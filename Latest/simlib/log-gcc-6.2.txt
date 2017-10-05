@@ -1,0 +1,283 @@
+make -C src
+make[1]: Entering directory '/disk2/peringer/WORK/SIMLIB/simlib/src'
+make -j3 -f Makefile.`uname -s`-`uname -m`
+make[2]: Entering directory '/disk2/peringer/WORK/SIMLIB/simlib/src'
+cc     generr.c   -o generr
+./generr errors.txt
+./generr errors.txt
+GENERR - error messages generator                     (c)PerPet 1991-1997 
+
+Number of messages = 89 
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c atexit.cc
+GENERR - error messages generator                     (c)PerPet 1991-1997 
+
+Number of messages = 89 
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c calendar.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c debug.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c entity.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c error.cc
+entity.cc: In member function ‘virtual void simlib3::Entity::Activate(double)’:
+entity.cc:27:24: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKENTITY(e) if (!e) SIMLIB_error(EntityRefError);
+                        ^
+entity.cc:63:3: note: in expansion of macro ‘CHECKENTITY’
+   CHECKENTITY(this);
+   ^~~~~~~~~~~
+entity.cc: In member function ‘virtual void simlib3::Entity::Passivate()’:
+entity.cc:27:24: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKENTITY(e) if (!e) SIMLIB_error(EntityRefError);
+                        ^
+entity.cc:86:3: note: in expansion of macro ‘CHECKENTITY’
+   CHECKENTITY(this);
+   ^~~~~~~~~~~
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c errors.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c event.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c link.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c list.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c name.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c object.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c print.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c run.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c sampler.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c opt-hooke.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c opt-simann.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c opt-param.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c delay.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c zdelay.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c simlib2D.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c simlib3D.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c algloop.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c cond.cc
+algloop.cc: In member function ‘virtual double simlib3::Bisect::Value()’:
+algloop.cc:182:10: warning: variable ‘fa’ set but not used [-Wunused-but-set-variable]
+   double fa = 0; // function value in boundary point
+          ^~
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c fun.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c graph.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c intg.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c continuous.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c ni_abm4.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c ni_euler.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c ni_fw.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c ni_rke.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c ni_rkf3.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c ni_rkf5.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c ni_rkf8.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c numint.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c output1.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c stdblock.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c barrier.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c facility.cc
+facility.cc: In member function ‘virtual void simlib3::Facility::QueueIn(simlib3::Entity*, simlib3::ServicePriority_t)’:
+facility.cc:33:29: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKFACILITY(fptr) if (!fptr) SIMLIB_error(FacilityRefError)
+                             ^
+facility.cc:210:5: note: in expansion of macro ‘CHECKFACILITY’
+     CHECKFACILITY(this);
+     ^~~~~~~~~~~~~
+facility.cc: In member function ‘virtual void simlib3::Facility::Release(simlib3::Entity*)’:
+facility.cc:33:29: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKFACILITY(fptr) if (!fptr) SIMLIB_error(FacilityRefError)
+                             ^
+facility.cc:160:5: note: in expansion of macro ‘CHECKFACILITY’
+     CHECKFACILITY(this);
+     ^~~~~~~~~~~~~
+facility.cc: In member function ‘virtual void simlib3::Facility::Seize(simlib3::Entity*, simlib3::ServicePriority_t)’:
+facility.cc:33:29: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKFACILITY(fptr) if (!fptr) SIMLIB_error(FacilityRefError)
+                             ^
+facility.cc:119:5: note: in expansion of macro ‘CHECKFACILITY’
+     CHECKFACILITY(this);
+     ^~~~~~~~~~~~~
+facility.cc: In member function ‘void simlib3::Facility::SetQueue(simlib3::Queue*)’:
+facility.cc:33:29: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKFACILITY(fptr) if (!fptr) SIMLIB_error(FacilityRefError)
+                             ^
+facility.cc:98:5: note: in expansion of macro ‘CHECKFACILITY’
+     CHECKFACILITY(this);
+     ^~~~~~~~~~~~~
+facility.cc: In member function ‘virtual void simlib3::Facility::Clear()’:
+facility.cc:33:29: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKFACILITY(fptr) if (!fptr) SIMLIB_error(FacilityRefError)
+                             ^
+facility.cc:273:5: note: in expansion of macro ‘CHECKFACILITY’
+     CHECKFACILITY(this);
+     ^~~~~~~~~~~~~
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c histo.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c output2.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c process.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c queue.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c random1.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c random2.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c semaphor.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c stat.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c store.cc
+stat.cc: In member function ‘void simlib3::Stat::operator()(double)’:
+stat.cc:36:3: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+   if (!this)  SIMLIB_error(StatRefError);
+   ^~
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c tstat.cc
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c waitunti.cc
+store.cc: In member function ‘virtual void simlib3::Store::QueueIn(simlib3::Entity*, long unsigned int)’:
+store.cc:34:26: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKSTORE(sptr) if (!sptr) SIMLIB_error(StoreRefError)
+                          ^
+store.cc:187:3: note: in expansion of macro ‘CHECKSTORE’
+   CHECKSTORE(this);
+   ^~~~~~~~~~
+store.cc: In member function ‘virtual void simlib3::Store::Enter(simlib3::Entity*, long unsigned int)’:
+store.cc:34:26: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKSTORE(sptr) if (!sptr) SIMLIB_error(StoreRefError)
+                          ^
+store.cc:138:3: note: in expansion of macro ‘CHECKSTORE’
+   CHECKSTORE(this);
+   ^~~~~~~~~~
+store.cc: In member function ‘virtual void simlib3::Store::Leave(long unsigned int)’:
+store.cc:34:26: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKSTORE(sptr) if (!sptr) SIMLIB_error(StoreRefError)
+                          ^
+store.cc:161:3: note: in expansion of macro ‘CHECKSTORE’
+   CHECKSTORE(this);
+   ^~~~~~~~~~
+store.cc: In member function ‘void simlib3::Store::SetCapacity(long unsigned int)’:
+store.cc:34:26: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKSTORE(sptr) if (!sptr) SIMLIB_error(StoreRefError)
+                          ^
+store.cc:106:3: note: in expansion of macro ‘CHECKSTORE’
+   CHECKSTORE(this);
+   ^~~~~~~~~~
+store.cc: In member function ‘void simlib3::Store::SetQueue(simlib3::Queue*)’:
+store.cc:34:26: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKSTORE(sptr) if (!sptr) SIMLIB_error(StoreRefError)
+                          ^
+store.cc:118:3: note: in expansion of macro ‘CHECKSTORE’
+   CHECKSTORE(this);
+   ^~~~~~~~~~
+store.cc: In member function ‘virtual void simlib3::Store::Clear()’:
+store.cc:34:26: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKSTORE(sptr) if (!sptr) SIMLIB_error(StoreRefError)
+                          ^
+store.cc:198:3: note: in expansion of macro ‘CHECKSTORE’
+   CHECKSTORE(this);
+   ^~~~~~~~~~
+tstat.cc: In member function ‘virtual void simlib3::TStat::operator()(double)’:
+tstat.cc:29:28: warning: nonnull argument ‘this’ compared to NULL [-Wnonnull-compare]
+ #define CHECKTSTAT(tsptr)  if (!tsptr)  SIMLIB_error(TStatRefError);
+                            ^
+tstat.cc:70:3: note: in expansion of macro ‘CHECKTSTAT’
+   CHECKTSTAT(this);
+   ^~~~~~~~~~
+g++ -Wall -fPIC   -m64         -O2          -g           -Wextra      -c version.cc
+rm -f simlib.a  # create new library
+g++ -shared -Wall -fPIC   -m64         -O2          -g           -Wextra      version.o atexit.o calendar.o debug.o entity.o error.o errors.o event.o link.o list.o name.o object.o print.o run.o sampler.o opt-hooke.o opt-simann.o opt-param.o delay.o zdelay.o simlib2D.o simlib3D.o algloop.o cond.o fun.o graph.o intg.o continuous.o ni_abm4.o ni_euler.o ni_fw.o ni_rke.o ni_rkf3.o ni_rkf5.o ni_rkf8.o numint.o output1.o stdblock.o barrier.o facility.o histo.o output2.o process.o queue.o random1.o random2.o semaphor.o stat.o store.o tstat.o waitunti.o -o simlib.so
+ar rcv simlib.a atexit.o calendar.o debug.o entity.o error.o errors.o event.o link.o list.o name.o object.o print.o run.o sampler.o opt-hooke.o opt-simann.o opt-param.o delay.o zdelay.o simlib2D.o simlib3D.o algloop.o cond.o fun.o graph.o intg.o continuous.o ni_abm4.o ni_euler.o ni_fw.o ni_rke.o ni_rkf3.o ni_rkf5.o ni_rkf8.o numint.o output1.o stdblock.o barrier.o facility.o histo.o output2.o process.o queue.o random1.o random2.o semaphor.o stat.o store.o tstat.o waitunti.o version.o
+a - atexit.o
+a - calendar.o
+a - debug.o
+a - entity.o
+a - error.o
+a - errors.o
+a - event.o
+a - link.o
+a - list.o
+a - name.o
+a - object.o
+a - print.o
+a - run.o
+a - sampler.o
+a - opt-hooke.o
+a - opt-simann.o
+a - opt-param.o
+a - delay.o
+a - zdelay.o
+a - simlib2D.o
+a - simlib3D.o
+a - algloop.o
+a - cond.o
+a - fun.o
+a - graph.o
+a - intg.o
+a - continuous.o
+a - ni_abm4.o
+a - ni_euler.o
+a - ni_fw.o
+a - ni_rke.o
+a - ni_rkf3.o
+a - ni_rkf5.o
+a - ni_rkf8.o
+a - numint.o
+a - output1.o
+a - stdblock.o
+a - barrier.o
+a - facility.o
+a - histo.o
+a - output2.o
+a - process.o
+a - queue.o
+a - random1.o
+a - random2.o
+a - semaphor.o
+a - stat.o
+a - store.o
+a - tstat.o
+a - waitunti.o
+a - version.o
+ranlib simlib.a
+nm --demangle simlib.a > simlib.nm
+make[2]: Leaving directory '/disk2/peringer/WORK/SIMLIB/simlib/src'
+make[1]: Leaving directory '/disk2/peringer/WORK/SIMLIB/simlib/src'
+make -C examples
+make[1]: Entering directory '/disk2/peringer/WORK/SIMLIB/simlib/examples'
+make -j3 -f Makefile.`uname -s`-`uname -m`
+make[2]: Entering directory '/disk2/peringer/WORK/SIMLIB/simlib/examples'
+g++ -Wall -m64 -O2  -g   -I../src -o bessel  bessel.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o centrala  centrala.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o ctest  ctest.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o kolo  kolo.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o kolo2  kolo2.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o kostky  kostky.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o kostky2  kostky2.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o lorenz  lorenz.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o micek  micek.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o ball2  ball2.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o model2  model2.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o model3  model3.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o model4  model4.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o model5  model5.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o multiexp  multiexp.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o pocsit  pocsit.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o procesor  procesor.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o test3D  test3D.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o topeni  topeni.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o model2-timeout  model2-timeout.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o rc  rc.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o rlc  rlc.cc ../src/simlib.so -lm
+make[2]: Leaving directory '/disk2/peringer/WORK/SIMLIB/simlib/examples'
+make[1]: Leaving directory '/disk2/peringer/WORK/SIMLIB/simlib/examples'
+make -C tests
+make[1]: Entering directory '/disk2/peringer/WORK/SIMLIB/simlib/tests'
+make -j3 -f Makefile.`uname -s`-`uname -m`
+make[2]: Entering directory '/disk2/peringer/WORK/SIMLIB/simlib/tests'
+g++ -Wall -m64 -O2  -g   -I../src -o 3d-test  3d-test.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o barrier-test1  barrier-test1.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o barrier-test2  barrier-test2.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o delay-test  delay-test.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o delay-test2  delay-test2.cc ../src/simlib.so -lm
+delay-test.cc: In function ‘void Sample()’:
+delay-test.cc:28:10: warning: variable ‘error’ set but not used [-Wunused-but-set-variable]
+   double error = delayed - e.Value();
+          ^~~~~
+g++ -Wall -m64 -O2  -g   -I../src -o zdelay-test  zdelay-test.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o waituntil-test  waituntil-test.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o process-test  process-test.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o sizeof-all  sizeof-all.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o random-test  random-test.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o test1  test1.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o test2  test2.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o test3  test3.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o test4  test4.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o test5  test5.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o test-calendar  test-calendar.cc ../src/simlib.so -lm
+g++ -Wall -m64 -O2  -g   -I../src -o test-reactivate  test-reactivate.cc ../src/simlib.so -lm
+make[2]: Leaving directory '/disk2/peringer/WORK/SIMLIB/simlib/tests'
+make[1]: Leaving directory '/disk2/peringer/WORK/SIMLIB/simlib/tests'

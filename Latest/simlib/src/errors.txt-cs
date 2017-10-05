@@ -1,0 +1,195 @@
+////////////////////////////////////////////////////////////////////////////
+//  errors.doc                 SIMLIB  v.2.12                   rev.970910
+//
+//  (c) PerPet 1991-1997
+//
+//  This file contains SIMLIB error messages 
+//  You can translate it and then recompile SIMLIB
+//
+//  texty chybových hlá¹ení knihovny SIMLIB - èesky
+//  zdrojový tvar pro program GENERR (generuje errors.h a errors.cc) 
+//
+////////////////////////////////////////////////////////////////////////////
+
+_ErrMsg(_ErrEnum)
+
+////////////////////////////////////////////////////////////////////////////
+// doplnit parametry (%s,...)
+//
+
+Copyright               SIMLIB v2.12  (c) PerPet 1991-1997
+UnknownError            Nedokumentovaná chyba
+InternalError           Interní chyba
+MemoryError             Málo pamìti
+
+// obecné funkce
+InitError               Chybné parametry funkce Init()
+TwiceInitError          Init() je voláno dvakrát pøed Run()
+InitInRunError          Init() nesmí být voláno pøi bìhu simulace
+SetStepError            Chybné parametry funkce SetStep(min,max)
+RunUseError             Volání Run() musí následovat po volání Init()
+SFunctionUseError       Speciální funkce je pou¾ita mimo bìh simulace
+AccuracyError           Nelze zajistit zadanou pøesnost numerické integrace
+MissingDynamicError     Chybí Dynamic() - popis spojitého chování
+MissingConditionsError  Chybí Conditions() - testy podmínek
+
+// class Link
+LinkRefError            Chybný odkaz na prvek seznamu
+LinkDelError            Ru¹ený prvek je zaøazen v seznamu
+LinkOutError            Vyøazovaný prvek není v seznamu
+
+// class Calendar
+DuplicateCalendar       Kalendáø nelze deklarovat - musí být unikátní
+DeletingActive          Ru¹ení aktivní polo¾ky v kalendáøi
+SchedulingBeforeTime    Plánování pøed èas Time
+EmptyCalendar           Prázdný kalendáø
+
+// class Process
+ProcessRefError         Chybný odkaz na proces
+ProcessNotInitialized   Proces není inicializován
+
+// class Histogram
+HistoRefError           Chybný odkaz na histogram
+HistoStepError          Chybný krok histogramu (step<=0)
+HistoCountError         Chybný poèet intervalù histogramu (max=10000)
+
+// class List
+ListRefError            Chybný odkaz na seznam
+ListActivityError       Seznam nemá aktivní prvek
+ListEmptyError          Seznam je prázdný
+
+// class Queue
+QueueRefError           Chybný odkaz na frontu
+
+// WaitUntil
+EmptyWUListError        Prázdný WaitUntilList - nelze Get() (interní chyba)
+
+// class Graph
+GraphRefError           Chybný odkaz na graf
+
+// class Entity
+EntityRefError          Chybný odkaz na entitu
+EntityIsNotScheduled    Entita není naplánována
+
+// class Stat
+StatRefError            Chybný odkaz na statistiku
+
+// class TStat
+TStatRefError           Chybný odkaz na èasovou statistiku
+TStatNotInitialized     Èasová statistika není inicializována
+
+// class Integrator
+TooManyIntg             Pøíli¹ mnoho integrátorù
+CantCreateIntg          Nelze vytvoøit integrátor v dynamické sekci
+CantDestroyIntg         Nelze zru¹it integrátor v dynamické sekci
+
+// class Model
+CantCreateModel         Nelze vytvoøit model pøi bìhu simulace
+CantDestroyModel        Nelze zru¹it model pøi bìhu simulace
+
+// class Status
+TooManyStatus           Pøíli¹ mnoho stavových promìnných
+CantCreateStatus        Nelze vytvoøit stavovou promìnnou v dynamické sekci
+CantDestroyStatus       Nelze zru¹it stavovou promìnnou v dynamické sekci
+
+// class Facility, Store
+FacilityRefError        Chybný odkaz na zaøízení
+FacInterruptError       Seize(): Nelze pøeru¹it obsluhu
+ReleaseError            Release(): Zaøízení uvolnìno nesprávnou entitou
+ReleaseNotSeized        Release(): Pokus o uvolnìní neobsazeného zaøízení
+StoreRefError           Chybný odkaz na sklad
+EnterCapError           Enter() po¾aduje více, ne¾ je kapacita skladu
+LeaveManyError          Leave() uvolòuje více, ne¾ je právì zabráno
+SetCapacityError        SetCapacity() nemù¾e zmen¹it kapacitu skladu
+SetQueueError           SetQueue(): Ru¹ená fronta není prázdná
+
+// RANDOM
+WeibullError            Weibul(): lambda<=0.0 nebo alfa<=1.0
+ErlangError             Erlang(): beta<1
+NegBinError             NegBin(): q<=0 nebo k<=0
+NegBinMError1           NegBinM(): m<=0
+NegBinMError2           NegBinM(): p mimo rozsah 0..1
+PoissonError            Poisson(lambda): lambda<=0
+GeomError               Geom(): q<=0
+HyperGeomError1         HyperGeom(): m<=0
+HyperGeomError2         HyperGeom(): p mimo rozsah 0..1
+
+////////////////////////////////////////////////////////////////////////////
+
+OutFilePutError         Nelze zapsat do výstupního souboru
+OutFileOpenError        Výstupní soubor nelze otevírat mezi Init() a Run()
+CantOpenOutFile         Výstupní soubor nelze otevøít
+CantCloseOutFile        Nelze uzavøít výstupní soubor
+CantCreateOldGraph      OldGraph mù¾e být pouze globální
+OldGraphParamError      OldGraph(): Poèet parametrù neodpovídá konstruktoru
+OldGraphNotOpenError    OldGraph(): Není otevøen výstupní soubor
+OldGraphUseError        OldGraph(): Nelze pou¾ít pøed Run()
+SetModelNameError       SetModelName: Jméno modelu je pøíli¹ dlouhé
+SetInfoTxtError         SetInfoText: Text je pøíli¹ dlouhý
+InitMinStepError        Po¾adovaný krok integrace je pøíli¹ malý
+SetStepError2           SetStep: Pøíli¹ velký rozdíl min/max kroku integrace
+SetAccuracyError        SetAccuracy: Pøíli¹né po¾adavky na rel. pøesnost
+
+////////////////////////////////////////////////////////////////////////////
+// ver 1.01
+
+////////////////////////////////////////////////////////////////////////////
+// ver 2.00
+AlgLoopDetected         Detekována algebraická smyèka
+LowGreaterHigh          Parametr low>=high
+BadQntzrStep            Parametr kvantizátoru je <= 0
+TooManyNames            Pøíli¹ mnoho jmen objektù
+ObjectHasNotName        Objekt není pojmenován
+InconsistentHeader      Nekonzistence knihovny (simlib.lib) a rozhraní (simlib.h)
+
+////////////////////////////////////////////////////////////////////////////
+SemaphoreError          Semaphore::V() -- chybné volání
+BadUniformParam         Uniform(l,h) -- chybné argumenty
+
+////////////////////////////////////////////////////////////////////////////
+//16.4.96
+StatNoRecError          Stat::MeanValue()  No record in statistic
+StatDispError           Stat::Disp()  Can't compute (n<2)
+
+
+////////////////////////////////////////////////////////////////////////////
+// AlgLoop -- Le¹ka
+AL_BadBounds            AlgLoop: t_min>=t_max
+AL_BadInitVal           AlgLoop: t0 nele¾í v intervalu <t_min,t_max>
+AL_Diverg               AlgLoop: metoda diverguje
+AL_MaxCount             AlgLoop: pøekroèen maximální poèet krokù
+AL_NotInLoop            AlgLoop: iteraèní blok není ve smyèce
+
+
+////////////////////////////////////////////////////////////////////////////
+// NumInt -- Le¹ka, 21. 3. 1997
+NI_UnknownMeth          integraèní metoda není známa
+NI_MultDefMeth          jméno integraèní metody musí být jedineèné
+NI_IlStepSize           integraèní krok je men¹í nebo roven nule
+NI_NotSingleStep        metoda po¾adovaná pro start není jednokroková
+NI_NotMultiStep         startovaná metoda není vícekroková
+NI_CantSetMethod        nelze pøepnout metodu v dynamické sekci
+NI_CantSetStarter       nelze pøepnout startovací metodu v dynamické sekci
+
+
+////////////////////////////////////////////////////////////////////////////
+// Rline block
+RlineErr1               Rline: parametr n<2
+RlineErr2               Rline: pole není seøazeno
+
+NoDebugErr              knihovna byla pøelo¾ena bez podpory ladìní
+
+////////////////////////////////////////////////////////////////////////////
+// delay 12.8.98
+DelayTimeErr            zpo¾dìní je pøíli¹ malé ( <= MaxStep )
+
+////////////////////////////////////////////////////////////////////////////
+
+ParameterChangeErr      Parametr nelze mìnit pøi bì¾ící simulaci
+
+////////////////////////////////////////////////////////////////////////////
+// -- poslední
+UserError               Obecná chyba
+
+
+////////////////////////////////////////////////////////////////////////////

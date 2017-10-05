@@ -1,0 +1,66 @@
+
+TODO list for SIMLIB/C++
+========================
+
+x86_64 128bit "red zone"
+
+= update INSTALL/README
+
+- IntegratorLim implementation
+- simplify numerical methods framework
+- autodetect multilib and create 32+64bit static+shared libs
+- use autotools?
+
+DONE - run ERRMSG generator only if really needed (timestamp-based)
+
+- try clang++
+
+- add soname and symlinks, OR use libtool?
+
+- add check for version vs name of tarball
+
+- add more Doxygen documentation to source code
+
+- automate SIMLIB script generation by make install
+
+- create both 32 and 64 bit versions, use suffix -32, -64, and symlink ?
+
+- add reference counting to aContiBlock  (+rename) OR use shared_ptr<>
+
+- tests for performance (regression tests, calendar)
+
+porting: windows/mingw, windows/vc
+
+use generic settings in CXX
+version 2.90...3.0
+
+- New monitoring (NOT function = Evaluate each step) block: 
+  TotalMinMax(x) + methods GetMin/GetMax/GetAvg/effective?
+  LastPeakValue +-
+  Integrator: add Total min/max
++ block+variable RelativeSimulationTime  0=begin 1=endtime
+     works only if endtime given - else error|0 ?
+
+- improve code - see src/TODO
+- add configure script
+- testing...
+
+- Init(...) should INITIALIZE (Clear) all time statistics
+
+
+======================================================
+- new debuging:
+
+DebugON()               Debug(1)
+DebugOFF()              Debug(0)
+
+Debug(0|1|level);
+
+levels:
+0 - none
+1 - basic operation
+2 - more
+4 - detail
+5 - all
+======================================================
+

@@ -1,0 +1,72 @@
+
+List of known bugs in SIMLIB/C++            
+================================
+
+Last modified: Tue Aug  5 17:41:52 CEST 2008
+
+Warning: not complete!
+
+==============================================================================
+key: 
+// solved
+?  problem may be elsewhere
+==============================================================================
+
+
+// fixed 20081216: Activate(t) if already scheduled -> segfault
+
+other_process->Terminate();  //ERROR
+
+typecasts --> *_cast<T>()
+
+?  Borland C++ 5.0x --- problem with 'new xxx' in ProcessXX::Behavior()
+                     if exception handling is ON
+                     temporary solution: enclose new in function
+
+// fixed Event::Wait() do not use ---> disable in Entity
+// fixed 2008-08-05:  one-time event -- needs Cancel() -- no more
+//                    calling Cancel() caused SIGSEGV in delete this
+
+// fixed: (new EventX)->Activate(); // memory leak after Behavior() execution
+
+SPARC: non-working process implementation (no plan to fix this)
+
+ContiBlock -- no 'garbage collecting' 
+missing: check of uninitialized block use
+
+
+============================================================================
+OLD (possibly solved):
+============================================================================
+
+Store: two possible use of input queue
+       (current implementation searches for acceptable capacity requirement in queue)
+
+============================================================================
+* PROBLEM of order of declarations in blocks !
+  Example: using double variables in block expressions:
+
+ class x {
+   Integrator i;
+   double param;
+  public:
+   R(Input in, double d = 1.0) :
+    i(in/param),    // division by zero! (uninitialized)
+    param(d)        // init
+     {}
+   Value();
+ };
+
+* no GC --- memory leaks in continuous blocks using code!
+  no problem for small and static models and small number of experiments
+
+* ERROR: WaitUntil() without scheduling leaves out last event?!
+  should be tested again!
+
+
+PORTABILITY
+============================================================================
+
+* GNU C: multiple inheritance: 2SimObject => new/delete problem
+
+

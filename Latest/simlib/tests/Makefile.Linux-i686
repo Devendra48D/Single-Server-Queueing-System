@@ -1,0 +1,18 @@
+#  Makefile for SIMLIB
+#  ===================
+
+# name of the compiler for C++ language
+CXX?=g++
+
+# C++ compiler flags
+CXXFLAGS  = -Wall
+#CXXFLAGS += -std=c++98
+CXXFLAGS += -m32
+CXXFLAGS += -O2 # add optimization level
+CXXFLAGS += -g  # add debug info
+#CXXFLAGS += -pg # add profiling support
+#CXXFLAGS += -Weffc++ # add extra checking of source code
+
+include Makefile.generic
+
+#

@@ -1,0 +1,5 @@
+
+Make - prelozi vse pro 64bit
+upravit makeflile vsude - nejak inteligentne
+do 5.3.2014
+

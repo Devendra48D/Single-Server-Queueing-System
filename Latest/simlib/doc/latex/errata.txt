@@ -1,0 +1,30 @@
+
+Opravy dokumentace k SIMLIB
+---------------------------
+
+skripta:
+  Rábová a kol.: Modelování a simulace, FE VUT BRNO, 1992
+
+
+Pøesto¾e ve skriptech byla popsána podmno¾ina SIMLIB, která by se nemìla 
+pøíli¹ mìnit s dal¹ím vývojem knihovny, do¹lo k nìkolika zmìnám:
+
+Hierarchie tøíd (bude se je¹tì mìnit)
+aBlock                pøepsat na         aContiBlock
+
+class Variable        pøejmenována       class ReferenceToDouble
+ Nepou¾ívat - není nutné 
+
+!Upozornìní! - vloudila se chyba - Time*5 se v blokovém výrazu 
+               vyhodnotí jako konstanta...
+
+  øe¹ení:  pou¾ít spojitý blok T, který reprezentuje simulaèní èas
+
+
+zmìna BoolCondition!
+ tøída Condition je speciální blok, který testuje vstup x podle podmínky:
+   x >= 0
+ odvozeny jsou ConditionUp a ConditionDown (detekce pouze jedné zmìny)
+
+
+..end

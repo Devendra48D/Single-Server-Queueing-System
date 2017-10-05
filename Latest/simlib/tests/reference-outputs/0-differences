@@ -1,0 +1,86 @@
+Wed Oct  4 15:38:36 CEST 2017
+===== 3d-test.out =====
+Files 3d-test.out and ../3d-test.out are identical
+===== barrier-test1.out =====
+1,12c1,12
+< b:start 0xd69010
+< b:start 0xd690b0
+< b:start 0xd69150
+< b:start 0xd691f0
+< b:start 0xd69290
+< b:start 0xd69330
+< b:start 0xd693d0
+< b:end 0xd69010
+< b:end 0xd690b0
+< b:end 0xd69150
+< b:end 0xd691f0
+< b:end 0xd69290
+---
+> b:start 0x5591a3e7fc20
+> b:start 0x5591a3e7fcc0
+> b:start 0x5591a3e7fd60
+> b:start 0x5591a3e7fe00
+> b:start 0x5591a3e7fea0
+> b:start 0x5591a3e7ff40
+> b:start 0x5591a3e7ffe0
+> b:end 0x5591a3e7fc20
+> b:end 0x5591a3e7fcc0
+> b:end 0x5591a3e7fd60
+> b:end 0x5591a3e7fe00
+> b:end 0x5591a3e7fea0
+14,15c14,15
+<   0: [0xd69330] Process#5
+<   1: [0xd693d0] Process#6
+---
+>   0: [0x5591a3e7ff40] Process#5
+>   1: [0x5591a3e7ffe0] Process#6
+===== barrier-test2.out =====
+151,157c151,157
+<   0: [0x804be18] Process#149
+<   1: [0x804bfd8] Process#150
+<   2: [0x804b9f8] Process#151
+<   3: [0x804bb90] Process#152
+<   4: [0x804bd28] Process#153
+<   5: [0x804bd78] Process#154
+<   6: [0x804c028] Process#155
+---
+>   0: [0x556318f4d990] Process#149
+>   1: [0x556318f4cd10] Process#150
+>   2: [0x556318f4d110] Process#151
+>   3: [0x556318f4da10] Process#152
+>   4: [0x556318f4d510] Process#153
+>   5: [0x556318f4d6e0] Process#154
+>   6: [0x556318f4d8b0] Process#155
+===== delay-test.out =====
+Files delay-test.out and ../delay-test.out are identical
+===== process-test.out =====
+Files process-test.out and ../process-test.out are identical
+===== random-test.out =====
+Files random-test.out and ../random-test.out are identical
+===== sizeof-all-32.out =====
+***** NOT COMPARED ***** 
+===== sizeof-all-64.out =====
+4c4
+< SIMLIB Version  = SIMLIB 3.03 (Nov 26 2013 15:05:31)
+---
+> SIMLIB Version  = SIMLIB 3.04 (Oct  4 2017 15:38:09)
+39,42c39,42
+<   sizeof(IntegrationMethod) = 48
+<   sizeof(SingleStepMethod) = 56,  parent = IntegrationMethod
+<   sizeof(MultiStepMethod) = 64,  parent = IntegrationMethod
+<   sizeof(StatusMethod) = 80,  parent = SingleStepMethod
+---
+>   sizeof(IntegrationMethod) = 56
+>   sizeof(SingleStepMethod) = 64,  parent = IntegrationMethod
+>   sizeof(MultiStepMethod) = 72,  parent = IntegrationMethod
+>   sizeof(StatusMethod) = 96,  parent = SingleStepMethod
+===== test-calendar.out =====
+Files test-calendar.out and ../test-calendar.out are identical
+===== test4.out =====
+Files test4.out and ../test4.out are identical
+===== test5.out =====
+Files test5.out and ../test5.out are identical
+===== waituntil-test.out =====
+Files waituntil-test.out and ../waituntil-test.out are identical
+===== zdelay-test.out =====
+Files zdelay-test.out and ../zdelay-test.out are identical

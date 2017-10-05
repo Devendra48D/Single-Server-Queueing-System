@@ -1,0 +1,94 @@
+
+----------------------------------------------------------------
+This is README for SIMLIB/C++ (Simulation Library for C++)
+----------------------------------------------------------------
+
+Version 3.03 - 2014-06-01
+
+Copyright (c) 1991-2014 Petr Peringer
+Copyright (c) 1996-1997 David Leska     [numerical methods OO framework]
+Copyright (c) 2000-2001 David Martinek  [fuzzy extension]
+
+
+SIMLIB/C++ is the SIMulation LIBrary for C++ programming language. You can
+create models directly in C++ language using predefined simulation tools from
+the library. SIMLIB allows object-oriented description of models based on
+basic simulation abstractions. Current version allows a description of
+continuous, discrete, combined, 2D/3D vector, and fuzzy models.
+
+The library works with GNU C++ compiler under Linux (primary development
+platform), FreeBSD, and MS Windows (all platforms on i386+ and x86_64). The
+library is portable with one exception -- process switching code depends on
+setjmp/longjmp and some lines of assembly language.
+
+SIMLIB/C++ is developed at the Faculty of Information Technology, Brno
+University of Technology. The development started in 1991.
+
+
+----------------------------------------------------------------
+How to build and install SIMLIB/C++
+----------------------------------------------------------------
+
+See INSTALL file.
+
+Bug reports please mail to:  peringer AT fit.vutbr.cz
+
+----------------------------------------------------------------
+WWW
+----------------------------------------------------------------
+
+The SIMLIB home page URL:
+
+   http://www.fit.vutbr.cz/~peringer/SIMLIB/
+
+----------------------------------------------------------------
+How to write simulation models with SIMLIB/C++
+----------------------------------------------------------------
+
+First, see the examples -- it is easy to write simple models.
+
+The proper way to include SIMLIB header file is
+#include <simlib.h>
+if SIMLIB is correctly installed
+(for example in /usr/local/lib and /usr/local/include).
+Linker switches will be "-lsimlib -lm".
+
+If you wish to distribute a compiled program without source code: this is
+allowed.  See the LGPL license.
+
+----------------------------------------------------------------
+Copyright (c) 1991-2007 Petr Peringer
+----------------------------------------------------------------
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+USA.
+
+----------------------------------------------------------------
+Address:
+
+  Petr Peringer, 
+  Faculty of Information Technology, Brno University of Technology
+  Bozetechova 2
+  612 66 Brno, Czech Republic
+
+----------------------------------------------------------------
+
+Contributors:
+    David Leska                  OO numerical methods
+    David Martinek               Fuzzy subsystem extensions
+    xbatrl00@stud.fee.vutbr.cz   small fix of Integrator3D::Init()
+
+----------------------------------------------------------------
+Written by Petr Peringer              peringer AT fit.vutbr.cz 
+----------------------------------------------------------------

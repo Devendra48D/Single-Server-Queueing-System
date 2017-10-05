@@ -1,12 +1,8 @@
 # Single-Server-Queueing-System
+Author: Devendra Shah
+To run the program 
 
-Using the code from these slides, create a single server queueing system. 
-Also, use the code from pdf1 that contains the arrive and depart functions.
-Also the simlab 
-library 
-files 
-files2
-files3
- file4
-files5
-files6 
+1) run 'make' comman in Terminal. 
+2) You can see the output in output2.txt file. 
+
+
