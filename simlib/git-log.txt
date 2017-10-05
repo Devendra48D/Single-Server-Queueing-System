@@ -1,0 +1,755 @@
+commit 8d2dd2ddb168efb77b18751cfb84b69107d4b9de
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Oct 4 17:31:50 2017 +0200
+
+    version updated to 3.04
+
+commit cc3169fa6d6398088964fd93d088a54016e5e45e
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Oct 4 17:29:21 2017 +0200
+
+    tar argument update in Makefile
+
+commit 0d06dbee5d6654d582b1931c932de770da0e0740
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Oct 4 15:35:31 2017 +0200
+
+    example updates
+
+commit 52093725debd6ac576a33286badb78e65728b5e2
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Oct 4 15:34:29 2017 +0200
+
+    small changes to error messages
+
+commit a49ed2334adc72294b06429d92b7420e3ed980c9
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Oct 4 15:31:54 2017 +0200
+
+    minor documentation cleanup
+
+commit c672b299ee711672b7c908625441765484f0961a
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Nov 16 15:53:52 2016 +0100
+
+    documentation improvements
+
+commit 866e31b7fdd7eb96ceef90066d3d19ce6acb9530
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Nov 16 15:36:21 2016 +0100
+
+    minor cleanup, algloop.cc needs testing
+
+commit a63235de99a3b663712253d0d0b336ee02812d24
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Nov 16 15:34:53 2016 +0100
+
+    improved documentation for Delay
+
+commit 8e0f32f0da4fc485460797eeef9a3ef4610ad66e
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Tue Nov 15 21:20:28 2016 +0100
+
+    new TODO items
+
+commit f3ccb23e5475f438708e21b8dfbe65c2c408fc9d
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Tue Nov 15 21:19:09 2016 +0100
+
+    remove stupid checks and associated errors
+
+commit 96350d3d52451967bd1f5e8e09159efcb5d43f45
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Tue Nov 15 21:13:20 2016 +0100
+
+    do not make generr if not needed
+
+commit a7ff04ca4c1a6d7ab00ededaee0df04a62b1a494
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Tue Nov 15 19:49:23 2016 +0100
+
+    add FAQ entry - SetCalendar usage
+
+commit 9de8c3b7a4b494fb6f9e7371006527657eb88f6b
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Jul 1 17:53:25 2015 +0200
+
+    added pragmas which do not work (GCC bug)
+
+commit 74aa597f19c6fae7d44a2ef4e6bac3b620993545
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Jul 1 17:52:42 2015 +0200
+
+    generated file with add spaces
+
+commit 24b6d913344e06a1090464ce82c435e38c5e99a0
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Jul 1 17:50:06 2015 +0200
+
+    add space to remove warning
+
+commit 86cb81ac4444be57486619220cca3cf5b0d3e4f6
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Jul 1 17:48:56 2015 +0200
+
+    makefile cleanup
+
+commit d04cf0ee2c7a15e234be2b2398f1f08bf8db5c29
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Mon Dec 8 15:37:25 2014 +0100
+
+    new test5 (Cancel)
+
+commit e385248b6d004cbcb016e7b2b605f532966364d2
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Wed Nov 12 16:59:45 2014 +0100
+
+    clean-up
+
+commit 8d6a9a393efc751f2173531ad0b29cdbe6a75179
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Wed Nov 12 16:56:36 2014 +0100
+
+    minor changes
+
+commit 1997f3152c0b70b31e04bae153ca2341bec75153
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Wed May 14 15:15:36 2014 +0200
+
+    all Output() methods made const
+
+commit 36da6d7f245e587a04abd6ddf0f5abb5acb4ac94
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Mon May 12 17:46:42 2014 +0200
+
+    fix bug introduced by previous commit
+
+commit 4cf58f4b6916f30c44f3a60c8b136b21b38f36b8
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Mon May 12 17:32:31 2014 +0200
+
+    small bugfixes
+
+commit de5d71c58e1bc168651e54bdc955e915f4cd86fe
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Mon May 12 13:52:27 2014 +0200
+
+    doxygen config update
+
+commit f8770bae4ead204938a6ea4115b8ffcbe894df68
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Thu Mar 27 16:00:59 2014 +0100
+
+    some comments for doxygen added
+
+commit f90537233e0f2c252e5fc27a7cc981b0be988f65
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Wed Mar 26 22:44:53 2014 +0100
+
+    bugfixes for make test target
+
+commit 5a302e8bbaebb99026415035ae7cc7579dd239c9
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Fri Dec 6 15:30:51 2013 +0100
+
+    updated changelog
+
+commit 0b0a5b3592cf37029127c030deec8e0e6f522ec7
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Fri Dec 6 15:28:21 2013 +0100
+
+    Process::Terminate bugfix (isCurrent place)
+
+commit c74594b03d84589f1a4a7b5169942d68956953ed
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Tue Nov 26 15:11:19 2013 +0100
+
+    delete old test reference output
+
+commit 1deb5cbd8c68f8befcaedffeb7e6302afe6eadb1
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Tue Nov 26 15:09:26 2013 +0100
+
+    split 32/64 bit test output
+
+commit 9df801fe7b2c6c7c964851138b1ec222eb62ae61
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Tue Nov 26 15:08:13 2013 +0100
+
+    test Makefile update
+
+commit e1736ec9e3f5ec73c2951244d16afe061d8f5c7f
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Tue Nov 26 14:31:40 2013 +0100
+
+    remove memory leaks in calendar-list etc.
+
+commit 8a2fda1e34b34dc84bcf51abbec3c969df1bb1bd
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Tue Nov 19 16:30:11 2013 +0100
+
+    doxygen config update
+
+commit 90dae05eb95939e78c0bbf0ad8e5542e5174b9d9
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Tue Nov 19 16:28:48 2013 +0100
+
+    cleaning (remove obsolete architectures,...)
+
+commit 4343fecd981ba59051ac72751f3c1bc9797204d0
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Tue Nov 19 16:26:43 2013 +0100
+
+    int->long in process.cc (bug on Mac OS)
+
+commit 089a0e51e8c7c5ec3e4bc29b011d65d9626b7618
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Fri Oct 18 11:13:51 2013 +0200
+
+    rename SIMLIB_create_name to SIMLIB_create_tmp_name
+
+commit 0e30f86312bb6df61d830bd191d1deb938237281
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Thu Oct 17 17:43:39 2013 +0200
+
+    Halvint->Bisect rename
+
+commit ffed3b52db38f84c3d5fcad47f2f499dbdd34de7
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Thu Oct 17 17:35:06 2013 +0200
+
+    "make dep" update
+
+commit e02b23a429656904a6acdba076598422fc8b485c
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Thu Oct 17 17:27:22 2013 +0200
+
+    small changes, update changelog
+
+commit a3d14116581ce8f4d05e63fe0f7b8d130b1a7b25
+Author: Peringer Petr <peringer@fit.vutbr.cz>
+Date:   Thu Oct 17 17:12:21 2013 +0200
+
+    added comments, reduced whitespace
+
+commit a8032a3b8c3a3fcd38b009a4be71f4501b5c166a
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Nov 13 20:50:12 2011 +0100
+
+    minor changes in header files
+
+commit feba67b8683dffa0eeddbe0dedaf7133f99922fa
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 17:25:59 2011 +0100
+
+    New release (3.02), minor changes
+
+commit ab78f553e4eedb9ff4075f625b4f9a897590b4c4
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:19 2011 +0100
+
+    simlib-3.02-20110504
+
+commit af4f21afe780c944eddbb19960dbbb6b852ab9c1
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:18 2011 +0100
+
+    simlib-3.02-20110221
+
+commit 792d5d8642e4e33ec0888dcb47ce9b5e5b421aea
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:18 2011 +0100
+
+    simlib-3.02-20110210
+
+commit 3d6764a8a8663ad142715155d7f60533d71aeb83
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:18 2011 +0100
+
+    simlib-3.02-20101215
+
+commit 1a2983122dc2e0fe566082ff65ca79ba08607b9d
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:18 2011 +0100
+
+    simlib-3.02-20101130
+
+commit 9e0fc78871776223d25e210ed2145403f85bebaf
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:18 2011 +0100
+
+    simlib-3.01-20091129-release
+
+commit 2cca83792411d0061f97ab48174e0065b977e2e8
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:18 2011 +0100
+
+    simlib-3.00-20091125
+
+commit 9192fdd51a96fbd99b9614e852115b2771647a20
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:18 2011 +0100
+
+    simlib-3.00-20091124-release
+
+commit 6b013567cf37fa8a33d1e3a526c8af5449c9b56c
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:17 2011 +0100
+
+    simlib-3-20091030
+
+commit 60b728770ee718efc7f2989c2de913ecfa71b757
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:17 2011 +0100
+
+    simlib-3-20090505
+
+commit 462befd81974532b22d0fd316836554888fd977b
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:17 2011 +0100
+
+    simlib-3-20090415
+
+commit d98aec8e0e5ca9ab5bd1a98dc70a7af3a8f20934
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:17 2011 +0100
+
+    simlib-3-20090210
+
+commit 49e71f5819e1ab4ac69376c379ecdc0ba0bc5844
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:16 2011 +0100
+
+    simlib-3-20081217
+
+commit 2f509d1d60229edd22e1ad203273f9a18292b072
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:16 2011 +0100
+
+    simlib-3-20081216
+
+commit d88b9a7ee666522781ea2a661b3f46e3f5b1c941
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:16 2011 +0100
+
+    simlib-3-20081215
+
+commit c3ab10de65904795123d9ef6432743127822a199
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:16 2011 +0100
+
+    simlib-3-20081210
+
+commit 0ad96a9775013392b8000ab16794a204de30578e
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:16 2011 +0100
+
+    simlib-3-20081209
+
+commit f5081b37095d47849742678a20ee74a068b2ce19
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:16 2011 +0100
+
+    simlib-3-20081029
+
+commit 9d22e538572b76dc14865cff24b0e0aadf722c33
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:15 2011 +0100
+
+    simlib-3-20080929
+
+commit 83491711c9ab657316e196bf68b27c29cd2ac255
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:15 2011 +0100
+
+    simlib-3-20080911
+
+commit 834898a0244fa0898ad760659caabdaf995dd957
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:15 2011 +0100
+
+    simlib-3-20080908
+
+commit 695a354a2356bd6e121630023d578cdd07064ee2
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:15 2011 +0100
+
+    simlib-3-20080824
+
+commit 497e7ee5497613c412bc16174a2a21beb41ccdf4
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:15 2011 +0100
+
+    simlib-3-20080823
+
+commit 4b54caca26892b2f0fea3b9e27e631a09a698ca3
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:15 2011 +0100
+
+    simlib-3-20080821
+
+commit 158efaa296c169de9c7f6c5ff27d5a81aa89a81c
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:14 2011 +0100
+
+    simlib-3-20080819
+
+commit a5c3f9293c149429bbffa583d452a4cfa5565ae1
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:14 2011 +0100
+
+    simlib-3-20080811
+
+commit f666b8e65553e36ddee05a3f6141301b7a787adc
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:14 2011 +0100
+
+    simlib-3-20080806
+
+commit 4cf92a064b49986c90e42dfe938548b3b05f92f1
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:14 2011 +0100
+
+    simlib-3-20080805
+
+commit cf5c18953bcb75870058b9bec37a569f09e60467
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:14 2011 +0100
+
+    simlib-3-20080429
+
+commit cbe0c5ae70c6a5a704a0d27f5c9a3be632d6518d
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:13 2011 +0100
+
+    simlib-3-20080324
+
+commit cd56e2f989182e1ef95860cd107ffd6df9b6907e
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:13 2011 +0100
+
+    simlib-3-20071220
+
+commit ce30f7d44fbc62968f802c5150d2733844b686c1
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:13 2011 +0100
+
+    simlib-3-20071218
+
+commit 832767cded16577cec2450d93e935e0db406ab0f
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:13 2011 +0100
+
+    simlib-3-20071213
+
+commit e8e6bc9ab1e1fecb3602b3a53d3a08aeeb13ce72
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:12 2011 +0100
+
+    simlib-3-20071212
+
+commit 685bde7b32b4fb51ee6c57d0232ed320c566acf7
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:12 2011 +0100
+
+    simlib-3-20071211
+
+commit 290bce3226c6d6c966750449fdfb7121747d3584
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:12 2011 +0100
+
+    simlib-3-20071210
+
+commit 0413eafafe84e54ada8b4c5ad5d9b7b611e959a3
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:12 2011 +0100
+
+    simlib-3-20071209
+
+commit d5d99982eca3734742f9972f0af4c964ab214629
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:12 2011 +0100
+
+    simlib-3-20071208
+
+commit 6757ed243ab02515fdf5368e8a5aee6f72f28871
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:12 2011 +0100
+
+    simlib-3-20071207
+
+commit 5786e81485086a4c66eb45b4c3f9e4f4fb69b86f
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:12 2011 +0100
+
+    simlib-3-20071205
+
+commit f3f0728c54e460673ef51c0b567b21fbba5cd7e8
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:12 2011 +0100
+
+    simlib-3-20071203
+
+commit 0ebed6271c52d592f424d585edb837f1440f2710
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:11 2011 +0100
+
+    simlib-3-20071124
+
+commit ab12fa291c0fc35bb771be91e060cdb0c4816729
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:11 2011 +0100
+
+    simlib-3-20071120
+
+commit 286adcd7253d54d105f3f82d51ddf3355e8c2a5b
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:11 2011 +0100
+
+    simlib-3-20071119
+
+commit 49ef707d8cc93705ccfb0abf67456d76d6e3bf55
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:11 2011 +0100
+
+    simlib-3-20071114
+
+commit 9be8bdb1f3ce362aaef731799afbf6238cecba1f
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:11 2011 +0100
+
+    simlib-3-20071111
+
+commit a28297ec2301152dc723d21cd33decd446ccb1ef
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:08 2011 +0100
+
+    simlib-3-20030110
+
+commit 15bfaffef7f0ab95a57e14ba0bf19cede88f1929
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:07 2011 +0100
+
+    simlib-3-20020817
+
+commit 4193eb64bb20b2efeb1db4057a6ce266817e62e7
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:07 2011 +0100
+
+    simlib-2.17-20011115-release
+
+commit 069d6be6b238313c2672e0748f740323373afec6
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:07 2011 +0100
+
+    simlib-2.16.3-20011115
+
+commit c73beb2f7c7819f8cd5cbf259bc310ea8f39fd71
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:07 2011 +0100
+
+    simlib-2.16.3-20011106
+
+commit 0dc5369e20d07a8a95a2a4ddd54954b8e6aed832
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:07 2011 +0100
+
+    simlib-2.16.3-20010624
+
+commit b10dfe14e03d10103b56d9d8258d7527cef3bf5a
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:07 2011 +0100
+
+    simlib-2.16.3-20010528
+
+commit f20aa85b168e17952a11ad1d961e23ae1342ce2f
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:07 2011 +0100
+
+    simlib-2.16.3-20010425
+
+commit c9eabaa6a7cd4efdab1180db82b4918d26009740
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.16.2-20010405
+
+commit f13aa51a0c44706b8400611a96d48c34efd7da9a
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.16-20010228
+
+commit a3b865bc34f80935c648996eb2c4d0cbbb479c85
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.16-20010218
+
+commit 55398713693034ce99610ee3b3d3e9005dbfebde
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.16-20001123
+
+commit 4882f03cef56c4e5944ea34e5c3c66ddf0c9ffce
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.16-20001112
+
+commit 16d8f3245efde84894aa02c0171afee7e82f0f88
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.16-20001103-release
+
+commit 37f426ddebd6c58bc27965fa1a907588bf2524e8
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-20000808
+
+commit f1dcc3947077c981994d19ed7cecc230bbfc90bb
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-20000612
+
+commit f843c1ce5556fdca9027b08f9817e35f00032921
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-20000305
+
+commit 5e3889637de662dcb1410a437694febfbf1f52d5
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-20000120
+
+commit 4a10042e910929cfca6d764c97424bc1a0ca628e
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-19991206
+
+commit d908069e48fbb8d12377eceed7c482d430ff10d5
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-19991019
+
+commit b1a2435ede4d6fc06ad6283d836bb2c93ad5dce5
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-19990927
+
+commit 48065c8d128a495f7a0708d1e2eab4649b6bf98d
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-19990806
+
+commit c62d442769628688d780fbee5c5850db7e0f1aec
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-19990505
+
+commit 8a6eaefcb325de2cd6012aaba71eff80441c78e2
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:06 2011 +0100
+
+    simlib-2.15-19990504
+
+commit bc631cc4603b8899370f6a3086ddde1a5ac23f79
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:05 2011 +0100
+
+    simlib-2.15-19981108-release
+
+commit ccd79ad7b76c78f580467e72389150dac8cbfcde
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:05 2011 +0100
+
+    simlib-2.13-19980830-release
+
+commit a8246924ab11af8d6af9fa8e09f6fcc0c088183c
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:05 2011 +0100
+
+    renamed simlib-2.11-19960325
+
+commit 619ec4412d1813b20f6057a32919000d82128fe4
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:05 2011 +0100
+
+    simlib-2.11-19960325
+
+commit 1c60d4b72001379ba710b208ddfb9291e350e2ce
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:05 2011 +0100
+
+    simlib-2.10-19960219
+
+commit ec1c5757e1ec4ee42bac0c87e93286899865c922
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:05 2011 +0100
+
+    simlib-2.02-19950910
+
+commit a4c70bde37d775bdd92c4eb1b4499abd78a2301f
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-2.02-19950329
+
+commit 9933672cd385a83872d32b4e8c06da15622b73a1
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-2.00-19940511
+
+commit ecb8be54d603a5d9e96620ba180fb6ac1e4e733c
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-2.00-19931127
+
+commit 7194c00179bdd9f919c4d90a85675b38e5c35cc0
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-2.00-19930308
+
+commit 9643a5719d764feaf1be9f05cc2dc29f8ca2abc6
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-2.00-19930121
+
+commit b4f8e618b65cc40344494362216d1f080a40adaa
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-1.05-19921123
+
+commit cb81db18547bbaaadfc21b44c737e8288306d65c
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-1.00-19920514
+
+commit 076886dcb1020ee0592430b99196585e2b0eaaf1
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-1.00-19920413
+
+commit 9183d289b6186235b4440d8b57ce287eb4ab8c50
+Author: Petr Peringer <peringer@fit.vutbr.cz>
+Date:   Sun Oct 30 16:32:04 2011 +0100
+
+    simlib-1.00-19911216

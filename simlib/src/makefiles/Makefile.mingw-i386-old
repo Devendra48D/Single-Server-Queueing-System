@@ -1,0 +1,299 @@
+#
+#  Makefile for SIMLIB
+#  ===================
+#
+#  Target: win32/GNU C++ (mingw)
+#  Make:   make (GNU make)
+#
+################################################################################
+# How to install pure SimLib:
+# edit Makefile to suit it to your system
+# type "make clean" to remove binaries created by compiler
+# type "make" or "make all" to compile sources
+# type "make install" to install library (WARNING: this experimental Makefile
+#                     installs into parent directory .. )
+# then you may type "make test" to check if all is OK
+# type "make pack" to create archive SIMLIB*.tar.gz
+################################################################################
+# How to install SimLib with Fuzzy module:
+# type "make MODULES="fuzzy" clean" to remove binaries created by compiler
+# type 'make MODULES="fuzzy"' to compile sources
+# type 'make MODULES="fuzzy" install' to install library (WARNING: this 
+#          experimental Makefile installs into parent directory .. )
+# then you may type "make MODULES="fuzzy" test" to check if all is OK
+# type "make MODULES="fuzzy" pack" to create archive SIMLIB*.tar.gz
+################################################################################
+# How to install SimLib with XML analyzer module:
+# First you must have library Xerces1.4 installed.
+# You can find it on http://xml.apache.org/xerces-c/
+#
+# type "make MODULES="fuzzy analyzer" clean" to remove binaries created by compiler
+# type 'make MODULES="fuzzy analyzer"' to compile sources
+# type 'make MODULES="fuzzy analyzer" install' to install library (WARNING: this 
+#          experimental Makefile installs into parent directory .. )
+# then you may type "make MODULES="fuzzy analyzer" test" to check if all is OK
+# type "make MODULES="fuzzy analyzer" pack" to create archive SIMLIB*.tar.gz
+#############################################################################
+#####  Definitions  #####
+
+.PHONY: all install uninstall clean distclean test
+
+# to add modules
+MODULES=
+
+# the name of the library
+LIBNAME=simlib
+
+# name of the compiler for C and C++ language
+CC=gcc
+CXX=c++
+
+# C++ compiler flags -- for development
+#CXXFLAGS=-g -O2 -Wall		# with debug info
+CXXFLAGS=-O2 -Wall         	# PRODUCTION CODE
+
+# program to remove files
+RM=rm -f
+
+# program providing a simple test of installed library functionality
+TESTFILE=_test_
+
+# files to remove after compiling & install
+GARBAGE=$(OBJFILES) *~ $(LIBNAME)*.a $(LIBNAME)*.nm $(LIBNAME)*.so \
+	generr errors.h errors.cc _test_
+
+# archive file name (without extension)
+ARCHIVE=SIMLIB
+
+# files to pack into archive
+ARCHIVE_FILES = README COPYING *.c *.h *.cc *.doc Makefile.* *.txt *.config
+
+# headers for dependencies
+HEADERS = simlib.h errors.h internal.h
+
+# headers for install
+SIMLIB_HEADERS = simlib.h delay.h zdelay.h simlib2D.h simlib3D.h optimize.h 
+
+#############################################################################
+# binaries which will be in the library
+BASEOBJFILES = atexit.o \
+	calendar.o debug.o \
+	entity.o error.o errors.o event.o \
+	link.o list.o name.o \
+	object.o \
+	print.o run.o \
+	sampler.o 
+
+CONTIOBJFILES = delay.o zdelay.o simlib2D.o simlib3D.o\
+	algloop.o cond.o \
+	fun.o graph.o \
+	intg.o continuous.o ni_abm4.o ni_euler.o \
+	ni_fw.o ni_rke.o ni_rkf3.o ni_rkf5.o ni_rkf8.o numint.o \
+	output1.o \
+	stdblock.o 
+
+DISCOBJFILES = \
+	barrier.o \
+	facility.o \
+	histo.o \
+	\
+	output2.o process.o queue.o random1.o random2.o \
+	semaphor.o stat.o store.o tstat.o waitunti.o
+
+OPTOBJFILES = opt-hooke.o opt-simann.o opt-param.o
+
+OBJFILES = $(BASEOBJFILES) $(CONTIOBJFILES) $(OPTOBJFILES) $(DISCOBJFILES)
+
+SIMLIBOBJFILES =  $(BASEOBJFILES) $(CONTIOBJFILES) $(OPTOBJFILES) $(DISCOBJFILES)
+
+#############################################################################
+# Implicit Rule to compile modules
+%.o : %.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+#############################################################################
+###  Create library
+#############################################################################
+WITHMODULES=$(SIMLIBOBJFILES)
+
+ifeq (fuzzy, $(findstring fuzzy, $(MODULES)))
+OBJFILES+=fuzzy/fuzzy.o fuzzy/fuzzyio.o fuzzy/fuzzymf.o fuzzy/fuzzyrul.o fuzzy/ruletree.o fuzzy/rules.o 
+WITHMODULES+=fuzzymodule
+SIMLIB_HEADERS+=fuzzy/fuzzy.h
+ARCHIVE_FILES+=fuzzy/*.h fuzzy/*.cc fuzzy/Makefile
+endif
+
+ifeq (analyzer, $(findstring analyzer, $(MODULES)))
+OBJFILES+=analyzer/fuzzyanalyzer.o
+WITHMODULES+=analyzermodule
+SIMLIB_HEADERS+=analyzer/analyzer.h analyzer/fuzzyanalyzer.h
+ARCHIVE_FILES+=analyzer/*.h analyzer/*.cc analyzer/Makefile
+endif
+
+### main rule
+withmodules: $(WITHMODULES) all
+
+all: $(LIBNAME).a
+
+special: $(LIBNAME)-c.a  #$(LIBNAME)-d.a 
+
+fuzzymodule:
+	$(MAKE) -C fuzzy
+
+analyzermodule:
+	$(MAKE) -C analyzer
+
+### rule for static library
+
+$(LIBNAME).a: $(OBJFILES) 
+	$(RM) $(LIBNAME).a  # create new library
+	ar rcv $(LIBNAME).a $(OBJFILES)
+	ranlib $(LIBNAME).a
+	nm --demangle $(LIBNAME).a > $(LIBNAME).nm
+
+$(LIBNAME)-c.a: $(BASEOBJFILES) $(CONTIOBJFILES) 
+	$(RM) $(LIBNAME)-c.a  # create new library
+	ar rcv $(LIBNAME)-c.a $(BASEOBJFILES) $(CONTIOBJFILES)
+	ranlib $(LIBNAME)-c.a
+	nm --demangle $(LIBNAME)-c.a > $(LIBNAME)-c.nm
+
+$(LIBNAME)-d.a: $(BASEOBJFILES) $(DISCOBJFILES) 
+	$(RM) $(LIBNAME)-d.a  # create new library
+	ar rcv $(LIBNAME)-d.a $(BASEOBJFILES) $(DISCOBJFILES)
+	ranlib $(LIBNAME)-d.a
+	nm --demangle $(LIBNAME)-d.a > $(LIBNAME)-d.nm
+
+#############################################################################
+##### create error messages file
+
+generr: generr.c
+
+errors.h errors.cc: generr errors.doc
+	./generr errors.doc
+
+#############################################################################
+##### create library modules 
+
+atexit.o: atexit.cc         $(HEADERS)
+
+delay.o: delay.cc           $(HEADERS) delay.h
+
+zdelay.o: zdelay.cc         $(HEADERS) zdelay.h
+
+simlib2D.o: simlib2D.cc     $(HEADERS) simlib2D.h     
+
+simlib3D.o: simlib3D.cc     $(HEADERS) simlib3D.h     
+
+barrier.o: barrier.cc       $(HEADERS)
+
+calendar.o: calendar.cc     $(HEADERS)
+
+cond.o: cond.cc             $(HEADERS)
+
+debug.o: debug.cc           $(HEADERS)
+
+entity.o: entity.cc         $(HEADERS)
+
+error.o: error.cc           $(HEADERS)
+
+errors.o: errors.cc         $(HEADERS)
+
+event.o: event.cc           $(HEADERS)
+
+facility.o: facility.cc     $(HEADERS)
+
+fun.o: fun.cc               $(HEADERS)
+
+graph.o: graph.cc           $(HEADERS)
+
+histo.o: histo.cc           $(HEADERS)
+
+intg.o: intg.cc             $(HEADERS)
+
+link.o: link.cc             $(HEADERS)
+
+list.o: list.cc             $(HEADERS)
+
+name.o: name.cc             $(HEADERS)
+
+continuous.o: continuous.cc $(HEADERS)
+
+algloop.o: algloop.cc       $(HEADERS)
+
+numint.o: numint.cc         $(HEADERS) ni_abm4.h ni_euler.h ni_fw.h \
+	ni_rke.h ni_rkf3.h ni_rkf5.h ni_rkf8.h
+
+ni_abm4.o: ni_abm4.cc       $(HEADERS) ni_abm4.h
+
+ni_euler.o: ni_euler.cc     $(HEADERS) ni_euler.h
+
+ni_fw.o: ni_fw.cc           $(HEADERS) ni_fw.h
+
+ni_rke.o: ni_rke.cc         $(HEADERS) ni_rke.h
+
+ni_rkf3.o: ni_rkf3.cc       $(HEADERS) ni_rkf3.h
+
+ni_rkf5.o: ni_rkf5.cc       $(HEADERS) ni_rkf5.h
+
+ni_rkf8.o: ni_rkf8.cc       $(HEADERS) ni_rkf8.h
+
+object.o: object.cc         $(HEADERS)
+
+opt-param.o: opt-param.cc   $(HEADERS) optimize.h
+
+opt-hooke.o: opt-hooke.cc   $(HEADERS) optimize.h
+
+output1.o: output1.cc       $(HEADERS)
+
+output2.o: output2.cc       $(HEADERS)
+
+print.o: print.cc           $(HEADERS)
+
+process.o: process.cc       $(HEADERS)
+
+queue.o: queue.cc           $(HEADERS)
+
+random1.o: random1.cc       $(HEADERS)
+
+random2.o: random2.cc       $(HEADERS)
+
+run.o: run.cc               $(HEADERS)
+
+sampler.o: sampler.cc       $(HEADERS)
+
+semaphor.o: semaphor.cc     $(HEADERS)
+
+stat.o: stat.cc             $(HEADERS)
+
+stdblock.o: stdblock.cc     $(HEADERS)
+
+store.o: store.cc           $(HEADERS)
+
+tstat.o: tstat.cc           $(HEADERS)
+
+waitunti.o: waitunti.cc     $(HEADERS)
+
+
+#############################################################################
+#####  Remove garbage from directory  #####
+
+clean:
+	$(RM) $(GARBAGE) 
+
+#############################################################################
+#####  Install library  #####
+
+#temporary hack
+install: all
+	cp simlib.a $(SIMLIB_HEADERS) ..
+
+#############################################################################
+#####  Test installed system  #####
+
+test: all
+	$(CXX) $(CXXFLAGS) -g -Wall  -o $(TESTFILE) $(TESTFILE).cc -lm simlib.a
+	./$(TESTFILE)
+	rm ./$(TESTFILE)
+
+#############################################################################
+# end of Makefile  

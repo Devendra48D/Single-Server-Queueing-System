@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo configure
+echo TODO: generate Makefiles
+echo For now try make, make 32, make 64, make clean-all, ... 
+echo Sorry.

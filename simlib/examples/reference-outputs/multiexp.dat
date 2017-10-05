@@ -1,0 +1,181 @@
+# MULTIEXP --- test více experimentù (èas=2000) 
+# Experiment#1 
+1  229.582 459.393 683.779 907.849 912.364
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 4481
+#    StepCount  = 0
+#
+# Experiment#2 
+2  210.93 421.18 629.286 834.841 838.939
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 2365
+#    StepCount  = 0
+#
+# Experiment#3 
+3  164.049 328.208 502.016 668.181 671.525
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 1751
+#    StepCount  = 0
+#
+# Experiment#4 
+4  174.336 330.481 488.656 639.076 641.968
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 1503
+#    StepCount  = 0
+#
+# Experiment#5 
+5  142.455 267.753 392.562 517.455 519.831
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 1245
+#    StepCount  = 0
+#
+# Experiment#6 
+6  117.787 230.252 327.495 422.755 424.82
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 1089
+#    StepCount  = 0
+#
+# Experiment#7 
+7  119.479 203.271 285.314 350.611 351.862
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 981
+#    StepCount  = 0
+#
+# Experiment#8 
+8  92.6778 154.035 224.56 291.214 292.348
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 947
+#    StepCount  = 0
+#
+# Experiment#9 
+9  57.3038 115.228 163.942 208.013 208.013
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 875
+#    StepCount  = 0
+#
+# Experiment#10 
+10  21.0404 54.4751 64.778 70.2605 70.2605
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 785
+#    StepCount  = 0
+#
+# Experiment#11 
+11  53.2698 53.6469 51.03 47.6199 47.6199
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 759
+#    StepCount  = 0
+#
+# Experiment#12 
+12  39.4283 49.4754 50.8858 46.0713 46.0713
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 723
+#    StepCount  = 0
+#
+# Experiment#13 
+13  16.1921 15.3752 16.5386 16.5993 16.5993
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 497
+#    StepCount  = 0
+#
+# Experiment#14 
+14  15.5668 15.5183 17.4257 18.8183 18.8183
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 558
+#    StepCount  = 0
+#
+# Experiment#15 
+15  17.3745 17.9955 17.5716 17.3096 17.3096
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 482
+#    StepCount  = 0
+#
+# Experiment#16 
+16  18.3053 22.4801 19.9952 18.6576 18.6576
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 431
+#    StepCount  = 0
+#
+# Experiment#17 
+17  11.0254 11.1187 11.985 16.1309 16.1309
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 388
+#    StepCount  = 0
+#
+# Experiment#18 
+18  18.8967 19.2822 17.8583 18.8859 18.8859
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 450
+#    StepCount  = 0
+#
+# Experiment#19 
+19  13.9345 15.4958 14.1833 13.5637 13.5637
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 304
+#    StepCount  = 0
+#
+# Experiment#20 
+20  15.8766 14.7207 14.8118 15.4353 15.4353
+#
+# SIMLIB run-time statistics:
+#    StartTime  = 0
+#    EndTime    = 2000
+#    EventCount = 405
+#    StepCount  = 0
+#

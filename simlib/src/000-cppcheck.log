@@ -1,0 +1,123 @@
+[simlib.h:692]: (style) C-style pointer casting
+[simlib.h:693]: (style) C-style pointer casting
+[simlib.h:895]: (style) Value of pointer 'bp', which points to allocated memory, is copied in copy constructor instead of allocating new memory.
+[algloop.cc:179]: (style) The scope of the variable 'count' can be reduced.
+[algloop.cc:183]: (style) The scope of the variable 'ft' can be reduced.
+[algloop.cc:285]: (style) The scope of the variable 'count' can be reduced.
+[algloop.cc:287]: (style) The scope of the variable 'feps' can be reduced.
+[algloop.cc:288]: (style) The scope of the variable 'prev_root' can be reduced.
+[algloop.cc:291]: (style) The scope of the variable 'ft' can be reduced.
+[algloop.cc:402]: (style) The scope of the variable 'count' can be reduced.
+[algloop.cc:404]: (style) The scope of the variable 'feps' can be reduced.
+[algloop.cc:407]: (style) The scope of the variable 'aux_root' can be reduced.
+[algloop.cc:408]: (style) The scope of the variable 'aux_ft' can be reduced.
+[algloop.cc:249]: (style) Variable 'fa' is assigned a value that is never used.
+[intg.cc:319]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[intg.cc:334]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[intg.cc:349]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[intg.cc:366]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[intg.cc:528]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[intg.cc:543]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[intg.cc:558]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[intg.cc:574]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[intg.cc:590]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[ni_fw.cc:192]: (style) Expression 'exp(x) - 1' can be replaced by 'expm1(x)' to avoid loss of precision.
+[numint.cc:461]: (style) C-style pointer casting
+[numint.cc:506]: (style) C-style pointer casting
+[numint.cc:539]: (style) C-style pointer casting
+[numint.cc:226]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:267]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:297]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:606]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:624]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:631]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:651]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:658]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:680]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[numint.cc:687]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[output2.cc:90]: (style) The scope of the variable 'to' can be reduced.
+[output2.cc:120]: (style) The scope of the variable 's' can be reduced.
+[process.cc]: (information) Too many #ifdef configurations - cppcheck only checks 12 of 14 configurations. Use --force to check all configurations.
+[queue.cc:136]: (style) C-style pointer casting
+[random2.cc:37]: (style) The scope of the variable 'i' can be reduced.
+[random2.cc:38]: (style) The scope of the variable 'PROD' can be reduced.
+[random2.cc:123]: (style) The scope of the variable 'R' can be reduced.
+[random2.cc:231]: (style) The scope of the variable 'Y' can be reduced.
+[random2.cc:231]: (style) The scope of the variable 'X' can be reduced.
+[run.cc:65]: (warning) Member variable 'SIMLIB_statistics_t::StartTime' is not initialized in the constructor.
+[run.cc:65]: (warning) Member variable 'SIMLIB_statistics_t::EndTime' is not initialized in the constructor.
+[waitunti.cc:157]: (style) C-style pointer casting
+[zdelay.cc:54]: (performance) Possible inefficient checking for 'container' emptiness.
+[zdelay.cc:73]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[zdelay.cc:126]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[zdelay.cc:139]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[zdelay.cc:166]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[zdelay.cc:168]: (performance) Prefer prefix ++/-- operators for non-primitive types.
+[fun.cc:97]: (style) The function 'ACos' is never used.
+[fun.cc:96]: (style) The function 'ASin' is never used.
+[fun.cc:98]: (style) The function 'ATan' is never used.
+[fun.cc:99]: (style) The function 'ATan2' is never used.
+[run.cc:159]: (style) The function 'Abort' is never used.
+[fun.cc:90]: (style) The function 'Abs' is never used.
+[random2.cc:181]: (style) The function 'Beta' is never used.
+[barrier.cc:125]: (style) The function 'ChangeHeight' is never used.
+[fun.cc:93]: (style) The function 'Cos' is never used.
+[debug.cc:42]: (style) The function 'DebugOFF' is never used.
+[debug.cc:36]: (style) The function 'DebugON' is never used.
+[barrier.cc:62]: (style) The function 'Enter' is never used.
+[random2.cc:109]: (style) The function 'Erlang' is never used.
+[fun.cc:101]: (style) The function 'Exp' is never used.
+[random2.cc:152]: (style) The function 'Exponential' is never used.
+[numint.cc:340]: (style) The function 'FunCall' is never used.
+[random2.cc:141]: (style) The function 'Gamma' is never used.
+[random2.cc:257]: (style) The function 'Geom' is never used.
+[list.cc:132]: (style) The function 'GetLast' is never used.
+[name.cc:66]: (style) The function 'GetName' is never used.
+[random2.cc:270]: (style) The function 'HyperGeom' is never used.
+[numint.cc:326]: (style) The function 'InitStep' is never used.
+[list.cc:56]: (style) The function 'InsFirst' is never used.
+[run.cc:104]: (style) The function 'InstallBreak' is never used.
+[link.cc:53]: (style) The function 'Into' is never used.
+[store.cc:151]: (style) The function 'Leave' is never used.
+[fun.cc:103]: (style) The function 'Ln' is never used.
+[fun.cc:102]: (style) The function 'Log10' is never used.
+[random2.cc:210]: (style) The function 'Logar' is never used.
+[random2.cc:121]: (style) The function 'NegBin' is never used.
+[random2.cc:164]: (style) The function 'NegBinM' is never used.
+[opt-hooke.cc:57]: (style) The function 'Optimize_hooke' is never used.
+[opt-simann.cc:52]: (style) The function 'Optimize_simann' is never used.
+[semaphor.cc:77]: (style) The function 'P' is never used.
+[random2.cc:229]: (style) The function 'Poisson' is never used.
+[list.cc:86]: (style) The function 'PostIns' is never used.
+[fun.cc:104]: (style) The function 'Pow' is never used.
+[random1.cc:64]: (style) The function 'RandomSeed' is never used.
+[random2.cc:219]: (style) The function 'Rayle' is never used.
+[facility.cc:151]: (style) The function 'Release' is never used.
+[name.cc:54]: (style) The function 'RemoveName' is never used.
+[version.cc:13]: (style) The function 'SIMLIB_version_string' is never used.
+[simlib2D.cc:389]: (style) The function 'ScalarProduct' is never used.
+[facility.cc:111]: (style) The function 'Seize' is never used.
+[random1.cc:103]: (style) The function 'SetBaseRandomGenerator' is never used.
+[calendar.cc:1247]: (style) The function 'SetCalendar' is never used.
+[store.cc:102]: (style) The function 'SetCapacity' is never used.
+[print.cc:50]: (style) The function 'SetOutput' is never used.
+[facility.cc:95]: (style) The function 'SetQueue' is never used.
+[fun.cc:106]: (style) The function 'Sign' is never used.
+[continuous.cc:225]: (style) The function 'Sqr' is never used.
+[fun.cc:108]: (style) The function 'Sqrt' is never used.
+[run.cc:147]: (style) The function 'Stop' is never used.
+[fun.cc:94]: (style) The function 'Tan' is never used.
+[random2.cc:193]: (style) The function 'Triag' is never used.
+[random2.cc:71]: (style) The function 'Uniform' is never used.
+[simlib2D.cc:388]: (style) The function 'UnitVector' is never used.
+[semaphor.cc:92]: (style) The function 'V' is never used.
+[waitunti.cc:75]: (style) The function 'WU_print' is never used.
+[random2.cc:94]: (style) The function 'Weibul' is never used.
+[simlib2D.cc:420]: (style) The function 'Xpart' is never used.
+[simlib2D.cc:421]: (style) The function 'Ypart' is never used.
+[simlib3D.cc:442]: (style) The function 'Zpart' is never used.
+[print.cc:41]: (style) The function 'operatorFILE*' is never used.
+[object.cc:42]: (style) The function 'operatordelete' is never used.
+[object.cc:27]: (style) The function 'operatornew' is never used.
+[calendar.cc:1167]: (style) The function 'visualize' is never used.
+(information) Cppcheck cannot find all the include files (use --check-config for details)

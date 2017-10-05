@@ -1,0 +1,1813 @@
+% SIMLIB-doc.tex                                     rev 2003-09-13
+%
+% (c) P. Peringer 1997, 2003
+%
+% Historie:
+%  2004-12-20 drobné úpravy
+%  2003-09-13 drobné úpravy
+%  1997-xx-xx sazba
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper]{article}
+\usepackage{times}
+\usepackage{czech}                 % Èeská sazba
+\usepackage{epsfig}                % obrázky
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document} 
+
+\begin{titlepage}
+\hrule
+\vfill
+\begin{center}
+
+            {\Huge\bf Popis simulaèní knihovny SIMLIB\\}
+
+\bigskip               {Petr Peringer\\}
+
+\bigskip                    \today
+
+\end{center}
+\vfill
+\hrule
+\end{titlepage}
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\section{Úvod}
+
+Simulaèní knihovna SIMLIB/C++ je vyvíjena od roku 1990 na VUT v Brnì. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+SIMLIB poskytuje základní prostøedky pro popis spojitých, diskrétních i
+kombinovaných modelù a prostøedky pro øízení simulace. Pøi tvorbì simulaèních
+modelù a experimentování s nimi lze pou¾ít rùzná integrovaná prostøedí, která 
+umo¾òují interaktivní tvorbu a ladìní modelù. 
+Knihovna byla implementována na poèítaèích tøídy PC pod MS-DOS (pøekladaèe
+Borland C++ nebo GNU C++), nyní je vyvíjena v operaèním systému Linux (GNU
+C++). Knihovna je pøenositelná i na jiné platformy, vy¾aduje v¹ak úpravu v
+modulu implementujícím tøídu Process.
+
+Knihovna usnadòuje efektivní popis modelù pøímo v jazyce C++,
+není tedy nutný pøekladaè simulaèního jazyka. Tato koncepce má
+své výhody i nevýhody. Je mo¾né pou¾ívat v¹ech ostatních
+prostøedkù vytvoøených v C++ (napø. grafické knihovny
+a u¾ivatelská rozhraní). U¾ivatel také není nijak omezován pøi
+pøípadném doplòování prostøedkù knihovny. Za nevýhodu lze
+pova¾ovat nemo¾nost dodateèných syntaktických a sémantických
+kontrol, které by se mohly provádìt pøi pou¾ití pøekladaèe
+simulaèního jazyka. Na stranì u¾ivatele se pøedpokládá základní
+znalost programování v jazyce C++.
+
+Následující kapitoly vysvìtlují základní principy pou¾ití SIMLIB pro
+modelování diskrétních, spojitých a kombinovaných modelù. Výklad
+je doplnìn pøíklady s popisem funkce jednotlivých objektù
+modelu.
+
+
+\section{Objektovì orientovaná simulace}
+
+Model je v SIMLIB chápán jako mno¾ina prvkù (entit), které jsou spolu
+navzájem propojeny vazbami. Tyto vazby spolu s chováním prvkù urèují chování
+systému jako celku. Podobný pøístup je podstatou objektovì orientovaného
+programování, jeho¾ principy se poprvé objevily v ¹edesátých letech
+v~jazyce SIMULA~67. Objektovì orientovaný program je tvoøen mno¾inou objektù,
+které spolu navzájem komunikují --- posílají si zprávy.
+
+Rozdìlení systému na jednotlivé objekty je závislé
+na úèelu modelu. Mezi objekty modelu mù¾eme najít takové, které
+mají shodné podstatné charakteristiky a ty pak mù¾eme zaøadit do
+jedné tøídy objektù. Tøída definuje vnitøní strukturu objektù,
+reakce objektù na vstupy (zprávy) a vlastní chování objektu
+v èase.
+
+Objekty modelu provádìjí urèité akce jako odezvu na pøijímané
+zprávy a souèasnì provádìjí jiné akce, které jsou nezávislé na
+pøijímaných zprávách. Akce mìní stav objektu, jen¾ je dán
+obsahem jeho vnitøních datových struktur.
+
+Ka¾dý objekt má definované akce, které realizuje kdy¾ je
+vytvoøen (inicializuje se) a kdy¾ je ru¹en. Tyto akce se
+nazývají konstruktory a destruktory. Stejnì jako ostatní akce,
+související s popisem chování objektu, patøí k takzvaným
+metodám. Pøijetí zprávy odpovídá vyvolání metody a metoda pak
+popisuje akce, kterými má objekt na tuto zprávu reagovat.
+
+Mezi tøídami objektù modelu lze nalézt jisté vzájemné vztahy.
+Tyto vztahy mají obvykle hierarchický charakter (èásteèné
+uspoøádání). Nìkteré tøídy popisují obecné vlastnosti objektù,
+jiné je více konkretizují. Toho lze výhodnì vyu¾ít pøi návrhu
+tøíd modelu tak, aby tøídy konkrétní mohly vyu¾ít v¹eho, co ji¾
+definovaly tøídy obecné. Tato hierarchie tøíd je definována
+relací dìdiènosti. Tøída mù¾e zdìdit vlastnosti své bázové
+tøídy, pøidávat nové vlastnosti a pøípadnì modifikovat
+vlastnosti zdìdìné. Takto pojatá hierarchie tøíd umo¾òuje
+v maximální míøe vyu¾ívat ji¾ existujících tøíd, co¾
+zjednodu¹uje a zpøehledòuje implementaci modelù. Hierarchie tøíd
+je v podstatì uspoøádáním abstrakcí, obvykle od nejobecnìj¹ích
+po konkrétní. Napøíklad:
+
+\begin{verbatim}
+ Objekt
+    Dopravní prostøedek
+       Automobil
+          Nákladní automobil
+          Osobní automobil
+    Osoba
+       Uèitel
+       ®ák
+\end{verbatim}
+
+Postup od obecných tøíd ke konkrétním odpovídá postupu shora
+dolù, lze v¹ak postupovat i jinak. Vytvoøení vhodné hierarchie
+tøíd obvykle závisí na øe¹eném problému.
+
+Hierarchická struktura existuje i na úrovni objektù modelu. Jde
+o vzájemný vztah objektù z hlediska jejich zahrnutí do jiných
+objektù jako jejich èástí. Tato relace se oznaèuje "patøí do"
+("is part of"), má jiné pou¾ití ne¾ dìdiènost ("is kind of")
+a definuje hierarchii objektù.
+
+%    +--------------------------------------+
+%    |+-----------------------------------+ |
+%    ||            +---------++---------+ | |
+%    ||    O1      |  O11    ||  O12    | | |
+%    ||            +---------++---------+ | |
+%    |+-----------------------------------+ |
+%    |                        +---------+   |
+%    |     O                  |  O2     |   |
+%    |                        +---------+   |
+%    +--------------------------------------+
+% obr. 1. Pøíklad hierarchického uspoøádání objektù
+
+\begin{figure}[ht]
+  \begin{center}
+    \epsfig{file=o1.eps}
+    \caption{Pøíklad hierarchického uspoøádání objektù}
+    \label{o1}
+  \end{center}
+\end{figure}
+
+Tento zpùsob popisu problémù je velmi pøirozený, proto¾e lze
+vyjádøit jednoznaèný vztah mezi objekty modelu (programu)
+a objekty modelovaného systému. Metod pro analýzu problémù
+a návrh objektovì orientovaných programù lze vyu¾ít i v oblasti
+modelování a simulace. Proto zde uvedeme základní pojmy
+objektovì orientovaného programování.
+
+Objektovì orientované programování je metoda implementace, pøi
+ní¾ jsou programy tvoøeny spolupracujícími skupinami objektù,
+z nich¾ ka¾dý reprezentuje instanci nìkteré tøídy, a tøídy jsou
+navzájem v relaci dìdiènosti. Základní principy objektovì
+orientovaného programování:
+
+\begin{description}
+\item[Abstrakce]
+ ukazuje na podstatné charakteristiky objektu, které
+jej odli¹ují od v¹ech ostatních druhù objektù a tedy poskytuje
+pøesnì definované konceptuální hranice, vzta¾ené k perspektivì
+pozorovatele.
+
+\item[Zapouzdøení]  (encapsulation)
+Zapouzdøením se rozumí ukrývání v¹ech detailù objektu, které
+nepøispívají k jeho podstatným charakteristikám, viditelným vnì
+objektu.
+
+\item[Modularita]
+vyjadøuje vlastnost systému, jen¾ byl dekomponován do
+mno¾iny modulù s pøesnì definovanými vazbami.
+
+\item[Hierarchie]
+ je uspoøádání nebo seøazení abstrakcí. Pøíkladem je
+hierarchie dìdiènosti tøíd v objektovì orientovaném
+programování.
+\end{description}
+
+Tyto principy jsou pro objektovì orientované programování
+podstatné, následující tøi jsou ménì dùle¾ité.
+
+\begin{description}
+\item[Typování]
+ je takové uplatnìní tøídy objektu, ¾e objekty rùzných
+tøíd nemohou být zamìòovány, nebo nanejvý¹ mohou být zamìòovány
+jen velmi omezeným zpùsobem.
+
+\item[Paralelismus] (concurrency)
+ je vlastnost, která odli¹uje aktivní objekt od
+neaktivního. Pøi simulaèním modelování dynamických systémù se
+tato vlastnost stává podstatnou.
+
+\item[Persistence]
+ je vlastnost objektu, která definuje dobu jeho
+existence v èase a prostoru. Napøíklad globální promìnné
+existují pouze pøi bìhu programu, ve kterém jsou definovány,
+naopak soubory existují, i kdy¾ program nebì¾í.
+
+\end{description}
+
+Tyto principy nejsou v oblasti programování nové, ale objektovì
+orientované programování je vhodným zpùsobem kombinuje.
+Po¾adavky, které jsou kladeny na objektovì orientovaný jazyk mù¾eme shrnout do
+následujících bodù:
+
+\begin{itemize}
+\item jazyk musí podporovat objekty jako datové abstrakce; rozhraní
+   objektù je definováno pomocí pojmenovaných operací, a ka¾dý
+   objekt má (skrytý) vnitøní stav
+
+\item ka¾dý objekt je urèitého typu (patøí do urèité tøídy)
+
+\item tøídy mohou dìdit atributy z nadtøíd
+\end{itemize}
+
+Existuje mnoho objektovì orientovaných programovacích jazykù,
+nejvìt¹ího roz¹íøení dosáhly pøedev¹ím jazyky Smalltalk a C++.
+Bli¾¹í informace o objektovì orientovaném programování jsou
+dostupné v literatuøe.
+
+
+
+\section{Struktura simulaèního programu}
+
+Obecnou strukturu simulaèního programu v C++ znázoròuje pøíklad:
+
+\begin{verbatim}
+#include "simlib.h"
+
+<definice tøíd>
+<definice funkcí>
+<deklarace globálních objektù>
+
+<definice funkce  main  - popis experimentu>
+\end{verbatim}
+
+Ka¾dý model musí obsahovat dovoz rozhraní simulaèní knihovny
+direktivou \verb|#include|, potom následuje popis modelu a popis
+experimentu. V pøípadì rozsáhlých modelù mù¾eme rozdìlit popis
+modelu a experimentu do nìkolika souborù (modulù), z nich¾ ka¾dý
+má tuto strukturu. Popis experimentu (funkce \verb|main|) smí být
+uveden pouze v jednom modulu.
+
+Deklarace tøíd, objektù a funkcí mohou být v libovolném poøadí;
+platí pouze zásada, ¾e objekt, funkci nebo tøídu nelze pou¾ít
+pøed pøíslu¹nou deklarací.
+
+
+\subsection{Popis modelu}
+
+Model je tvoøen mno¾inou objektù, které jsou navzájem propojeny.
+Propojení objektù umo¾òuje jejich vzájemnou komunikaci, která
+definuje chování modelu.
+
+
+\subsubsection{Vytváøení a ru¹ení objektù}
+
+V objektovì orientovaném popisu systémù je tøeba pou¾ívat rùzné
+druhy objektù podle zpùsobu jejich vytvoøení. Podle po¾adavkù na
+dobu existence objektu lze pou¾ít rùzné zpùsoby vytvoøení
+objektù podle toho, má-li být objekt statický nebo dynamický.
+Pøedpokládáme-li tøídu Zakaznik, mù¾eme vytvoøit objekty této
+tøídy napøíklad takto:
+
+\begin{verbatim}
+ (1)  new Zakaznik;
+
+ (2)  Zakaznik *ptr;
+      ptr = new Zakaznik;
+
+ (3)  Zakaznik Z;
+\end{verbatim}
+
+V prvním pøípadì je dynamicky vytvoøen nový objekt tøídy
+Zakaznik a takto vytvoøený objekt není nijak identifikovatelný.
+Proto je tento zpùsob pou¾itelný pouze pro objekty, na které
+nebude tøeba se explicitnì odkazovat. Druhý pøípad je doplnìn
+o ukazatel na objekt tøídy zákazník. Tento ukazatel potom slou¾í
+k identifikaci konkrétního zákazníka pøi komunikaci s ním.
+Dynamické objekty lze vytváøet i ru¹it v prùbìhu simulace. Tøetí
+zpùsob odpovídá vytvoøení globálního statického objektu
+s identifikací jménem (identifikátorem). Tento objekt existuje
+po celou dobu bìhu simulaèního programu.
+
+Objekty, definované tvùrcem modelu, mohou být globální nebo
+lokální z hlediska jejich umístìní v jiných objektech. Objekty
+globální jsou dostupné v¾dy, objekty uvnitø tøídy (lokální) jsou
+dostupné pouze kdy¾ to tato tøída dovolí specifikací public.
+Lokální objekty jsou souèástí jiných tøíd objektù:
+
+\begin{verbatim}
+class X : public Process {
+  Histogram H;
+  double  StartTime;
+  int i;
+public:
+  X() : H("X.H",0,0.1,10), i(0) {};
+  ...
+};
+\end{verbatim}
+
+Z ukázky je patrná syntaxe volání konstruktoru lokálního objektu
+H. Ka¾dý objekt tøídy X obsahuje histogram H, který je
+nedostupný objektùm jiné tøídy (má implicitnì specifikaci
+private).
+
+Dal¹í èlenìní objektù je z hlediska èasového. Objekty, které
+v modelu existují po celou dobu simulace, nazveme statické
+a objekty, které vznikají a zanikají v prùbìhu simulace, budeme
+nazývat dynamické.
+
+Proto¾e objekty modelu je nutné identifikovat (pro èitelný
+výstup), musí se pøi vytváøení objektù nìkterých tøíd uvést
+jejich textové pojmenování:
+
+\begin{description}
+\item[globální objekty:] 
+\begin{verbatim}
+  
+  Facility  F1("Zaøízení 1");
+  Store     S1("Sklad 1", Kapacita);
+  Histogram H("Èetnost hodnot x",Od,Krok,10);
+\end{verbatim}
+
+\item[dynamicky vytvoøené objekty:] 
+\begin{verbatim}
+  
+  Store *ptr;
+  ptr = new Store("Sklad X",10000);
+\end{verbatim}
+
+\item[objekty vnoøené ve tøídì:] 
+\begin{verbatim}
+  
+  class X {
+    Facility F;
+  public:
+    X() : F("Lokální zaøízení")  {}
+    ...
+  };
+\end{verbatim}
+
+\end{description}
+
+Pro zru¹ení objektu odvozeného od tøídy Process lze pou¾ít
+metodu Cancel, která provede potøebné operace. Tatá¾ operace se
+provede implicitnì po ukonèení popisu chování objektu v metodì
+Behavior. Dynamicky vytvoøené objekty lze ru¹it operátorem
+delete aplikovaným na ukazatel na objekt:
+
+\begin{verbatim}
+  delete objptr;
+\end{verbatim}
+
+Statické globální objekty nelze ru¹it explicitnì, ru¹í se automaticky po
+ukonèení simulaèního programu. Jazyk C++ volá automaticky pøi ru¹ení ka¾dého
+objektu speciální metodu --- destruktor, který mù¾e provést pøípadné operace,
+nutné pro jeho korektní odstranìní z modelu.
+
+
+\subsection{Øízení simulace}
+
+Øízení simulaèního experimentu popisuje funkce \verb|main|. Zde se
+provádí inicializace modelu, vytvoøení objektù modelu a jejich
+aktivace (tj. start procesù, které probíhají uvnitø objektù).
+Prototypová verze popisu experimentu je uvedena v pøíkladu:
+
+\begin{verbatim}
+int main() {
+  <pøíkazy1>
+  Init(<poèáteèní èas>,<koncový èas>);
+  <pøíkazy2>
+  Run();
+  <pøíkazy3>
+  return 0;
+}
+\end{verbatim}
+
+Na poèátku funkce \verb|main| lze provést pøíkazy, nesouvisející pøímo
+s modelem a jeho inicializací (pøíkazy1). Zde je vhodné
+otevøít výstupní soubor, pøípadnì zobrazit úvodní informace
+o modelu.
+
+Funkce \verb|Init| zahajuje inicializaèní fázi experimentu. Nastaví
+poèáteèní modelový èas a zaznamená koncový èas pro simulaci.
+Zároveò inicializuje v¹echny objekty systému pro øízení simulace
+(napø. kalendáø). V této fázi experimentu u¾ivatel inicializuje
+svoje objekty (pøíkazy2). Typickým pøíkazem v této èásti
+popisu experimentu je vytvoøení, inicializace a aktivace objektù
+modelu.
+
+Potom následuje vlastní simulaèní bìh vyvolaný funkcí \verb|Run|. Po
+ukonèení simulace následuje obvykle tisk a vyhodnocování
+výsledkù experimentu (pøíkazy3).
+
+Posloupnost \verb|Init(); <pøíkazy2> Run(); <pøíkazy3>| lze
+mnohokrát opakovat v cyklu s rùznými parametry modelu, co¾ je
+vhodné pøedev¹ím pro optimalizaèní experimenty. Je v¹ak
+zapotøebí opatrnosti pøi inicializaci objektù modelu tak, aby
+výchozí stav nebyl ovlivnìn pøedchozí simulací, pokud to není
+¾ádoucí. Musí se inicializovat v¹echny objekty modelu, systém
+øízení simulace inicializuje pouze kalendáø událostí, seznam pro
+\verb|WaitUntil| a svùj stav.
+
+
+\subsection{Výstupy modelu}
+
+Výstup informací z modelu lze provádìt nìkolika zpùsoby. Pou¾ití
+prostøedkù C++ je jedním z nich. Bì¾nì se v¹ak pou¾ívá
+standardních prostøedkù knihovny SIMLIB. Vìt¹ina tøíd definuje
+metodu Output, která zapisuje stav objektu v textovém tvaru do
+výstupního souboru. Tímto souborem je implicitnì standardní
+výstup. Funkce \verb|SetOutput| umo¾òuje pøesmìrování
+tohoto výstupu do souboru se zadaným jménem.
+
+Prohlí¾ení a tisk výsledkù (pøedev¹ím spojité) simulace  v rùzných formátech
+je mo¾né programem GNUplot. 
+
+
+%%%%%%%%%%%%%%%%%% update1
+
+Pro výstup spojitých prùbìhù do výstupního souboru slou¾í tøída \verb|Graph|.
+Objekty této tøídy provádí periodický zápis hodnot svého vstupu do zvlá¹tního
+výstupního souboru. Perioda zápisu se urèuje pøi vytváøení objektu a je mo¾né
+ji dynamicky mìnit.
+
+\subsubsection*{Pøíklad:}
+
+\begin{verbatim}
+  Integrator x(vstup);
+  Graph Gx("x", x, 0.01);
+\end{verbatim}
+
+
+\section{Modelový èas}
+
+V knihovnì SIMLIB je modelový èas reprezentován globální
+promìnnou \verb|Time|. Tato promìnná je typu \verb|double| (èas je nezáporné
+reálné èíslo) a její poèáteèní a koncová hodnota je
+specifikována v popisu experimentu funkcí \verb|Init|. Interpretace
+jednotky modelového èasu je závislá na modelovaném problému.
+Hodnota promìnné je nastavována systémem pro øízení
+simulace a nelze ji mìnit pøiøazovacím pøíkazem. Pou¾ití pøíkazu
+
+\begin{verbatim}
+  Time = 10; // chyba!
+\end{verbatim}
+
+vyvolá chybu pøi pøekladu modelu. Pro blokové výrazy je pou¾itelný blok
+\verb|T|, který reprezentuje blokový ekvivalent promìnné \verb|Time|.
+Pou¾ití \verb|Time| v blokovém výrazu je chyba, kterou neodhalí pøekladaè,
+ani kontrola pøi bìhu programu.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Diskrétní simulace}
+
+Knihovna obsahuje standardní tøídy pro popis diskrétního chování
+objektù, pro modelování standardních obslu¾ných zaøízení a pro
+sbìr statistických údajù. Chování objektù lze popsat dvìma
+zpùsoby, buï s pou¾itím událostí, nebo procesù.
+
+
+\subsection{Prostøedky pro práci s náhodnými velièinami}
+
+Pøi simulaci diskrétních stochastických systémù je zapotøebí
+modelovat náhodné jevy. K tomu je nutné mít generátory náhodných
+èísel pro v¹echna potøebná rozlo¾ení. Knihovna SIMLIB obsahuje
+v¹echny obvyklé generátory ve formì funkcí, zde uvedeme pouze ty
+nejdùle¾itìj¹í:
+
+\subsubsection{Random}
+
+\begin{verbatim}
+   double Random();
+\end{verbatim}
+
+Funkce Random generuje pseudonáhodná èísla s rovnomìrným
+rozlo¾ením na intervalu $<0,1)$. Tento generátor je pou¾it jako
+základní generátor pro ostatní rozlo¾ení.
+
+\subsubsection{Exponential}
+
+\begin{verbatim}
+   double Exponential(double E);
+\end{verbatim}
+
+Generátor exponenciálního rozlo¾ení se støední hodnotou  E.
+
+\subsubsection{Normal}
+
+\begin{verbatim}
+   double Normal(double M, double S);
+\end{verbatim}
+
+Normální rozlo¾ení se støední hodnotou  M  a rozptylem  S.
+
+\subsubsection{Uniform}
+
+\begin{verbatim}
+   double Uniform(double L, double H);
+\end{verbatim}
+
+Rovnomìrné rozlo¾ení na intervalu $<L,H)$.
+
+
+\subsubsection{Pøíklady pou¾ití generátorù}
+
+\begin{verbatim}
+  Wait(Exponential(10));
+
+  if(Random()<0.33) S1();
+  else              S2();
+
+  int pole[10] = { 10,10,20,20,20,30,30,30,30,30 };
+  //...
+  X = pole[Random()*10];
+
+  Wait(Uniform(100,150));
+\end{verbatim}
+
+
+
+\subsection{Události}
+
+Pro popis jednorázových dìjù, které se mohou periodicky
+opakovat, je urèena abstraktní tøída \verb|Event|. Odvozené tøídy 
+musí definovat chování události v metodì
+\verb|Behavior|, podobnì jako u procesù. Na rozdíl od procesù v¹ak
+popis události není pøeru¹itelný. Pro naplánování události na
+èas \verb|t| lze pou¾ít metodu \verb|Activate(t)|.
+Pro ukonèení periodického provádìní události je urèena metoda \verb|Cancel|
+\footnote{
+Souèasná verze SIMLIB vy¾aduje volání této metody. SIMLIB v3 tento problém
+odstraní.
+}.
+
+
+
+\subsection{Procesy}
+
+Pro popis tøídy objektù s vlastním dynamickým chováním je
+v SIMLIB definována abstraktní tøída \verb|Process|. Ka¾dá tøída, která
+zdìdí tøídu Process, musí specifikovat chování objektù této
+tøídy v èase. Chování se popisuje v metodì \verb|Behavior| posloupností
+pøíkazù. Základní struktura popisu tøídy je uvedena v pøíkladu:
+
+\begin{verbatim}
+class Zakaznik : public Process {
+  <atributy zákazníka>
+  void Behavior()
+  {
+    <pøíkazy popisující chování objektu v èase>
+  }
+public:
+  Zakaznik(<parametry>) { <inicializace atributù> }
+  ~Zakaznik(<parametry>) { <ru¹ení atributù> }
+};
+\end{verbatim}
+
+Popis chování objektù v metodì \verb|Behavior| pøipomíná popis procedury, mù¾e v¹ak,
+na rozdíl od ní, obsahovat i pøíkazy, které zpùsobují èekání. To znamená, ¾e
+popis chování je v modelovém èase na urèitou dobu
+pøeru¹itelný\footnote{Pøeru¹itelné procedury jsou implementovány s vyu¾itím
+funkcí \texttt{setjmp} a \texttt{longjmp} ze standardní knihovny jazyka C. Musí být doplnìny
+nìkolika øádky kódu v jazyku symbolických instrukcí, proto SIMLIB není zcela
+pøenositelná.}. Po aktivaci objektu se zaène provádìt posloupnost operací v
+metodì \verb|Behavior| stejnì, jako pøi provádìní obvyklé procedury. V okam¾iku, kdy
+se narazí v tomto popisu èinnosti objektu na pøíkaz, který pøedstavuje
+èekání, je provádìní pøíkazù pozastaveno. Pokud proces èeká, mohou bì¾et
+ostatní procesy. 
+
+Pøíkaz \verb|Wait| pou¾itý v popisu chování objektu provádí potlaèení
+èinnosti objektu na urèitou dobu (tato èinnost odpovídá èekání
+objektu). Pøíkaz má tvar:
+
+\begin{verbatim}
+    Wait( <aritmetický výraz> );
+\end{verbatim}
+
+Hodnota výrazu udává dobu, po kterou bude pozastavena aktivní
+èinnost objektu. Jestli¾e tedy objekt O v modelovém èase
+t provede pøíkaz Wait($d$) ve svém popisu chování, pak se stane
+po dobu d pasivním a pøí¹tí aktivace (obnovení èinnosti) nastane
+v modelovém èase $t + d$. Okam¾ik $t + d$ budeme nazývat
+reaktivaèním okam¾ikem procesu nebo také kritickým okam¾ikem
+procesu.
+
+Pøí¹tí kritický okam¾ik je skrytým atributem ka¾dého objektu.
+Èas pøí¹tího kritického okam¾iku je stanoven buï explicitnì
+pøíkazem \verb|Wait(d)| (pak je roven \verb|Time + d|, 
+kde \verb|Time| je
+aktuální hodnota modelového èasu), nebo implicitnì pøíkazem
+\verb|WaitUntil(B)| (pak je roven nejbli¾¹í hodnotì modelového èasu,
+ve kterém se predikát B stane pravdivým).
+
+Ka¾dý objekt je charakterizován tøídou, svým stavem a identitou
+(napøíklad jménem). V prùbìhu simulace mù¾e objekt vzniknout,
+zaniknout, mù¾e být právì aktivní a nebo mù¾e èekat (pasivní
+stav procesu) na urèitou událost nebo na urèitý stav modelu.
+
+Po vzniku je objekt v neaktivním stavu. Odstartování procesu
+(jeho aktivace) se provede metodou \verb|Activate|. Objekt se mù¾e sám
+aktivovat tím zpùsobem, ¾e provede svou aktivaci jako akci
+v konstruktoru. Poznamenejme, ¾e k aktivaci nového objektu mù¾e
+dojít a¾ po pøeru¹ení právì probíhajícího procesu.
+
+Po provedení posledního pøíkazu v popisu chování objektu tento
+objekt automaticky zaniká. Zánik objektu lze pøípadnì
+kontrolovat tím, ¾e definujeme destruktor s po¾adovanými
+operacemi.
+
+
+\subsubsection{Kvaziparalelní provádìní procesù v SIMLIB}
+
+I kdy¾ sémantika modelu je postavena na paralelnì probíhajících
+procesech, nelze ignorovat skuteènost, ¾e vlastní výpoèet
+(simulace) probíhá na jednom reálném procesoru. Z toho plyne
+nutnost øe¹it zpracování simulaèního programu kvaziparalelnì.
+
+Principy kvaziparalelního zpracování procesù jsou popsány
+v \cite{Skripta92}. Popisu chování objektu tøídy odvozené ze tøídy
+Process odpovídá pøíslu¹ná metoda Behavior. Tato metoda obsahuje
+pøíkazy, které mohou mìnit stav daného objektu (zmìnou atributù)
+nebo stav ostatních objektù modelu (pokud je to dovoleno). Právì
+bì¾ící proces provádí akce, popsané v metodì Behavior právì
+aktivního objektu, který je identifikován ukazatelem Current.
+
+Priorita procesu je definována atributem \verb|Priority|. Pøi vzniku
+objektu je mo¾né zadat jeho prioritu, implicitnì je nejni¾¹í,
+tj. nulová. Prioritu probíhajícího procesu mù¾eme dynamicky
+mìnit pøiøazovacím pøíkazem:
+
+\begin{verbatim}
+    Priority = <aritmetický výraz>;
+\end{verbatim}
+
+V pøípadì plánování reaktivace procesù na stejný modelový èas se
+nejdøíve provede událost procesu s vy¹¹í prioritou (vy¹¹í
+hodnotou atributu \verb|Priority|). V pøípadì shodných priorit procesù
+se døíve provede proces, který byl naplánován døíve.
+
+
+\subsection{Zaøízení}
+
+Obslu¾né zaøízení popisuje tøída \verb|Facility|\footnote{Zaøízení jsou
+navr¾ena tak, aby se co nejvíce podobala zaøízením v jazyce SOL. SIMLIB v3
+zjednodu¹í sémantiku pøeru¹ení obsluhy.}. Zaøízení je
+objekt, urèený k popisu specifického typu interakcí procesù, oznaèovaného
+jako výluèný (exkluzívní) pøístup. Problém výluèného pøístupu lze formulovat
+takto: ka¾dý z m procesù systému po¾aduje takový pøístup k abstraktnímu
+zaøízení nebo zdroji Z, který vyluèuje, aby v kterémkoli okam¾iku sdílel
+zaøízení Z více, ne¾ jeden proces.
+
+S pøíklady výluèného pøístupu se setkáváme témìø v ka¾dém systému hromadné
+obsluhy. Pøíkladem mù¾e být benzinové èerpadlo, po¹tovní úøedník u pøepá¾ky,
+nebo terminál poèítaèe. Rovnì¾ samotný mechanismus kvaziparalelního provádìní
+procesù, kdy pouze jediný z procesù mù¾e být aktivním, je ukázkou výluèného
+pøístupu procesù k zaøízení --- reálnému procesoru. Deklarace zaøízení má tvar:
+
+\begin{verbatim}
+  Facility <identifikátor> ("<jméno zaøízení>");
+\end{verbatim}
+
+Pøíklad deklarace:
+
+\begin{verbatim}
+  Facility fac("fac");
+\end{verbatim}
+
+Zaøízení je buï obsazeno nìkterým objektem modelu nebo je volné.
+Stav zaøízení je mo¾né testovat metodou--predikátem \verb|Busy|, která vrací
+nenulovou hodnotu (TRUE) v pøípadì, ¾e zaøízení je obsazeno:
+
+\begin{verbatim}
+  if(fac.Busy()) Print("obsazeno\n");
+\end{verbatim}
+
+Základní operace zaøízení jsou obsazení (metoda \verb|Seize|)
+a uvolnìní (metoda \verb|Release|). Tøída Process má definovány také
+metody Seize a Release, jejich parametrem je zaøízení, se
+kterým se pracuje:
+
+\begin{verbatim}
+  Seize(<identifikátor zaøízení>[,<výraz>]);
+  Release(<identifikátor zaøízení>);
+\end{verbatim}
+
+
+Ka¾dé zaøízení má vstupní frontu pro po¾adavky na obsazení,
+které nelze okam¾itì uspokojit. V pøípadì, ¾e není uveden výraz
+jako druhý parametr Seize, je sémantika této operace
+jednoduchá: je-li zaøízení volné, pak se obsadí, je-li zaøízení
+obsazeno, pak se proces pozastaví a zaøadí do vstupní fronty
+u zaøízení. Uvolnìní zaøízení mù¾e provést pouze ten proces,
+který je obsadil. V pøípadì, ¾e vstupní fronta je neprázdná, 
+zaøízení je uvolnìní znovu obsazeno prvním objektem (procesem)
+z fronty.
+
+\bigskip 
+\noindent 
+{\bf Poznámka:} Souèasná implementace zaøízení není
+aktivní, tj. vstoupí-li nìjaký proces pøímo do fronty a zaøízení je volné,
+nedojde k jeho obsazení (k tomu dochází jen pøi provádìní operace \verb|Seize|,
+resp. \verb|Release|).
+
+
+\subsubsection*{Pøíklad:}  %% zmenit---
+
+\begin{verbatim}
+   Seize(fac);
+   Wait(Exponential(20));
+   Release(fac);
+\end{verbatim}
+
+V pøípadì uvedení druhého parametru --- napøíklad \verb|Seize(fac, 5)| ---
+tento parametr znamená {\em prioritu obsluhy} (Pozor -- nesouvisí s prioritou
+procesu!).  Rozsah priority obsluhy je od nuly do 255, implicitní hodnota
+priority obsluhy je nula.
+
+Je-li zaøízení Z obsazeno procesem $p_1$ s prioritou obsluhy $o_1$
+a po¾aduje-li obsluhu zaøízením Z dal¹í proces $p_2$ s prioritou
+obsluhy $o_2$, pak mohou nastat dva pøípady:
+
+\begin{description}
+
+\item{$o_1 < o_2$}  
+         zpùsobí pøeru¹ení obsluhy procesu $p_1$ a zaøízení je
+         pøidìleno procesu $p_2$. Po skonèení pokraèuje obsluha
+         $p_1$, pokud nedo¹lo k dal¹ímu pøeru¹ení.
+
+\item{$o_1 >= o_2$}   
+         proces $p_2$ se zaøadí do vstupní fronty zaøízení Z
+         
+\end{description}
+
+Z toho plyne existence dal¹í fronty u zaøízení --- fronty
+pøeru¹ených procesù. Obì fronty jsou øazeny podle tìchto
+kritérií:
+
+\begin{enumerate}
+\item  priority obsluhy
+\item  priority procesu
+\item  FIFO
+\end{enumerate}
+
+%                                   Q2
+%                           -------+-+-+
+%                        +-------> | | |->+
+%                        |  -------+-+-+  |
+%                 Q1     +-----+          |
+%         -------+-+-+-+     +-+----------+-+
+%     ---------> | | | |---->|   Zaøízení   |-------->
+%         -------+-+-+-+     +--------------+
+%
+%                   obr. 2. Zaøízení
+
+\begin{figure}[ht]
+  \begin{center}
+    \epsfig{file=o2.eps}
+    \caption{Zaøízení}
+    \label{o2}
+  \end{center}
+\end{figure}
+
+Ka¾dé zaøízení typu \verb|Facility| automaticky uchovává statistiky, potøebné
+k výpoètu prùmìrného vyu¾ití. Výstup statistik zaøízení lze provést metodou
+\verb|Output|. Do standardního výstupního souboru se tisknou tyto informace:
+
+\begin{itemize}
+\item vyu¾ití zaøízení (je v rozsahu od nuly do jedné)
+\item maximální délka vstupní fronty
+\item prùmìrná délka vstupní fronty
+\item prùmìrná doba èekání ve frontì
+\end{itemize}
+
+\subsection{Sklad}
+
+Na rozdíl od zaøízení, pro které je charakteristický výluèný pøístup,
+umo¾òuje sklad (objekt tøídy \verb|Store|) popisovat simultánní pøístup ke
+zdroji s urèitou kapacitou. Jako pøíklad skladu mù¾eme uvést parkovi¹tì nebo
+pamì» poèítaèe. Sklad mù¾e obsadit více procesù v závislosti na kapacitì
+skladu a na po¾adavcích tìchto procesù. Proces, který po¾aduje ménì jednotek
+kapacity ne¾ je volné místo, mù¾e obsadit po¾adovanou èást kapacity a volné
+místo se tím zmen¹í. Pokud proces po¾aduje více, ne¾ je volná kapacita, musí
+èekat a¾ bude po¾adované místo volné. Zaøízení lze tedy pova¾ovat za sklad s
+kapacitou jedna s tou výjimkou, ¾e sklad nemá mo¾nost pøeru¹ovat obsluhu.
+Deklarace skladu má tvar:
+
+\begin{verbatim}
+Store <identifikátor> ( "<jméno skladu>", <výraz-kapacita> );
+\end{verbatim}
+
+
+\subsubsection*{Pøíklad:}
+
+\begin{verbatim}
+  Store Sto("Sto",100);
+\end{verbatim}
+
+Sklad má metody pro zji¹tìní volné kapacity (\verb|Free|) a predikáty pro
+testování, je-li prázdný (\verb|Empty|) nebo plný (\verb|Full|). Procesy
+obsazují sklad operacemi \verb|Enter| a \verb|Leave|.
+
+\begin{verbatim}
+  Enter(<identifikátor skladu>, <výraz>);
+  Leave(<identifikátor skladu>, <výraz>);
+\end{verbatim}
+
+Výraz udává obsazovanou, resp. uvolòovanou kapacitu skladu. Je
+chybou, kdy¾ po¾adovaná kapacita je vìt¹í, ne¾ deklarovaná
+kapacita skladu. Pøíklad ukazuje obsazení a uvolnìní deseti
+jednotek kapacity skladu \verb|S|:
+
+\begin{verbatim}
+  Enter(S,10);
+  Wait(10);
+  Leave(S,10);
+\end{verbatim}
+
+Pøíkaz \verb|Enter| mù¾e zpùsobit èekání procesu na volnou kapacitu.
+Èekající procesy se øadí do fronty podle priorit, první je
+proces s nejvy¹¹í prioritou. Pøíkaz \verb|Leave| uvolòuje zadanou
+kapacitu a v pøípadì neprázdné vstupní fronty obsazuje sklad
+první objekt z fronty, pokud lze jeho po¾adavek uspokojit\footnote{Souèasná
+implementace se chová jinak -- prochází frontu a hledá v¹echny po¾adavky,
+které lze uspokojit. Podívejte se do zdrojového textu modulu 'store.cc'}.
+
+Sklad automaticky uchovává statistiky, potøebné k výpoètu
+prùmìrného vyu¾ití. Výstup statistik skladu lze provést metodou
+\verb|Output|. Do standardního výstupního souboru se tisknou tyto
+informace:
+
+\begin{itemize}
+\item  deklarovaná kapacita
+\item  maximální pou¾itá kapacita
+\item  prùmìrná pou¾itá kapacita
+\item  maximální délka vstupní fronty
+\item  prùmìrná délka vstupní fronty
+\item  prùmìrná doba èekání ve frontì
+\end{itemize}
+
+%                  Q
+%         -------+-+-+-+     +------------+
+%     ---------> | | | +-----+   Sklad    +--------->
+%         -------+-+-+-+     +------------+
+%
+%                   obr. 3. Sklad
+\begin{figure}[ht]
+  \begin{center}
+    \epsfig{file=o3.eps}
+    \caption{Sklad}
+    \label{o3}
+  \end{center}
+\end{figure}
+
+
+
+\subsection{Sbìr statistik}
+
+Typickou èinností pøi simulaci diskrétních stochastických
+systémù je sbìr a vyhodnocování statistických informací,
+získaných z modelu. K tomu jsou urèeny standardní tøídy
+\verb|Histogram|, \verb|Stat|, \verb|TStat|.
+
+
+\subsubsection{Histogramy}
+
+Objekty tøídy \verb|Histogram| slou¾í k záznamu èetností zapisovaných
+hodnot v zadaných intervalech. Deklarace objektu této tøídy
+má tvar:
+
+\begin{verbatim}
+  Histogram <identifikátor>("<jméno>",<od>,<krok>,<kolik>);
+\end{verbatim}
+
+Význam jednotlivých parametrù je patrný z obrázku \ref{o4}.
+
+%          od      krok
+% ----------+-----+-----+----  ----+-------+-------------
+%        0  |  1  |  2  |   ....   | kolik | kolik+1
+% ----------+-----+-----+----  ----+-------+-------------
+\begin{figure}[ht]
+  \begin{center}
+    \epsfig{file=o4.eps}
+    \caption{Parametry histogramu}
+    \label{o4}
+  \end{center}
+\end{figure}
+
+\noindent
+Zápis do histogramu se provádí pøíkazem:
+
+\begin{verbatim}
+<identifikátor histogramu>(<výraz-hodnota>);
+\end{verbatim}
+
+Výstup histogramu do standardního výstupního souboru provede
+metoda \verb|Output|. Tiskne tabulku èetností a statistiku vstupních
+hodnot (tj. minimální vstupní hodnotu, maximální vstupní
+hodnotu, poèet vstupních hodnot, prùmìrnou hodnotu a smìrodatnou
+odchylku).
+
+\subsubsection*{Pøíklad:}
+
+Histogram \verb|H| sledující èetnost hodnot ve $100$ intervalech od nuly
+s krokem $0.1$ :
+
+\begin{verbatim}
+Histogram  H("Histogram1",0,0.1,100);
+double  x;
+  ...
+  H(x);           // záznam hodnoty promìnné x
+  ...
+  H.Output();     // výstup histogramu
+
+\end{verbatim}
+
+
+\subsubsection{Statistiky}
+
+Objekty tøídy  \verb|Stat|  uchovávají tyto hodnoty:
+
+\begin{itemize}
+\item souèet vstupních hodnot
+\item souèet ètvercù vstupních hodnot
+\item minimální vstupní hodnotu
+\item maximální vstupní hodnotu
+\item poèet zaznamenaných hodnot
+\end{itemize} 
+
+Metoda \verb|Output| vytiskne tyto hodnoty a navíc prùmìrnou hodnotu
+a smìrodatnou odchylku.
+
+\subsubsection*{Pøíklad:}
+
+Testujeme støední hodnotu generátoru exponenciálního rozlo¾ení:
+
+\begin{verbatim}
+Stat  TestStat("St1");
+  ...
+  for(int i=0; i<10000; i++)
+    TestStat(Exponential(10));  // záznam hodnoty
+  TestStat.Output();            // tisk statistiky
+
+\end{verbatim}
+
+\subsubsection{Èasové statistiky}
+
+Objekty tøídy \verb|TStat| sledují èasový prùbìh vstupní velièiny.
+Pou¾ívají se k výpoètu prùmìrné hodnoty vstupu za urèitý èasový
+interval. Objekty tøídy \verb|TStat| uchovávají tyto hodnoty:
+
+\begin{itemize}
+\item sumu souèinù vstupní hodnoty a èasového intervalu
+\item sumu souèinù ètverce vstupní hodnoty a èasového intervalu
+\item minimální vstupní hodnotu
+\item maximální vstupní hodnotu
+\item poèet vstupních hodnot
+\item poèáteèní èas
+\end{itemize}
+
+Metoda \verb|Output| tiskne kromì ulo¾ených hodnot také prùmìrnou
+hodnotu vstupu za èas od inicializace statistiky metodou \verb|Clear|
+do okam¾iku volání metody \verb|Output|.
+
+\subsubsection*{Pøíklad:}
+
+\begin{verbatim}
+TStat  S("TStat1");
+  ...
+  S(x);        // záznam hodnoty v èase Time
+  ...
+  S.Output();  // výstup statistiky
+\end{verbatim}
+
+
+
+\subsection{Pøíklad diskrétního modelu}
+
+Uva¾ujme jedno obslu¾né støedisko se vstupní frontou, kterým
+procházejí zákazníci:
+
+%                               +-----------+
+%         ---------+-+-+-+      |           |
+%    ------------->| | | +----->+    Box    +-------->
+%         ---------+-+-+-+      |           |
+%                               +-----------+
+%
+%            obr. 5. Obslu¾né støedisko Box
+\begin{figure}[ht]
+  \begin{center}
+    \epsfig{file=o5.eps}
+    \caption{Obslu¾né støedisko Box}
+    \label{o5}
+  \end{center}
+\end{figure}
+
+{\small
+\begin{verbatim}
+//  model  MODEL1
+
+#include "simlib.h"
+
+//  deklarace  globálních  objektù
+Facility  Box("Linka");
+Histogram Tabulka("Tabulka",0,50,10);
+
+class Zakaznik : public Process { // tøída zákazníkù
+  double Prichod;                 // atribut ka¾dého zákazníka
+  void Behavior() {               // popis chování zákazníka
+    Prichod = Time;               // èas pøíchodu zákazníka
+    Seize(Box);                   // obsazení zaøízení Box
+    Wait(10);                     // obsluha
+    Release(Box);                 // uvolnìní
+    Tabulka(Time-Prichod);        // doba obsluhy a èekání
+  }
+};
+
+class Generator : public Event {  // generátor zákazníkù
+  void Behavior() {               // popis chování generátoru
+    new Zakaznik->Activate();     // nový zákazník v èase Time
+    Activate(Time+Exponential(1e3/150)); // interval mezi pøíchody
+  }
+};
+
+//  popis  experimentu
+int main()
+{
+  Print("***** MODEL1 *****\n");
+  Init(0,1000);              // inicializace experimentu
+  new Generator->Activate(); // generátor zákazníkù, aktivace
+  Run();                     // simulace
+  Box.Output();              // tisk výsledkù
+  Tabulka.Output();
+  return 0;
+}
+\end{verbatim}
+}
+
+Na zaèátku popisu modelu musíme pou¾ít pøíkaz \verb|#include|, který
+definuje rozhraní simulaèní knihovny. Dále následují deklarace
+globálních objektù modelu, v tomto pøíkladu je deklarováno
+zaøízení \verb|Box| a histogram \verb|Tabulka|.
+
+Následuje definice tøídy zákazníkù, kteøí mají chování popsáno
+v metodì \verb|Behavior|. Ka¾dý zákazník má atribut \verb|Prichod|, kterým je
+doba jeho pøíchodu do modelovaného systému. Zákazník obsadí
+zaøízení \verb|Box| na dobu 10 èasových jednotek (není dùle¾ité,
+jde-li o hodiny èi sekundy) a potom zaøízení uvolní. Je
+zaji¹tìno, ¾e v pøípadì ji¾ obsazeného zaøízení bude zákazník
+èekat ve frontì, která se vytvoøí u zaøízení.
+
+Po uvolnìní zaøízení se do histogramu \verb|Tabulka| poznamená doba,
+strávená zákazníkem v systému (doba obsluhy plus doba strávená
+èekáním ve frontì u zaøízení). Potom zákazník opou¹tí námi
+sledovaný systém, a proto je po ukonèení procesu automaticky
+zru¹en.
+
+Vytváøení zákazníkù je realizováno objektem tøídy \verb|Generator|,
+který periodicky se opakující událostí modeluje pøíchody
+zákazníkù do systému tak, ¾e vytváøí nové zákazníky a aktivuje
+je.
+
+Popis experimentu je souèástí funkce \verb|main|. Je inicializován
+model a nastavena doba simulace funkcí \verb|Init| od èasu nula do
+1000. Potom je zaji¹tìno vytvoøení generátoru pøíchodù zákazníkù
+do modelu. Po inicializaci spustíme vlastní simulaci voláním
+funkce \verb|Run|. Po ukonèení experimentu se vytisknou informace,
+získané v histogramu \verb|Tabulka|.
+
+
+\section{Spojitá simulace}
+
+Spojité chování modelu popisujeme v SIMLIB propojením objektù,
+které reprezentují integrátory, stavové bloky a rùzné
+nelinearity. Propojení objektù se realizuje pøi jejich
+vytváøení. Konstruktor dostává jako první parametr odkaz na
+vstupní objekt. Tento odkaz se pou¾ívá pøi vyhodnocování
+objektu. Ka¾dý objekt má definovanou metodu Value, která vrací
+hodnotu objektu. Pokud je k výpoètu hodnoty objektu zapotøebí
+hodnota vstupu, je objekt na vstupu po¾ádán o svou hodnotu opìt
+metodou Value. Takto probìhne výpoèet v¹ech potøebných hodnot
+objektù. V pøípadì, ¾e vznikne cyklický odkaz (rychlá smyèka),
+mù¾e být detekována.
+
+
+Pro zvý¹ení efektivity výpoètu si nìkteré objekty po vyhodnocení
+pamatují výslednou hodnotu, aby se pøi nìkolika po¾adavcích na
+vyhodnocení v tém¾e modelovém èase nemusely opakovat tyté¾
+výpoèty.
+
+Reprezentace výrazu, který je obvykle na vstupu bloku, se
+dynamicky vytváøí pøi volání konstruktoru. Této vlastnosti bylo
+dosa¾eno pøetí¾ením obvyklých aritmetických operátorù tak, aby
+pøi operandech typu blok dynamicky vytvoøily odpovídající
+grafovou strukturu výrazu.
+
+\subsubsection*{Pøíklad:}
+
+Uva¾ujme kmitavý èlánek:
+
+\begin{verbatim}
+class TEST : public aContiBlock {
+  Integrator i1;
+  Integrator i2;
+public:
+  TEST() : i1(-i2,1), i2(i1*0.5) {}
+  double Value() { return i2.Value(); }
+};
+\end{verbatim}
+
+
+\subsection{Standardní tøídy pro spojitou simulaci}
+
+Tøída \verb|aContiBlock| definuje obecný blok spojitého modelu s operací
+vyhodnocení metodou \verb|Value|. V¹echny tøídy spojitých blokù jsou
+odvozeny z této tøídy a definují metodu \verb|Value| pro vyhodnocení,
+metodu \verb|Init| pro inicializaci a konstruktor pro definici
+propojení objektù. SIMLIB obsahuje tøídy pro základní
+aritmetické operace ($+$,$-$,$*$,$/$) a nìkteré funkce
+(Abs,Sin,Log,...). U¾ivatel SIMLIB mù¾e té¾ definovat libovolné vlastní
+bloky, které jsou rovnocenné standardním blokùm.
+
+
+\subsubsection{Tøída Integrator}
+
+Tøída \verb|Integrator| slou¾í k implementaci integraèního mechanismu
+spojité simulace. Integrátor má definovány tøi základní operace:
+
+\begin{itemize}
+\item  numerickou integraci
+\item  nastavení poèáteèní podmínky (inicializaci)
+\item  nastavení hodnoty (skokovou zmìnu stavu)
+\end{itemize}
+
+Numerická integrace vstupní hodnoty je nejdùle¾itìj¹í operací
+integrátoru, provádí se automaticky v prùbìhu simulace.
+Nastavení poèáteèní hodnoty lze provést více zpùsoby. Zadání
+druhého parametru konstruktoru objektu je nejèastìj¹í pøípad.
+
+\begin{verbatim}
+ Integrator <identifikátor>(<obj-výraz>,<èíselný výraz>);
+\end{verbatim}
+
+Pøi inicializaci modelu v inicializaèní èásti popisu experimentu
+je pou¾itelná metoda \verb|Init|.
+
+\begin{verbatim}
+ <identifikátor>.Init(<èíselný výraz>);
+\end{verbatim}
+
+Zadanou poèáteèní hodnotu si integrátor pamatuje a nastaví ji
+pøi startu simulace ve funkci \verb|Run| automaticky. Nastavení hodnoty
+integrátoru je proveditelné pøi bìhu simulace buï pøiøazovacím
+pøíkazem, nebo metodou \verb|Set|.
+
+\begin{verbatim}
+ <identifikátor> = <èíselný výraz>;
+ <identifikátor>.Set(<èíselný výraz>);
+\end{verbatim}
+
+Konstruktor má jako první parametr odkaz na objektový výraz
+--- vstup. Lze zadat volitelný druhý parametr s poèáteèní hodnotou
+integrátoru. Deklarace
+
+\begin{verbatim}
+  Integrator <identifikátor integrátoru>(<objekt-výraz>);
+\end{verbatim}
+
+vytvoøí integrátor se vstupem zadaným objektovým výrazem
+s implicitnì nulovou poèáteèní hodnotou. Získání hodnoty
+integrátoru provedeme voláním metody Value pøíslu¹ného
+integrátoru:
+
+\begin{verbatim}
+  x = <identifikátor integrátoru>.Value();
+\end{verbatim}
+
+
+\subsubsection{Nelinearity}
+
+Pro modelování nelineárních blokù jsou v SIMLIB definovány
+standardní tøídy, které jsou podrobnìji popsány v referenèní
+pøíruèce. Nelineární bloky je nutné deklarovat, formát deklarace
+má tvar:
+
+\begin{verbatim}
+  <tøída bloku> <identifikátor>(<vstup>,<parametry>);
+\end{verbatim}
+
+Typickým pøíkladem je blok omezení (tøída  Lim):
+
+\begin{verbatim}
+  Lim  omez(x+y,-1,1);
+\end{verbatim}
+
+Výstupem objektu omez je souèet hodnot objektù x a y omezený na
+interval mezi $-1$ a $1$. Blok omez je pou¾itelný jako vstup jiného
+objektu.
+
+
+\subsubsection{Stavové bloky}
+
+\subsubsection*{Tøída Status}
+
+Tøída \verb|Status| popisuje vlastnosti stavových promìnných. Je to
+bázová tøída pro v¹echny tøídy objektù s vnitøním stavem, kromì
+tøídy \verb|Integrator|. Jako pøíklad si uvedeme pouze relé
+a hysterezi, ostatní nelineární bloky jsou struènì popsány
+v referenèní pøíruèce a jejich pou¾ití je stejné jako
+u uvedených objektù.
+
+\subsubsection*{Tøída  Hyst}
+
+Objekty tøídy  \verb|Hyst|  mají charakteristiku podle obrázku \ref{o6}.
+
+%                        | y2
+%                     ---+---------------
+%                    /   |       /
+%                   /    |      /. alfa
+%      ------------------+------------------------>
+%                 /p1    |    /p2                x
+%                /       |   /
+%          --------------+---
+%                        | y1
+%                        |
+\begin{figure}[ht]
+  \begin{center}
+    \epsfig{file=o6.eps}
+    \caption{Charakteristika hystereze}
+    \label{o6}
+  \end{center}
+\end{figure}
+
+
+Konstruktor
+
+\begin{verbatim}
+  Hyst(Input x, double p1, double p2, 
+                double y1, double y2, double tga);
+\end{verbatim}
+
+vytvoøí objekt se zadaným vstupem x a s pøíslu¹nými parametry
+(viz obrázek \ref{o6}). Parametr \verb|tga| je tangentou úhlu alfa. Hodnotu
+výstupu tohoto objektu získáme voláním metody \verb|Value|.
+
+\subsubsection*{Pøíklad:}
+
+\begin{verbatim}
+  Hyst H(x,-1,1,-5,5,3.5);
+\end{verbatim}
+
+
+\subsubsection*{Tøída  Relay}
+
+Tøída \verb|Relay| popisuje objekty s reléovou charakteristikou:
+
+%                        |
+%                        | y2 +------+----------
+%            p1   p2     |    |      |
+%      -------+----+-----+----+------+----------->
+%             |    |     |    p3     p4          vstup
+%        -----+----+  y1 |
+%                        |
+\begin{figure}[ht]
+  \begin{center}
+    \epsfig{file=o7.eps}
+    \caption{Charakteristika relé}
+    \label{o7}
+  \end{center}
+\end{figure}
+
+
+ Konstruktor
+
+\begin{verbatim}
+  Relay(Input i, double p1, double p2, double p3, double p4,
+                 double y1, double y2);
+\end{verbatim}
+
+vytvoøí objekt se zadanými parametry.
+
+Poznámka:
+
+U objektù s nespojitými charakteristikami (relé, hystereze,...) nastává pøi
+simulaci problém 'dokroèení' numerické integrace na zlom charakteristiky
+(napøíklad do okam¾iku, kdy relé sepne). Pro øe¹ení tohoto problému\footnote{
+tøída Relay v SIMLIB skuteènì umí øe¹it tento problém} se pou¾ívá metod,
+uvedených v odstavci o kombinované simulaci.
+
+
+\subsection{Pøíklad spojitého modelu}
+
+Jako pøíklad spojité simulace budeme uva¾ovat systém kola automobilu.
+Experiment bude sledovat odezvu kola na jednotkový skok. Rovnice, popisující
+tlumené kmitání kola:
+
+           $$ M \ddot{x} + D \dot{x} + k x = F(t) $$
+\noindent
+kde
+
+ $v$      je rychlost pohybu kola,
+ 
+ $y$      je výchylka kola z klidové polohy,
+ 
+ $F(t)$   je vstupní budicí funkce (napø. jednotkový skok) a
+ 
+ $k,D,M$  jsou konstantní parametry systému kola
+
+\noindent
+Rovnici pøevedeme na soustavu diferenciálních rovnic prvního øádu
+
+           $$ \dot{v} = (F - D v - k y) / M $$
+           $$ \dot{y} = v $$
+
+a potom mù¾eme pøímo psát simulaèní program:
+
+{\small
+\begin{verbatim}
+// model KOLO.CPP - Model tlumení kola automobilu v C++
+
+#include "simlib.h"
+
+const double F = 1.0;
+
+class Kolo {
+  Graph G;              // výstup polohy kola
+  Integrator v,y;       // stav systému kola
+public:
+  Kolo(Input F, double M, double D, double k):
+     G("Výchylka",y,0.01),
+     v((F-D*v-k*y)/M),
+     y(v) {}
+};
+
+Kolo k1(F, 2, 5.656, 400);
+
+int main() {                  // popis experimentu
+  Print(" Model tlumení kola automobilu v C++ \n");
+  OpenOutputFile("kolo.out");
+  Init(0,1.5);                // inicializace parametrù experimentu
+  SetStep(1e-3,0.1);          // krok integrace
+  SetAccuracy(0.001);         // max. povolená rel. chyba integrace
+  Run();                      // simulace
+  Print(" Konec simulace \n");
+  return 0;
+}
+\end{verbatim}
+}
+
+Spojitý model popisujeme propojením funkèních blokù --- objektù
+modelu. Ka¾dý objekt je inicializován tak, ¾e prvním parametrem
+jeho konstruktoru je jeho vstup. Na místì vstupu mù¾e být výraz,
+ve kterém lze pou¾ít objekty (jako promìnné) nebo èíselné
+hodnoty (jako konstanty).
+
+Výstup informací o chování modelu probíhá prostøednictvím
+objektu tøídy Graph. Tato tøída zabezpeèuje rovnomìrné
+vzorkování vstupu objektu (v na¹em pøípadì s periodou 0.01)
+a výstup do výstupního souboru, který lze prohlí¾et výstupním
+editorem.
+
+Celý model je tvoøen jedním objektem tøídy \verb|Kolo| (globální objekt
+\verb|k1|). Pøi vytváøení objektu musíme zadat jeho vstup a parametry. Øízení
+experimentu ve funkci \verb|main| zaji¹»uje otevøení výstupního souboru,
+inicializaci pro modelový èas od nuly do $1.5$ sekundy, nastavení povoleného
+rozsahu kroku numerické integrace (\verb|SetStep|) a nastavení po¾adované
+pøesnosti numerické integrace (\verb|SetAccuracy|). Vlastní simulace probìhne
+v rámci volání funkce \verb|Run|.
+
+
+\section{Kombinovaná simulace}
+
+Kombinovaná simulace pøedpokládá pou¾ití spojitého i diskrétního
+pøístupu, pøiná¹í v¹ak navíc nìkteré problémy, spojené se
+vzájemnou interakcí spojité a diskrétní èásti modelu. Zmìny,
+zpùsobené diskrétními událostmi ve spojité èásti modelu,
+nepøiná¹ejí témìø ¾ádné problémy. Po skokové zmìnì stavu spojité
+èásti modelu je zapotøebí pouze znovu inicializovat integraèní
+metodu a je mo¾né pokraèovat v simulaci. Slo¾itìj¹í situace
+nastává pøi potøebì vyvolat diskrétní událost pøi dosa¾ení
+urèitého stavu spojité èásti modelu. Øe¹ení tohoto problému je
+náplní dal¹ích odstavcù.
+
+
+\subsection{Stavové podmínky a stavové události}
+
+Reakce na zmìny ve spojité èásti modelu jsou popsány formou
+stavových podmínek a stavových událostí. Stavová podmínka mù¾e
+být specifikována napøíklad booleovským výrazem. Akci, která je
+podmínìna zmìnou pravdivostní hodnoty stavové podmínky, nazveme
+stavová událost. Pøíkladem mù¾e být událost, která má nastat pøi
+pøekroèení nastavené maximální teploty místnosti v modelu
+automaticky øízeného vytápìní domu.
+
+V C++ lze stavové podmínky implementovat tøídami, které definují
+chování objektù - blokù citlivých na zmìnu vstupu. Vstupem
+takového bloku mù¾e být booleovský výraz. Pro zji¹tìní èasu
+zmìny vstupní hodnoty takových podmínek lze proto pou¾ít pouze
+metodu pùlení intervalu, tj. zkracování kroku integrace na
+polovinu. Existují i jiné metody, napøíklad metoda
+Regula-Falsi, ty v¹ak vy¾adují spojitý vstup podmínky.
+
+Mù¾eme také po¾adovat, aby stavová podmínka byla citlivá pouze
+na nìkteré zmìny pravdivostní hodnoty vstupu (napøíklad pouze na
+zmìnu FALSE na TRUE, pøípadnì na pøekroèení mezní hodnoty smìrem
+nahoru). Proto¾e C++ nedefinuje speciální Booleovský typ,
+pou¾ívá se místo nìj typ int. Pravdivostní hodnota TRUE potom
+odpovídá nenulové hodnotì typu int, pravdivostní hodnota FALSE
+odpovídá nulové hodnotì.
+
+Pøi numerické integraci, kdy výpoèet probíhá po krocích, nemusí
+dojít k detekci nìkterých stavových událostí. Tato situace
+nastane v pøípadì, ¾e krok integrace je pøíli¹ dlouhý a dojde
+pøi nìm k 'pøekroèení' nìkolika zmìn stavových podmínek. Podobný
+problém mù¾e nastat v dùsledku nepøesnosti numerické integrace,
+kdy pøi nevhodnì zvolené podmínce nemusí dojít k její zmìnì
+a tím k vyvolání po¾adované události.
+
+
+\subsubsection{Tøída BoolCondition}
+
+Bázová tøída BoolCondition popisuje pouze chování, potøebné pro
+detekci zmìn vstupní podmínky. U¾ivatel musí tuto tøídu zdìdit
+a doplnit metodu, popisující vstup podmínky a metodu, popisující
+akci pøi zmìnì podmínky. Vstup podmínky popisuje metoda Test,
+která vrací pravdivostní hodnotu. Pro detekci zmìny pravdivostní
+hodnoty pou¾íváme metodu pùlení intervalu. Pøi zmìnì stavu
+podmínky se integraèní krok zkracuje tak dlouho, a¾ dosáhne své
+minimální povolené hodnoty (promìnná MinStep). Tím zajistíme
+'dokroèení' v èase, který se nejvíce blí¾í skuteènému okam¾iku
+zmìny podmínky. Teprve potom nastane reakce na tuto zmìnu
+vyvoláním metody Action. Metoda Mode umo¾òuje nastavení
+citlivosti podmínky na rùzné zmìny pravdivostní hodnoty vstupu
+podmínky.
+
+\subsubsection*{Pøíklad:}
+
+\begin{verbatim}
+class MyCondition : BoolCondition {
+    Input inp;
+    int Test()    { return inp.Value()<0; }
+    void Action() { Print("zmìna znaménka z + na -"); }
+  public:
+    MyCondition(Input i) : inp(i) { Mode(DetectUP); }
+};
+
+Integrator x(vstup);
+MyCondition  Test(x);
+\end{verbatim}
+
+Pøíklad popisuje podmínku, reagující na zmìnu znaménka vstupní
+hodnoty z plus na minus. Na vstupu objektu Test je integrátor x.
+
+
+\subsection{Pøíklad kombinovaného modelu}
+
+Jako pøíklad kombinovaného modelu pou¾ijeme model skákajícího
+míèku. Spojité chování míèku odpovídá volnému pádu, pro detekci
+dopadu míèku pou¾íváme stavovou podmínku. Stavová událost (dopad
+míèku) vyvolá skokovou zmìnu rychlosti míèku.
+
+{\small
+\begin{verbatim}
+//  model  MICEK.CPP -  skákající  míèek
+
+#include "simlib.h"
+
+const double g = 9.81;       // gravitaèní zrychlení
+
+class Micek : BoolCondition {
+  Graph G;
+  Integrator v,y;
+  int Test() { return y.Value()<0; }
+  void Action() {
+      Print(" Odraz míèku v èase t=%g \n",Time);
+      G();
+      v = -0.8 * v.Value();
+      y = 0;  // nutné pro detekci následujícího dopadu
+    }
+  }
+public:
+  Micek(double position) :
+     G("Vý¹ka míèku",y,0.05),
+     y(v,position), v(-g)  {
+    Mode(DetectUP);
+  }
+};
+
+Micek  micek(1);             // vytvoøení objektu micek
+
+int main() {                 // popis experimentu
+  Print(" Model skákajícího míèku v C++ \n");
+  OpenOutputFile("micek.out");
+  Init(0,5);                 // inicializace experimentu
+  SetStep(1e-10,0.5);        // krok integrace
+  SetAccuracy(1e-5,0.001);   // max. povolená chyba integrace
+  Run();                     // simulace
+  Print(" Konec simulace \n");
+  return 0;
+}
+\end{verbatim}
+}
+
+Chování míèku je popsáno jako volný pád. Integrátor v integruje
+tíhové zrychlení g a jeho hodnota je rovna rychlosti míèku.
+Integrátor y integruje rychlost a jeho hodnota pøedstavuje vý¹ku
+míèku nad zemí.
+
+Pro detekci okam¾iku dopadu míèku na zem ($y=0$) je pou¾ito stavové podmínky
+\verb|y.Value()<0| v metodì \verb|Test|. Tato metoda je volána systémem
+øízení simulace pøi ka¾dém kroku numerické integrace. V pøípadì zmìny hodnoty
+podmínky se krok zkracuje tak, abychom okam¾ik dopadu míèku urèili s
+maximální pøesností (pøesnost urèení doby dopadu je dána minimální délkou
+kroku, tj. hodnotou promìnné \verb|MinStep|). V okam¾iku dopadu míèku se provede
+akce, popsaná v metodì Action, tj. obrácení a zmen¹ení vektoru rychlosti.
+Tímto zpùsobem modelujeme ztrátu energie pøi dopadu míèku.
+
+Øízení experimentu popisuje funkce \verb|main|. Po volání Init
+následuje nastavení povoleného rozsahu kroku integrace (SetStep)
+a urèení po¾adované pøesnosti integrace (SetAccuracy). Bìh
+simulace se odstartuje voláním funkce Run. Výstup se øe¹í
+podobnì, jako u spojité simulace, je zde v¹ak nutné zajistit
+výstup té¾ v okam¾icích dopadu míèku na zem.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{SIMLIB-3D roz¹íøení}
+
+Pro usnadnìní popisu modelù, které vy¾adují popis vektorovými diferenciálními
+rovnicemi byla SIMLIB doplnìna o 3D abstrakce.
+
+Prostorové modely jsou popsatelné vektorovými dif. rovnicemi. Napøíklad pohyb
+hmotného bodu v gravitaèním poli je mo¾né popsat rovnicí:
+
+   $$ \ddot{\vec{r}} = \frac{\vec{F}}{m} $$
+
+kde:
+   $\vec{r}$ je vektor --- pozice bodu 
+   
+   $\vec{F}$ je vektor síly pùsobící na hmotný bod 
+   
+   $m$ je hmotnost bodu
+
+SIMLIB dovoluje popis tohoto systému jak skalárními prostøedky, tak vektorovì.
+
+Vektorový popis je výraznì krat¹í:
+
+{
+\small
+\begin{verbatim}
+class MassPoint {  // model hmotného bodu
+  const double m;  // hmotnost
+  Integrator3D v;  // rychlost
+  Integrator3D r;  // pozice
+ public:
+  MassPoint(Input3D F, Value3D ini_pos) :  // konstruktor:
+     m(1000),       // hmotnost je konstantní
+     v(F/m),        // rychlost je integrál zrychlení
+     r(v, ini_pos)  // pozice je integrál rychlosti
+     {}
+};
+\end{verbatim}
+}
+
+Z uvedeného pøíkladu je zøejmé, ¾e tøírozmìrný popis problému je stejnì
+jednoduchý jako popis skalární (operace jsou vektorové a v roli operandù jsou
+vektory místo skalárù).
+
+
+
+\subsection{Hierarchie tøíd 3D}
+
+\begin{verbatim}
+aBlock
+  aContiBlock3D       - bázová tøída
+    Constant3D        - konstanta
+    Expression3D      - blokový výraz
+    Integrator3D      - vektorový integrátor 
+    Function3D        - obecná vektorová funkce
+       _Add3D, _Mul3D - (skryté) tøídy pro operátory
+    Parameter3D       - parametr modelu
+                 
+Value3D               - hodnota
+Input3D               - odkaz na blok
+    
+\end{verbatim}
+
+Tøída \verb|Value3D| definuje vektorovou hodnotu a má tøi slo¾ky (x,y,z) typu
+\verb|double|. Pou¾ívá se na pøedávání a uchovávání vektorových hodnot.
+
+Tøída \verb|Input3D| definuje odkaz na objekt--blok. Pou¾ití odkazu v
+objektovém výrazu je transparentní, tj. blok na jeho¾ vstupu je uveden tento
+odkaz si poznamená cíl tohoto odkazu a nikoli odkaz samotný (pozdìj¹í zmìny
+odkazu ji¾ nic neovlivní). Vpøípadì, ¾e nám toto chování nevyhovuje, je
+mo¾né pou¾ít tøídu \verb|Expression3D|, která se chová jako blok--identita.
+
+Tøída Integrator3D obsahuje tøi skalární integrátory, které jsou napojeny na
+speciální objekty pro transformaci rozhraní 3D/skalární. To je mo¾né proto, ¾e
+integrace je lineární operátor.
+
+Ostatní tøídy definují konstanty, parametry modelu a funkce podobnì jako
+jejich skalární ekvivalenty.
+
+
+\subsection{Blokové výrazy}
+
+Operace $ + - * /$ jsou implementovány jako operátory, které dynamicky vytvoøí
+pøíslu¹ný objekt a zapojí jeho vstupy. Situace je stejná jako u bì¾ných
+skalárních operátorù. 
+
+Pøehled definovaných operátorù:
+
+{
+\small
+\begin{verbatim}
+// binární operátory:
+Input3D operator + (Input3D a, Input3D b);  // souèet vektorù
+Input3D operator - (Input3D a, Input3D b);  // rozdíl
+Input3D operator * (Input3D a, Input3D b);  // souèin
+Input3D operator * (Input3D a, Input b);    // vektor * skalár
+Input3D operator * (Input a, Input3D b);    // skalár * vektor
+Input3D operator / (Input3D a, Input b);    // vektor / skalár
+
+// unární operátory:
+Input3D operator - (Input3D a);             // unární -
+\end{verbatim}
+}
+
+Funkce v blokových výrazech 3D jsou definovány pouze pro základní operace s
+vektory:
+
+{
+\small
+\begin{verbatim}
+// funkce:
+Input Abs(Input3D x);                       // absolutní hodnota vektoru
+Input3D UnitVector(Input3D x);              // jednotkový vektor
+Input ScalarMultiply(Input3D x, Input3D y); // skalární douèin x.y
+
+Input Xpart(Input3D a); // slo¾ka x vektoru
+Input Ypart(Input3D a); // slo¾ka y vektoru
+Input Ypart(Input3D a); // slo¾ka z vektoru
+\end{verbatim}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Pøíklad}
+
+Uva¾ujme systém Zemì--Mìsíc a dru¾ici, která má vhodnì zvolenou poèáteèní
+pozici a rychlost. Takový systém mù¾eme popsat takto:
+
+{
+\small
+\begin{verbatim}
+// druzice.cc -- model Zemì--Mìsíc--dru¾ice 
+#include "simlib.h"
+#include "simlib3D.h"
+
+typedef Value3D Position, Speed, Force;
+
+const double   gravity_constant = 6.67e-11; // gravitaèní konstanta
+const double   m0 = 1000;           // hmotnost dru¾ice
+const double   m1 = 5.983e24;       // hmotnost Zemì
+const double   m2 = 7.374e22;       // hmotnost Mìsíce
+const Position p0(36.0e6, 0, 0);    // poloha dru¾ice
+const Position p2(384.405e6, 0, 0); // poloha Mìsíce
+const Speed    v0(0, 4.5e3, 0);     // poèáteèní rychlost dru¾ice
+const Speed    v2(0, 1022.6, 0);    // obì¾ná rychlost Mìsíce
+
+Constant3D Zero(0,0,0); // pomocný objekt
+
+struct MassPoint {
+  double m;              // hmotnost
+  Expression3D inforce;  // vstupní síla
+  Integrator3D v;        // rychlost
+  Integrator3D p;        // pozice
+  MassPoint(const double mass, Position p0, Speed v0=Speed(0,0,0)) :
+    m(mass), 
+    inforce(Zero),
+    v(inforce/m, v0), 
+    p(v,p0) {}
+   void SetInput(Input3D i) { inforce.SetInput(i); }
+};
+
+struct MyWorld {  // digitální svìt
+  enum { MAX=10 };
+  MassPoint *m[MAX];
+  unsigned n;
+  MyWorld();
+};
+
+MyWorld *w;  // vznikne a¾ pozdìji :-)
+
+// gravitaèní síla pusobící na hmotný bod p
+class GravityForce : public aContiBlock3D {
+  MassPoint *p;
+  MyWorld *w;
+ public:
+  GravityForce(MassPoint *_p, MyWorld *_w) : p(_p), w(_w) {} 
+  Force Value() {
+    Force f(0,0,0);  // gravitaèní síla
+    for(int i=0; i < w->n; i++) {
+      MassPoint *m = w->m[i];
+      if (m == p) continue;
+      Value3D distance = m->p.Value() - p->p.Value(); 
+      double d = abs(distance);  // vzdálenost
+      f = f + (distance * gravity_constant * p->m * m->m / (d*d*d)) ; 
+    }
+    return f; // souèet v¹ech gravitaèních sil 
+  }
+};
+
+typedef MassPoint Planet, Satelite; // pohyblivé planety
+
+MyWorld::MyWorld() {  // --- vytvoøíme digitální svìt
+  n=0;
+  m[n++] = new Planet(m1,Position(0,0,0),Speed(0,0,0));
+  m[n++] = new Planet(m2,p2,v2);
+  m[n++] = new Satelite(m0,p0,v0);
+  for(int i=0; i<n; i++)  // --- zapneme silové pùsobení
+    m[i]->SetInput(new GravityForce(m[i],this));
+}
+\end{verbatim}
+}
+
+Tøída \verb|MassPoint| definuje model hmotného bodu. Vstupem tohoto modelu je
+síla, která zpùsobí jeho pohyb. Proto¾e model vytváøíme postupnì, je
+implicitnì tato síla nulová a nastaví se a¾ po vytvoøení v¹ech hmotných bodù v
+systému (viz konstruktor tøídy \verb|MyWorld|). Celý model je tvoøen tøídou
+\verb|MyWorld|,
+která obsahuje seznam v¹ech hmotných bodù.
+
+Tøída \verb|GravityForce| modeluje gravitaèní sílu a je pro ka¾dý hmotný bod
+definována jako souèet v¹ech gravitaèních sil pùsobících na hmotný bod.
+Gravitaèní síla se poèítá se podle gravitaèního zákona.
+
+Výsledná dráha dru¾ice a Mìsíce je uvedena na obrázku \ref{druzice}.
+
+\begin{figure}[ht]
+  \begin{center}
+    \epsfig{file=druzice.eps}
+    \caption{Dru¾ice v gravitaèním poli}
+    \label{druzice}
+  \end{center}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Závìr}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{thebibliography}{1}
+
+\bibitem{Skripta92}
+Rábová,Z., Zendulka,J., Èe¹ka,M., Peringer,P., Janou¹ek,V :
+{\it Modelování a simulace}, Nakladatelství VUT Brno, 1992, 226 stran
+
+\bibitem{Fishwick}
+Fishwick P.: {\it Simulation Model Design and Execution: building digital
+  worlds}, Prentice Hall, 1995
+
+\bibitem{ContinuousAbstractions}
+Peringer P.: {\it Object-Oriented Description of Continuous Systems,} 5th
+  International Symposium on Modeling and System Simulation, June 1-4 1993,
+  Olomouc, 1993
+
+\bibitem{PerPet94}
+Peringer, P.: {\it Basic Abstractions for Object-Oriented Model
+  Description,} Proceedings of Conference MOSIS'94, 30.5-2.6 1994,
+  Zábøeh na  Moravì, Czech Republic, p. 274-277
+
+\bibitem{PerPet96}
+Peringer, P.: {\it Modelování na bázi komunikujících objektù},
+ Disertaèní práce FEI VUT Brno, prosinec 1996
+
+\bibitem{Leska}
+Le¹ka D.: {\it Objektovì orientovaný pøístup k numerickým metodám},
+Diplomová práce FEI VUT Brno, kvìten 1997
+
+\bibitem{SIMLIB-doc}
+Peringer, P.: {\it SIMLIB/C++},
+dokumentace k simulaèní knihovnì, FEI VUT Brno, prosinec 1997
+
+\bibitem{MOSIS97}
+Peringer, P.:{\it
+  Hierarchical Modelling Based on Communicating Objects},
+  Proceedings of Conference MOSIS'97, April 1997,
+  Hradec nad Moravicí, Czech Republic, p. 122-127
+
+\bibitem{ASIS97}
+Peringer, P.:{\it Tools for continuous Simulation in 3D space},
+  Proceedings of ASIS 1997, September, 1997,
+  Krnov, Czech Republic, p.327-330
+ 
+\end{thebibliography}
+
+
+
+\end{document}

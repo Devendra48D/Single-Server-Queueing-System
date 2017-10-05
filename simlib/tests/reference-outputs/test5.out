@@ -1,0 +1,15 @@
+Test5 (Cancel):
+Start time = 0
+T=0 Event created
+T=0 Process created
+T=0 Event behavior
+T=0 Process behavior
+T=1 Process destroyed
+End time = 1e+30
+Start time = 10
+T=10 Event created
+T=10 Process created
+T=10 Event behavior
+T=10 Process behavior
+T=11 Process destroyed
+End time = 1e+30

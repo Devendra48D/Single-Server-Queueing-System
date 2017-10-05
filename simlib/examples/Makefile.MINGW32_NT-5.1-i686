@@ -1,0 +1,92 @@
+#  Makefile for MinGW
+#  ==================
+
+# name of the compiler for C++ language
+CXX=g++ -m32
+
+# C++ compiler flags
+CXXFLAGS  = -Wall -std=c++98
+CXXFLAGS += -O2 # add optimization level
+CXXFLAGS += -g  # add debug info
+#CXXFLAGS += -pg # add profiling support
+#CXXFLAGS += -Weffc++ # add extra checking of source code
+
+#include Makefile.generic
+
+# makefile for basic SIMLIB examples
+# Linux
+
+# installed library home:
+SIMLIB_DIR=../src
+
+# dependencies:
+SIMLIB_DEPEND=$(SIMLIB_DIR)/simlib.a $(SIMLIB_DIR)/simlib.h
+SIMLIB_DEPEND2D=$(SIMLIB_DEPEND) $(SIMLIB_DIR)/simlib2D.h
+SIMLIB_DEPEND3D=$(SIMLIB_DEPEND) $(SIMLIB_DIR)/simlib3D.h
+
+# add flags:
+CXXFLAGS += -I$(SIMLIB_DIR)
+
+# Implicit rule to compile modules
+% : %.cc
+	@#$(CXX) $(CXXFLAGS) -static -o $@  $< $(SIMLIB_DIR)/simlib.a -lm
+	$(CXX) $(CXXFLAGS) -o $@  $< $(SIMLIB_DIR)/simlib.a -lm
+
+# Models
+ALL_MODELS= bessel centrala ctest kolo kolo2 kostky kostky2 lorenz micek ball2 \
+	model2 model3 model4 model5 multiexp pocsit procesor test3D topeni \
+	model2-timeout rc rlc
+
+# Rules:
+all: $(ALL_MODELS)
+
+#
+bessel:   bessel.cc $(SIMLIB_DEPEND)
+centrala: centrala.cc $(SIMLIB_DEPEND)
+ctest:    ctest.cc $(SIMLIB_DEPEND)
+kolo:     kolo.cc $(SIMLIB_DEPEND)
+kolo2:    kolo2.cc $(SIMLIB_DEPEND)
+kostky:   kostky.cc $(SIMLIB_DEPEND)
+kostky2:  kostky2.cc $(SIMLIB_DEPEND)
+lorenz:   lorenz.cc $(SIMLIB_DEPEND)
+micek:    micek.cc $(SIMLIB_DEPEND)
+ball2:    ball2.cc $(SIMLIB_DEPEND)
+model2:   model2.cc $(SIMLIB_DEPEND)
+model2-timeout: model2-timeout.cc $(SIMLIB_DEPEND)
+model3:   model3.cc $(SIMLIB_DEPEND)
+model4:   model4.cc $(SIMLIB_DEPEND)
+model5:   model5.cc $(SIMLIB_DEPEND)
+multiexp: multiexp.cc $(SIMLIB_DEPEND)
+pocsit:   pocsit.cc $(SIMLIB_DEPEND)
+procesor: procesor.cc $(SIMLIB_DEPEND)
+test3D:   test3D.cc $(SIMLIB_DEPEND3D)
+topeni:   topeni.cc $(SIMLIB_DEPEND)
+rc:   rc.cc $(SIMLIB_DEPEND)
+rlc:  rlc.cc $(SIMLIB_DEPEND)
+
+#
+run: all
+	@echo "Running all examples..."
+	@for i in $(ALL_MODELS); do echo Model $$i; ./$$i; done
+
+plot: run
+	@./0-plot-all-ps.sh
+
+clean:
+	@echo "Deleting all executable examples..."
+	rm -f $(ALL_MODELS) *.exe gmon.out
+
+clean-data:
+	@echo "Deleting all simulation results..."
+	rm -f *.dat *.out *.png *.ps reference-outputs/*.log
+
+clean-all: clean clean-data
+
+REFOUT=reference-outputs/*.dat reference-outputs/*.out reference-outputs/*.sh
+
+pack:
+	tar czf examples.tar.gz *.cc *.plt *.txt *.sh Makefile.* $(REFOUT)
+
+#
+
+#

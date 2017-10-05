@@ -1,0 +1,161 @@
+////////////////////////////////////////////////////////////////////////////
+//  errors.txt
+//
+//  (c) PerPet 1991-2007
+//
+//  This file contains SIMLIB error messages 
+//  You can translate it and then recompile SIMLIB
+//
+//  english source for GENERR program (it creates errors.h and errors.cc) 
+//
+////////////////////////////////////////////////////////////////////////////
+
+_ErrMsg(_ErrEnum)
+
+////////////////////////////////////////////////////////////////////////////
+
+Copyright               SIMLIB/C++ Simulation Library, " SIMLIB_COPYRIGHT "
+UnknownError            Undocumented error
+InternalError           Internal error
+MemoryError             No memory
+
+// general functions
+InitError               Bad Init() arguments
+TwiceInitError          Init() called twice before Run()
+InitInRunError          Init() can not be called during simulation run
+RunUseError             Run() should be called after Init()
+SetStepError            Bad SetStep(min,max) arguments
+InitMinStepError        Requested integration step is too small
+SetStepError2           SetStep: Too big difference of min/max step
+SetAccuracyError        SetAccuracy: Too small relative accuracy requested
+SFunctionUseError       Special function called and simulation is not running
+AccuracyError           Numerical integration error greater than requested
+
+// class Link
+LinkRefError            Bad reference to list item
+LinkDelError            Deleted item is linked in some list
+LinkOutError            Removed item not in list
+
+// class Calendar
+DuplicateCalendar       Calendar should be singleton
+DeletingActive          Deleting active item in calendar
+SchedulingBeforeTime    Scheduling before current Time
+EmptyCalendar           Calendar is empty
+
+// class Process
+ProcessNotInitialized   Procesis is not initialized
+
+// class Histogram
+HistoStepError          Bad histogram step (step<=0)
+HistoCountError         Bad histogram interval count (max=10000)
+
+// class List
+ListActivityError       List does not have active item
+ListEmptyError          Empty list
+
+// class Queue
+QueueRefError           Bad queue reference
+
+// WaitUntil
+EmptyWUListError        Empty WaitUntilList - can't Get() (internal error)
+
+// class Entity
+EntityRefError          Bad entity reference
+EntityIsNotScheduled    Entity not scheduled
+
+// class TStat
+TStatNotInitialized     Time statistic not initialized
+
+// class Integrator
+CantCreateIntg          Can't create new integrator in dynamic section
+CantDestroyIntg         Can't destroy integrator in dynamic section
+
+// class Status
+CantCreateStatus        Can't create new status variable in dynamic section
+CantDestroyStatus       Can't destroy status variable in dynamic section
+
+// class Facility, Store
+FacInterruptError       Seize(): Can't interrupt facility service
+ReleaseError            Release(): Facility is released by other than currently serviced process
+ReleaseNotSeized        Release(): Can't release empty facility
+EnterCapError           Enter() request exceeded the store capacity
+LeaveManyError          Leave() leaves more than currently used
+SetCapacityError        SetCapacity(): can't reduce store capacity
+SetQueueError           SetQueue(): deleted (old) queue is not empty
+
+// RANDOM
+WeibullError            Weibul(): lambda<=0.0 or alfa<=1.0
+ErlangError             Erlang(): beta<1
+NegBinError             NegBin(): q<=0 or k<=0
+NegBinMError1           NegBinM(): m<=0
+NegBinMError2           NegBinM(): p not in range 0..1
+PoissonError            Poisson(lambda): lambda<=0
+GeomError               Geom(): q<=0
+HyperGeomError1         HyperGeom(): m<=0
+HyperGeomError2         HyperGeom(): p not in range 0..1
+
+////////////////////////////////////////////////////////////////////////////
+
+// I/O
+OutFilePutError         Can't write output file
+OutFileOpenError        Output file can't be open between Init() and Run()
+CantOpenOutFile         Can't open output file
+CantCloseOutFile        Can't close output file
+
+////////////////////////////////////////////////////////////////////////////
+// ver 2.00
+AlgLoopDetected         Algebraic loop detected
+LowGreaterHigh          Parameter low>=high
+BadQntzrStep            Parameter of quantizer <= 0
+InconsistentHeader      Library and header (simlib.h) version mismatch 
+
+////////////////////////////////////////////////////////////////////////////
+SemaphoreError          Semaphore::V() -- bad call
+BadUniformParam         Uniform(l,h) -- bad arguments
+
+////////////////////////////////////////////////////////////////////////////
+//16.4.96
+StatNoRecError          Stat::MeanValue()  No record in statistics
+StatDispError           Stat::Disp()  Can't compute (n<2)
+
+
+////////////////////////////////////////////////////////////////////////////
+// AlgLoop -- Le¹ka
+AL_BadBounds            AlgLoop: t_min>=t_max
+AL_BadInitVal           AlgLoop: t0 not in  <t_min,t_max>
+AL_Diverg               AlgLoop: method not convergent
+AL_MaxCount             AlgLoop: iteration limit exceeded
+AL_NotInLoop            AlgLoop: iterative block is not in loop
+
+
+////////////////////////////////////////////////////////////////////////////
+// NumInt -- Le¹ka, 21. 3. 1997
+NI_UnknownMeth          Unknown integration method
+NI_MultDefMeth          Integration method name not unique
+NI_IlStepSize           Integration step <=0
+NI_NotSingleStep        Start-method is not single-step
+NI_NotMultiStep         Method is not multi-step
+NI_CantSetMethod        Can't switch methods in dynamic section
+NI_CantSetStarter       Can't switch start-methods in dynamic section
+
+
+////////////////////////////////////////////////////////////////////////////
+// Rline block
+RlineErr1               Rline: argument n<2
+RlineErr2               Rline: array is not sorted
+
+NoDebugErr              Library compiled without debugging support
+
+////////////////////////////////////////////////////////////////////////////
+// delay 12.8.98
+DelayTimeErr            Dealy is too small (<=MaxStep)
+
+////////////////////////////////////////////////////////////////////////////
+
+ParameterChangeErr      Parameter can not be changed during simulation run
+
+////////////////////////////////////////////////////////////////////////////
+// this should be last
+UserError               General error
+
+////////////////////////////////////////////////////////////////////////////

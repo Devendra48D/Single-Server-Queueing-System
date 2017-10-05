@@ -1,0 +1,588 @@
+
+// history of SIMLIB/C++ changes
+
+SIMLIB ChangeLog:
+
+2014-05-14
+ - change all Output methods to const
+
+2014-05-12
+ - bugfixes of some problems found by static analysis (codesonar)
+
+2014-03-26
+ - Makefile.generic corrected make test (do not ignore test segfault)
+ - print.cc bugfix of global initialization
+
+2013-12-06
+ - bug in Process::Terminate fixed (position of isCurrent after =TERMINATED)
+
+2013-11-26
+ - removed memory leak in CalendarList/ActivationRecordAllocaotr/freelist
+ - added SetOutput("") to reset to stdout
+ - CalendarQueue - change of parameter to switch from list to cq to 512
+
+2013-10-17
+ - some cleaning, comments, ...
+ - rename: HalvInt -> Bisect
+
+2011-10-30
+ - 3.02 release
+ - minor changes, git import of all known versions (1991-2011)
+ - make dist creates distribution-only archive without .git/
+
+2011-05-04
+ - minor corrections of Makefiles, simlib.h
+
+2011-02-21
+ - minor corrections
+
+2010-12-15
+ - error in Barrier: Wait() --> error in call of Activate()
+        virtual call of Activate(Time) ended in PROCESS_INTERRUPT used twice
+   reported by: Jiøí Koneèný & Jan Kolaøík (students of IMS course)
+ - added 2 testcases for Barrier
+
+2009-11-29
+ - version 3.01
+ - problem with new GCC 4.4.1 optimizations (on Ubuntu 9.10) 
+   Message: "process switching canary2 died"
+   Solved by adding volatile to all global variables in process switching code
+ - added CXXFLAGS += -Wextra to makefile (and minor corrections of code)
+
+2009-11-24
+ - version 3.00
+ - new semantics of Event: if not scheduled, terminated by default
+     Entity::Cancel() - no need to use it in non-periodic events anymore
+     Entity::Terminate inherited by Event corrected (no delete this);
+
+2009-06-01
+ - used gcc -Wshadow to correct some identifier names
+
+2009-04-09
+ - added Barrier::Wait() using Current process [inspired by Boost::thread]
+
+2008-12-17
+ - prepare version number 2.99
+ - Event::Terminate(): copy from Entity, remove delete this -- it caused 
+   crash if called by Cancel()
+   //BUG: Event:   Cancel(); Activate(....); -> segfault
+   //     if not scheduled  delete after Behavior() ends
+ - example/timeout translated into english, used to test Event::Cancel()
+
+2008-12-16
+ - Entity::Activate(t) - BUG in rescheduling fixed (report: xmacis00)
+ - release 2.98 (replaced older buggy version)
+
+2008-12-09
+ - Expression::Value() -- check for algebraic loops
+ - internal.h: new class AlgLoopProtect, new TestAndSetFlag function
+
+2008-10-29
+ - Event::Behavior() -- no need to Cancel() if not periodic event
+ - SetCalendar("list") or SetCalendar("cq") available before Init()
+   Warning: "cq" is experimental code
+
+2008-09-10
+ - corrected BUG in Random() -- gcc 4.3.1 (64 bit) found this
+   (problematic detection of 64bit mode in #if)
+
+2008-08-05:
+ - changes in Calendar queue implementation
+
+2008-03-24:
+ - minor corrections
+ - s/dprintf/Dprintf/g  --- collision with GCC 4.3 dprintf
+
+2007-12-11:
+ - added Name() implementation for many continuous classes
+ - changed Function to Function1
+
+2007-12-07:
+ - barrier.cc improvements: added method to change barrier height
+
+2007-11-20:
+ - add SIMLIB_statistics - publish some internal information
+   modified examples to use SIMLIB_statistics.Output()
+ - Makefiles for FreeBSD
+ - some examples updated to minimize rounding problems
+ - ...
+
+2007-11-18:
+ - changed Process _context structure
+ - fixed code in Process::_Run()
+ - Makefile* improvement
+
+2007-11-0x:
+ - version 2.20
+ - Process switching code reimplemented to use local variable pointers
+   This fixed the bug appearing with 32bit code and -O2 optimization in
+   examples/procesor.cc. 
+ - Added some "canary" checking using the variables
+ - Some details better commented in the code.
+
+ - Added namespace simlib3 and all SIMLIB code moved to it
+
+ - Makefile contains switch to special makefiles based on uname command
+   example: 
+     make    compile on current platform
+     make 32 compile 32bit version on 64bit platform
+     make 64 ...
+
+2007-07-17:
+ - _Print() contains duplicate va_start... (BUG in 64bit code)
+
+2004-10-18
+ - add automatic dependencies generation 'make dep'
+ - corrections for GCC 3.4
+   GCC 3.4 solved the BUG-2004-02-11
+
+2004-02-22
+ - Process::{Seize|Release|Enter|Leave|Into}(....) use reference instead of ptr
+
+2004-02-11
+ - check with g++ (GCC) 3.3.2 (Debian)
+ - WARNING: BUG: all should be compiled with -O2 (or we get runtime errors!)
+   should be investigated
+
+2004-01-25
+ - new version 2.18
+ - some updates
+
+2003-01-10
+ - delay.cc: Delay::Delay(.....=0) corrected    (reported by Ales Smrcka)
+
+2001-11-15
+ - facility.cc: Seize/Release BUG found by student (and corrected)
+ - this bugfix is incompatible -> new version 2.17
+ - corrected 2 examples for new version
+
+2001-11-06
+ - minor cleaning
+ - initialization in constructors by member initializers (not all is done)
+ - check with GCC 3.0.2
+
+2001-06-24
+ - checked with GNU C++ version 3.0 [small changes]
+
+2001-04-25
+ - Martinek: new fuzzy subsystem [v2.16.3]
+
+2001-04-05
+ - new and better fuzzy subsystem [v2.16.2]
+
+2001-02-28
+ - integrated patch for fuzzy extension from David Martinek
+
+2001-02-18
+ - Fuzzy extension integrated [status: EXPERIMENTAL]
+
+2000-11-12
+ - Makefiles for FreeBSD(kazi) and Unixware(sts)
+ - test basic examples on those two systems (with gcc 2.95.2): OK
+
+2000-11-09
+ - two optimization methods included: Hooke, sim. annealing
+   modules: opt*.cc, interface: optimize.h
+
+2000-11-03
+ - version 2.16
+
+20.1.2000
+ - corrected the behavior of Facility:: Seize/Release
+ - removed Process::Wait(Queue) 
+ - changed examples
+
+8.10.1999
+ - corrected missing return type of Input{2D|3D}::operator ==
+
+5.5.1999
+ - IsOnHeap renamed to IsAllocated and reimplemented to work correctly
+
+...14.1.1999
+ - try to innovate Store::Enter/Leave() -- fail
+ - Problem: Store::Enter() -- activation of process should be done from Leave() only
+ - store.cc,facility.cc -- OwnQueue() predicate used in code
+
+...8.11.1998
+ - corrections for egcs 1.1 (template class plist removed)
+ - make for Unixware/egcs
+
+...26.8.1998
+ - big changes in List, Calendar, ... implementation
+ - new debugging facility #define SIMLIB_DEBUG [mode]
+ - new code for cleanup SIMLIB_atexit, ... (for internal use only)
+
+...15.8.1998
+ - remove SimObject::_flag, add const char *_name (temporary solution)
+ - new detection of objects on heap (two pointers: {min_|max_}heap )
+ - Calendar on pointer ( allows scheduling before Init() == globals)
+ - many minor changes
+
+4-12.8.1998
+ - verze 2.14  ---------------------------------------
+ - novy modul delay.cc a samostatne rozhrani delay.h 
+ - run.cc --- instalace funkci na ukazatel (HOOKS)
+ - new macros: CALL_HOOK(x), DEFINE_HOOK(x), INSTALL_HOOK(x,f)
+ - simlib.h --- typ bool, t{Event|Service}Priority, drobne zmeny
+ - change of method name:  NameOf ---> Name
+ - new macro: SIMLIB_internal_error() --- print message, file, line
+ - cleaning, new comments
+
+12.6.1998
+- upravy Makefile pro Linux a FreeBSD
+- opravy chyb zjistene prekladacem GCC 2.8, egcs
+
+10.12.1997
+- pridano Print(Value3D), Print(double-1-2-3)
+- Integrator3D operator = (Input3D)|(Value3D) - jeste doplnit do 2D
+- problem s ne-inline funkci v *.h a dyn. knihovnou
+
+
+6.12.97
+- modul simlib2D a priklad
+- pridan blok fce Sqr x^2
+
+11.97
+- PP - modul simlib3D a priklady (druzice*.cc)
+
+97
+- Leska - doplneno prepinani num metod a nove num metody
+
+8.5.96
+- BC 3.1 vypnuta optimalizace -Oi (problemy v NUMINT!!!)
+
+30.4.96
+- nove num. metody (Leska) -- BETA
+- novy podadresar NUMINT
+
+16.4.96
+- barrier - oprava Break!!!
+- Stat, TStat, Histo + nove metody, zapouzdreni (n je problem!!) 
+
+13.4.96
+- doplnìna tøída Expression (blok s 1 vstupem -- identita)
+- doplnìn model TEST13/schema[2].cpp -- hierarchie!
+
+10.4.96
+- Histogram::Histogram(......count=10)
+
+4.4.96
+- doplnìny funkce Tan, ASin, ACos, ATan, ATan2, Log10, Sign, Pow
+- dprintf2
+
+27.3.96
+- oprava modulu WaitUntil: 
+    problem pri WaitUntil(TRUE) - vyjme z WUList a tim zrusi aktivitu!
+    (opraveno nastavenim na First -- testuje znova ostatni = OK)
+    (mo¾ný problém: zacyklení !!!???)
+
+26.3.96
+- modul Calendar -- upraveno tak, aby priorita procesu byla v EvNotice
+  + testovaci modul
+
+22.3.96
+- odstranena chyba Entity::_SPrio neinicializovano if Wait(Queue)
+- Uniform -- pridana kontrola argumentu
+
+19.3.96
+- interní globální symboly pøejmenovány SIMLIB_*
+- upraveno pod EasyWin -- Windows 16bit aplikace
+  problémy: nastavit Target W16, velikost zásobníku je¹tì v TEST.DEF
+
+11.3.96
+- doplnìno: aContiBlock{1,2} do hierarchie, kontrola smyèek
+- opravena chyba _Max
+- SIMLIB.H pøelo¾eno do angliètiny
+- aliasy Lim Limitation atd...
+
+
+19.2.96
+- verze 2.1
+- doplneno Semaphore, Barrier
+
+1.12.95
+- Boolean ---> Bool
+- char *NameOf() ---> const char * NameOf()
+
+24.11.95
+- PROCESS.CPP - oprava pro DJGPP 2.0 (asm), testy
+
+23.11.95
+- random2.cpp - oprava v Poisson: double -> int (odhalilo GNU C)
+
+11.11.95
+- zru¹eno OLDOUT.CPP
+- upraveny pøíklady
+- pøeklad pro BC3.1, BC4.0 a BC4.5 (pro BC4.0 je zbyteèné)
+- v2.03 rev.951111 (na síti)
+
+24.10.95
+- random2.cpp - úprava Poisson()
+
+5.6.95
+- Calendar::Clear(destroy) upraveno aby se pouze vyjmulo a neru¹ilo
+- zru¹eno ERROR.H a DEBUG.H  ---- pøesun do INTERNAL.H
+
+24.5.95
+- funkce Print, _Print, ErrPrint: doplnìno fflush
+
+14.5.95
+- tøída Sampler - doplnìno SetStep(dt) a GetStep()
+
+8.3.95
+- v.2.02 rev.950308 (na síti)
+- doplnìny funkce Exp(x) a Ln(x)
+
+22.1.95
+- upravy v simlib.h  #pragma....
+
+4.12.94
+- pøeneseno pod Linux + Makefile + testy
+
+12.9.94
+- v SIMLIB.H doplnìno #pragma option -a- -K-
+
+10.9.94
+- doplnìna funkce Error(const char *fmt, ...)
+-
+
+xx.06.94
+- test numint2.cpp - Eulerova metoda
+
+16.5.94
+- pøidán implicitní konstruktor Integrator vstup = 0
+
+3.5.94
+- name.cpp - zvý¹en limit poètu jmen v tabulce z 200 na 1000 (prozatím)
+- upraven simlib.h: #ifdef __MSDOS__ atd.
+- PROBLÉM: #pragma option -Vo  |  problémy s konzistencí !!!!!!!!!!!!
+
+19.4.94
+- oprava v modulu STORE.CPP  Store::Leave    
+     p->Out() zru¹í aktivitu ==> chyba!   (thanks to Mr. Gráf)
+
+25.3.94
+- upraveno pro GNU C++ pro DOS/386  (#ifdef)
+- opraven modul OldOut --- OutInt --> OutShort (kompatibilita 16/32bit)
+- problémy s GNU C++ (prázdné metody, Time, ...)
+- opravena chyba Frict::Value()  zámìna low <-> high
+
+7.1.94
+- chyba v implementaci Time -- operace s double jsou chybné
+- úprava hierarchie Double <---- SimTime
+    a oprava Input, nové operátory Double*double, Double*Double
+    a vznikla nová chyba -- kolize operátorù !!!!!!!!!!!!!!!!!!!!!
+
+============================================================================
+
+1.12.93
+- !!! objevena chyba ve funkci Eval u v¹ech stavových blokù
+   (postupnì opravováno)
+
+29.11.93
+- úprava tøídy Condition (testovací model MICEK.CPP)
+- doplnìny zakázané operace operator= a copy constructor pro tø. SimObject
+
+28.11.93
+- doplnìn test konzistence SIMLIB.H a SIMLIB.LIB
+- doplnìna tøída Double
+- nalezen problém pøi integraci  Status x(Sin(Time)); hlásí:
+      Warning: nelze dodr¾et zadanou pøesnost
+    výsledky jsou ale v toleranci...
+- pøejmenována tøída Variable na ReferenceToDouble
+- upravena tøída Input aby pracovala s objekty Double
+- doplnìn typedef Input Expression;
+- doplnìna tøída Function (?)
+
+27.11.93
+ problémy s promìnnými double v obj. výrazech - pou¾ívat class Parameter
+ doplnìna tøída Parameter (?)
+ drobné úpravy v souvislosti s ladìním modelù
+ doplnìna tøída SimTime a objekty Time, StartTime, EndTime, NextTime
+  upravena tøída Input aby pracovala s objekty SimTime
+
+25.11.93
+ chyba v Facility::Clear() --- volá Q?->Clear() i pro zru¹enou frontu!!!
+       toté¾ v Store::Clear() - opraveno: nuluje jen vlastní fronty.
+ chyba nalezena: chybí pøetypování  delete (EventNotice*)e->_Ev;
+                 nevyvolal se destruktor...
+ 
+24.11.93
+ chyba pøi provádìní procesu - Wait ?????!!!! hledání neúspì¹né...
+ EXTVARS.H pøejmenováno na INTERNAL.H + doplnìny prototypy funkcí
+
+28.10.93
+ kalendáø zru¹en ze SIMLIB.H
+
+29.9.93
+ doplnìny metody SetInput
+ zmìna tøídy Graph - automaticky sbírá data
+
+25.8.93
+ doplnìn modul DEBUG, funkce DebugOn/OFF, a pøíznak v RUN.CPP
+ doplnìno Rline, Sqrt
+
+
+23.8.93.
+ drobné úpravy simlib.h (NULL--,anglicky...)
+
+22.7.93.
+ drobné úpravy name.cpp (doplnìní const)
+
+
+
+
+
+
+
+----------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////
+----------------------------------------------------------------------------
+OLD:
+
+<17.10.1991
+-----------
+ - podminky,stav. prom. a integratory upraveny - bez poli
+ - doplnena promenna _Phase
+
+13.11.1991
+----------
+ - doplneno NameOf u vsech trid tak aby jednoznacne identifikovalo objekt
+ - rada metod prevedena na virtualni
+ - Facility
+ - Store
+ - doplneny statistiky do seznamu
+ - doplnen WaitUntil
+
+14.11.91
+--------
+ - modul PRINT
+ - moduly _DYNAMIC _COND
+ - upravy tisku
+ - konstruktory bez parametru
+
+15.11.91
+--------
+ - kazdy objekt ma priznak IsOnHeap()
+ - seznamy rusici podobjekty testuji IsOnHeap() a potom teprve delete
+ - Object definuje svoje operatory new a delete s kontrolou
+
+16.11.91
+--------
+ - dodefinovani konstruktoru
+ - metody pro definici/zmenu parametru objektu
+ - Entity maji cislo, je znam pocet entit v modelu a pocet vytvorenych
+
+17.11.91
+--------
+ - nalezena chyba !!!! a opravena
+    BC++ v pripade ze nezna destruktor, nevola nic a provede delete !!!
+      class EventNotice;
+      ...
+      EventNotice *_Ev;
+      ...
+         delete _Ev; // nevola destruktor - nezna jej ale nehlasi nic!!!
+
+ - NameOf - zruseny inline v simlib.h
+
+20.11
+-----
+ - doplneno Histogram::operator [] (unsigned i) 
+ - prejmenovani List::Card() na List::Length()
+
+25.11
+-----
+ - opravena chyba v RUN fce Run() spusteni jedne udalosti navic!!!!
+   (opraveno prozatimne !!!)
+
+26.11
+ - doplnen modul QUEUE
+
+27.11
+-----
+ - opravy v RAND.CPP
+ - modul OUTPUT - tisky do ramecku
+ - opravena chyba v Store::Leave()-List::XXXX Queue
+ - opraveno List::Clear()
+
+29.11.
+------
+  - upraven Histogram::operator ()  double=>int
+
+30.11.
+------
+  - drobna optimalizace Random() asi 10%
+  - testovani
+  - modul NAME - NameOf pro vìt¹inu tøíd
+
+
+01.12.91
+--------
+  - upraveno ERRORS.DOC + ERROR.CPP - InternalError,...
+  - drobné opravy
+
+05.12.91
+--------
+  - korekce dokumentace
+  - opravena chyba v FACILITY.CPP  Release()-vybere podle priority
+      obsluhy z obou front
+  - doplòena funkce SetOutput(char*)
+
+06.12.91
+--------
+  - opraven Store - prohlizeni fronty
+
+09.12.91
+--------
+  - hledání záludné chyby v INTG.CPP (neúspì¹né)
+  - doplnìní Entity::Terminate a Cancel
+
+11.12.91
+--------
+  - opravena chyba v INTG.CPP
+  - opraveno Facility,Store : public Object {
+  - doplnìn modul FUN.CPP (funkce a tøídy pro spojitou simulaci)
+
+13.12.91
+--------
+  - doplnen modul OLDOUT.CPP (funkce a tridy pro vystup pro OE)
+  - opraveny destruktory Integrator,Status,Condition
+  - doplnìny testy mezí pro MinStep, MaxStep a RelativeError
+  - *** poznámka pro u¾ivatele TC++ v1.00:
+        je tøeba nadefinovat funkci
+        void operator delete(void *p) { free(p); }
+  - korekce v dokumentaci
+
+14-15.12.91
+-----------
+  - doplnìny funkce ContractStep
+  - testování - pøíklady
+  - **** POZOR!!! zkontrolovat výpoèet smìrodat. odchylky !!!
+
+
+DEADLINE VERSION 1.0
+--------------------
+
+VERSION 1.01
+------------
+15.4.92
+-------
+  - prejmenovano class Object na class SimObject
+
+16.4.92
+-------
+  - novy modul NUMINTG
+  - nova funkce SetMethod() - nastaveni integracni metody
+
+8.5.92
+------
+  - zmena funkce OpenOutputFile:
+     implicitni jmeno vyst. souboru podle jmena modelu (*.exe)
+
+23.11.92
+--------
+  - doplneny prostredky pro praci s Petriho sitemi
+    (modul RUN)
+
+----------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////*/

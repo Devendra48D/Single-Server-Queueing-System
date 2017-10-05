@@ -1,10 +1,8 @@
 /* External definitions for single-server queueing system. */
-#include <iostream>
-#include <cstdlib>
-#include <cmath>
-#include <fstream>
+
+#include <stdio.h>
+#include <math.h>
 #include "lcgrand.h"  /* Header file for random-number generator. */
-using namespace std;
 
 #define Q_LIMIT 100  /* Limit on queue length. */
 #define BUSY      1  /* Mnemonics for server's being busy */
@@ -15,6 +13,7 @@ int   next_event_type, num_custs_delayed, num_delays_required, num_events,
 float area_num_in_q, area_server_status, mean_interarrival, mean_service,
       sim_time, time_arrival[Q_LIMIT + 1], time_last_event, time_next_event[3],
       total_of_delays;
+FILE  *infile, *outfile;
 
 void  initialize(void);
 void  timing(void);
@@ -24,26 +23,25 @@ void  report(void);
 void  update_time_avg_stats(void);
 float expon(float mean);
 
-ifstream input("input.txt");
-ofstream output("output2.txt");    
 
-
-int main(){  /* Main function. */
+main(){  /* Main function. */
 
     /* Open input and output files. */
+    infile  = fopen("mm1.in",  "r");
+    outfile = fopen("mm1.out", "w");
 
     /* Specify the number of events for the timing function. */
     num_events = 2;
 
     /* Read input parameters. */
-    input>>mean_interarrival>>mean_service>>num_delays_required;
+    fscanf(infile, "%f %f %d", &mean_interarrival, &mean_service,
+           &num_delays_required);
 
-    
     /* Write report heading and input parameters. */
-    output<<"Single-server queueing system\n\n";
-    output<<"Mean interarrival time "<< mean_interarrival<<" minutes\n\n";
-    output<<"Mean service time "<< mean_service<<" minutes\n\n";
-    output<<"Number of customers "<< num_delays_required<<" \n\n";
+    fprintf(outfile, "Single-server queueing system\n\n");
+    fprintf(outfile, "Mean interarrival time%11.3f minutes\n\n", mean_interarrival);
+    fprintf(outfile, "Mean service time%16.3f minutes\n\n", mean_service);
+    fprintf(outfile, "Number of customers%14d\n\n", num_delays_required);
 
     /* Initialize the simulation. */
     initialize();
@@ -71,8 +69,8 @@ int main(){  /* Main function. */
     /* Invoke the report generator and end the simulation. */
     report();
 
-    input.close();
-    output.close();
+    fclose(infile);
+    fclose(outfile);
 
     return 0;
 }
@@ -119,7 +117,7 @@ void timing(void){  /* Timing function. */
     if (next_event_type == 0) {
 
         /* The event list is empty, so stop the simulation. */
-        output<<"\nEvent list empty at time " <<sim_time <<" \n";
+        fprintf(outfile, "\nEvent list empty at time %f", sim_time);
         exit(1);
     }
 
@@ -145,8 +143,8 @@ void arrive(void){  /* Arrival event function. */
         if (num_in_q > Q_LIMIT) {
 
             /* The queue has overflowed, so stop the simulation. */
-           output<<"\nOverflow of the array time_arrival at";
-           output<<" time "<<sim_time<<" \n";
+            fprintf(outfile, "\nOverflow of the array time_arrival at");
+            fprintf(outfile, " time %f", sim_time);
             exit(2);
         }
 
@@ -212,10 +210,10 @@ void depart(void){  /* Departure event function. */
 void report(void){  /* Report generator function. */
 
     /* Compute and write estimates of desired measures of performance. */
-    output<<"\n\nAverage delay in queue "<< total_of_delays/num_custs_delayed<<" minutes\n\n";
-    output<<"Average number in queue "<<area_num_in_q/sim_time<<" \n\n";
-    output<<"Server utilization "<< area_server_status/sim_time<<" \n\n";
-    output<<"Time simulation ended "<<sim_time<<" minutes";
+    fprintf(outfile, "\n\nAverage delay in queue%11.3f minutes\n\n", total_of_delays / num_custs_delayed);
+    fprintf(outfile, "Average number in queue%10.3f\n\n", area_num_in_q / sim_time);
+    fprintf(outfile, "Server utilization%15.3f\n\n", area_server_status / sim_time);
+    fprintf(outfile, "Time simulation ended%12.3f minutes", sim_time);
 }
 
 

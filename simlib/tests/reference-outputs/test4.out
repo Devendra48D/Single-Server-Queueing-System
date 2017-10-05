@@ -1,0 +1,9 @@
+Test4:
+Start time = 0
+T=0 Event created
+T=0 Event behavior
+End time = 1e+30
+Start time = 10
+T=10 Event created
+T=10 Event behavior
+End time = 1e+30

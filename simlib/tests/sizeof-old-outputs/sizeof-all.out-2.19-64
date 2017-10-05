@@ -1,0 +1,64 @@
+Simlib internals
+----------------
+
+SIMLIB Version  = 2.19
+SIMLIB System   = Linux
+SIMLIB Compiler = GNU C++
+SIMLIB MinTime = 0
+SIMLIB MaxTime = 1e+30
+SIMLIB default MinStep = 1e-10
+SIMLIB default MaxStep = 1
+SIMLIB default AbsoluteError = 0
+SIMLIB default RelativeError = 0.001
+SIMLIB priority = 0 .. 255, (default = 0)
+
+  sizeof(SimObject) = 24
+  sizeof(Link) = 48,  parent = SimObject
+  sizeof(Entity) = 88,  parent = Link
+  sizeof(Process) = 312,  parent = Entity
+  sizeof(Event) = 88,  parent = Entity
+  sizeof(Sampler) = 128,  parent = Event
+  sizeof(Stat) = 64,  parent = SimObject
+  sizeof(TStat) = 88,  parent = SimObject
+  sizeof(List) = 56,  parent = SimObject
+  sizeof(Queue) = 208,  parent = List
+  sizeof(Histogram) = 120,  parent = SimObject
+  sizeof(Facility) = 136,  parent = SimObject
+  sizeof(Store) = 136,  parent = SimObject
+  sizeof(aBlock) = 24,  parent = SimObject
+  sizeof(aContiBlock) = 24,  parent = aBlock
+  sizeof(Constant) = 32,  parent = aContiBlock
+  sizeof(Variable) = 32,  parent = aContiBlock
+  sizeof(Parameter) = 32,  parent = aContiBlock
+  sizeof(Input) = 8
+  sizeof(aContiBlock1) = 32,  parent = aContiBlock
+  sizeof(Expression) = 32,  parent = aContiBlock1
+  sizeof(aContiBlock2) = 40,  parent = aContiBlock
+  sizeof(aContiBlock3) = 48,  parent = aContiBlock
+  sizeof(IntegrationMethod) = 48
+  sizeof(SingleStepMethod) = 56,  parent = IntegrationMethod
+  sizeof(MultiStepMethod) = 64,  parent = IntegrationMethod
+  sizeof(StatusMethod) = 80,  parent = SingleStepMethod
+  sizeof(Integrator) = 80,  parent = aContiBlock
+  sizeof(Status) = 72,  parent = aContiBlock1
+  sizeof(Hyst) = 112,  parent = Status
+  sizeof(Blash) = 96,  parent = Status
+  sizeof(Relay) = 120,  parent = Status
+  sizeof(Function) = 40,  parent = aContiBlock1
+  sizeof(Function2) = 48,  parent = aContiBlock2
+  sizeof(aCondition) = 32,  parent = aBlock
+  sizeof(Condition) = 48,  parent = aCondition
+  sizeof(ConditionUp) = 48,  parent = Condition
+  sizeof(ConditionDown) = 48,  parent = Condition
+  sizeof(Lim) = 56,  parent = aContiBlock1
+  sizeof(Insv) = 64,  parent = aContiBlock1
+  sizeof(Qntzr) = 40,  parent = aContiBlock1
+  sizeof(Frict) = 56,  parent = aContiBlock1
+  sizeof(Rline) = 56,  parent = aContiBlock1
+  sizeof(AlgLoop) = 88,  parent = aContiBlock1
+  sizeof(Iterations) = 88,  parent = AlgLoop
+  sizeof(Halvint) = 88,  parent = AlgLoop
+  sizeof(RegulaFalsi) = 96,  parent = AlgLoop
+  sizeof(Newton) = 104,  parent = AlgLoop
+  sizeof(Semaphore) = 232,  parent = SimObject
+  sizeof(Barrier) = 40,  parent = SimObject

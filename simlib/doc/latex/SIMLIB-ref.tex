@@ -1,0 +1,1731 @@
+% SIMLIB-ref.tex
+
+%% TODO: doplnit, upravit
+
+\documentclass[a4paper]{article}
+\usepackage{czech}                 % Èeská sazba
+\usepackage{epsfig}                % obrázky
+ 
+\begin{document}
+
+\begin{titlepage}
+\hrule
+\vfill
+\begin{center}
+
+{\Huge\bf Struèná referenèní pøíruèka SIMLIB \\}
+
+\bigskip            {Petr Peringer \\}
+
+\bigskip                \today
+
+\end{center}
+\vfill
+\hrule
+\end{titlepage}
+
+
+
+\section{Úvod}
+
+Tento  text shrnuje  struèné informace  o standardních  tøídách,
+objektech a funkcích obsa¾ených v SIMLIB. Jsou vynechány v¹echny
+nepodstatné detaily implementace - aby se popis nemusel s dal¹ím
+vývojem knihovny pøíli¹ mìnit. Proto¾e jde o pøíruèku, pou¾íváme
+abecedního øazení polo¾ek.
+
+
+\section{Hierarchie tøíd SIMLIB}
+
+(zjednodu¹eno)
+
+\begin{verbatim}
+   SimObject
+       aBlock
+           Frict
+           Graph
+           Insv
+           Integrator
+           Lim
+           Qntzr
+           Status
+               Blash
+               Hyst
+               Relay
+       aCondition
+           BoolCondition
+       aQueue
+           Queue
+       Entity
+           Process
+           Event
+       Facility
+       Histogram
+       Stat
+       Store
+       TStat
+       Variable
+\end{verbatim}
+
+
+\section{Tøída aBlock}
+
+Bázovou tøídou pro v¹echny tøídy objektù se spojitým chováním a jedním
+výstupem je abstraktní tøída aBlock. Tato tøída definuje
+podstatné spoleèné vlastnosti pro v¹echny spojité bloky, pøedev¹ím
+získání hodnoty bloku metodou Value. Deklaruje té¾ virtuální
+metody pro vyhodnocení bloku. Bloky lze navzájem propojovat.
+
+Value
+  double Value()=0;
+
+Metoda Value je urèena pro získání hodnoty výstupu bloku.
+Je definována pro v¹echny tøídy odvozené ze tøídy aBlock.
+
+
+\section{Tøída aCondition}
+
+Tato tøída je abstraktní bázovou tøídou pro v¹echny tøídy, popisující
+stavové podmínky. Definuje základní operace, nutné pro detekci zmìn
+stavových podmínek a pro vyvolání pøíslu¹ných stavových událostí.
+
+\section{Tøída aQueue}
+
+Tøída aQueue pøedstavuje abstraktní frontu objektù. Slou¾í
+jako bázová tøída pro fronty s rùznì definovaným uspoøádáním. Umo¾òuje
+uchovávání objektù tøíd, odvozených z tøídy Entity. Platí
+pravidlo, ¾e jeden objekt mù¾e být v jednom okam¾iku nejvý¹e v jedné
+frontì.
+
+Clear
+
+  virtual void Clear();
+
+Tato metoda zru¹í v¹echny objekty ve frontì a inicializuje frontu.
+
+Empty
+
+  int Empty();
+
+Metoda Empty testuje, je-li fronta prázdná.
+
+Get
+
+  virtual Entity *Get(Entity *e)=0;
+
+  virtual Entity *Get()=0;
+
+Metoda Get vyjme zadaný, resp. frontou definovaný (obvykle
+první) prvek z fronty.
+
+GetFirst,GetLast
+
+  Entity *GetFirst();
+
+  Entity *GetLast();
+
+Metody GetFirst a GetLast vyjmou první, resp. poslední
+prvek z fronty.
+
+Insert
+
+  virtual void Insert(Entity *e)=0;
+
+Metoda Insert zaøadí prvek e do fronty podle uspoøádání,
+které definuje fronta. Tato metoda je nejèastìji pou¾ívána pro vstup
+objektu do fronty.
+
+Length
+
+  unsigned Length();
+
+Metoda Length vrací poèet objektù, zaøazených ve frontì.
+
+\section{Tøída Blash - vùle v pøevodech}
+
+Tato tøída popisuje stavové bloky se spojitým chováním a charakteristikou,
+která je uvedena na obrázku:
+
+Konstruktor
+
+  Blash(Input x, double p1, double p2, double tga);
+
+Konstruktor vytvoøí blok a inicializuje jeho parametry. Parametr
+tga je tangentou úhlu alfa.
+
+Value
+
+  double Value()=0;
+
+Metoda Value vrací hodnotu výstupu bloku, tj. stav bloku.
+
+
+\section{Tøída BoolCondition - stavová podmínka}
+
+Tato abstraktní tøída popisuje chování stavových podmínek, které
+reagují (voláním metody Action) na zmìnu hodnoty vstupu
+(metoda Test), a to buï z hodnoty nula (FALSE) na hodnotu
+rùznou od nuly (TRUE), nebo obrácenì. Pro detekci zmìny podmínky
+je pou¾ita metoda pùlení intervalu. Metody Test a Action
+nejsou v této tøídì definovány, tøída se pou¾ívá jako bázová
+pro u¾ivatelské tøídy, které tyto metody definují.
+
+Action
+
+  virtual void Action()=0;
+
+Metoda popisuje reakci na zmìnu pravdivostní hodnoty podmínky. Tato
+metoda musí být definována v odvozené tøídì.
+
+
+Mode
+
+  enum DetectionMode { DetectUP, DetectDOWN, DetectALL }
+
+  void Mode(DetectionMode m);
+
+
+Metoda Mode umo¾òuje rozli¹ení rùzných pøípadù zmìny podmínky.
+DetectUP zpùsobí detekci zmìny pouze z hodnoty FALSE na
+hodnotu TRUE, DetectDOWN  detekuje opaènou zmìnu. DetectALL
+zapne detekci obou zmìn.
+
+
+Test
+
+  virtual int Test()=0;
+
+
+Metoda Test slou¾í pro zápis vstupu podmínky. Vyhodnocuje
+se prùbì¾nì pøi simulaci a zmìna pravdivostní hodnoty zpùsobí vyvolání
+metody Action. Tato metoda musí být definována v  odvozené
+tøídì.
+
+Pøíklad
+
+Integrator i1(x);
+class MyCondition : BoolCondition {
+  int Test()    { return i1.Value()>10; }
+  void Action() { x = -x.Value(); }
+public:
+  MyCondition() { Mode(DetectUP); }
+};
+
+\section{Tøída Entity}
+
+Tato tøída je abstraktní bázovou tøídou pro v¹echny prvky modelu,
+které mají popsáno svoje chování událostmi nebo procesy. Definuje
+chování spoleèné událostem i procesùm, pøedev¹ím jde o zaøazování
+do front a plánování akcí. Entita mù¾e být zaøazena pouze v jedné
+frontì (nemù¾e být na dvou místech souèasnì).
+
+
+Activate
+
+  virtual void Activate();
+
+  virtual void Activate(double t);
+
+
+Plánuje aktivaci entity na èas t (implicitnì ihned).
+
+
+Head
+
+  aQueue *Head();
+
+
+Vrací ukazatel na frontu, ve které je objekt zaøazen.
+
+
+Idle
+
+  int Idle();
+
+
+Test, je-li naplánována reaktivace entity. V pøípadì, ¾e není aktivaèní
+záznam entity v kalendáøi, vrací nenulovou hodnotu (TRUE). To znamená,
+¾e entita èeká v nìkteré frontì, nebo èeká na WaitUntil
+podmínku.
+
+
+Into
+
+  void Into(aQueue *Q);
+
+
+Zaøadí objekt do fronty Q, uspoøádání je definováno frontou.
+
+
+Out
+
+  void Out();
+
+
+Vyjme prvek z fronty, je-li v nìkteré zaøazen.
+
+
+Passivate
+
+  virtual void Passivate();
+
+
+Deaktivuje entitu, tj. vyøadí její aktivaèní záznam z kalendáøe.
+
+
+Priority
+
+  tPriority Priority;
+
+
+Priorita entity. Pou¾ívá se pøi øe¹ení problémù s plánováním více
+entit na jeden a tentý¾ okam¾ik. Typ tPriority má rozsah od nuly
+do 255. Nejni¾¹í priorita je nulová.
+
+\section{Tøída Event}
+
+Tato abstraktní tøída popisuje vlastnosti entit, jejich¾ chování
+v èase je popsáno událostmi (tj. akcemi, bìhem jejich¾ provádìní
+nedochází ke zmìnì modelového èasu - nelze je pøeru¹it). Události
+jsou ekvivalentní procesùm, které nepou¾ívají pøeru¹ovací pøíkazy.
+Jejich implementace je efektivnìj¹í ne¾ u procesù. Pou¾ívají se pøedev¹ím
+pøi periodickém sledování stavu modelu, jako generátory objektù nebo
+pro modelování jednorázových dìjù. Dìdí vlastnosti tøídy Entity.
+
+
+Activate
+
+  virtual void Activate();
+
+  virtual void Activate(double t);
+
+
+Plánuje aktivaci události na èas t (implicitnì ihned). Aktivací
+události se rozumí provedení metody Behavior.
+
+
+Behavior
+
+  virtual void Behavior()=0;
+
+
+Výkonná funkce, definující akce události. U¾ivatel ji musí definovat
+v odvozené tøídì. Tato funkce je nepøeru¹itelná.
+
+
+Konstruktor
+
+\begin{verbatim}
+  Event(tPriority p=DEFAULT_PRIORITY);
+\end{verbatim}
+
+
+Vytvoøí událost se zadanou prioritou. Implicitní priorita události
+je rovna nule (nejni¾¹í).
+
+
+Priority
+
+  tPriority Priority;
+
+
+Priorita události. Pou¾ívá se pøi øe¹ení problémù s plánováním více
+událostí na jeden a tentý¾ okam¾ik. Typ tPriority má rozsah
+od nuly do 255. Nejni¾¹í priorita je nulová.
+
+
+Schedule
+
+  void Schedule(double t);
+
+
+Plánuje aktivaci události na dobu t. Je ekvivalentní metodì
+Activate(t).
+
+
+Terminate
+
+  void Terminate();
+
+
+Zru¹ení aktivní události.
+
+\section{Tøída Facility}
+
+Tato tøída pøedstavuje zaøízení s výluèným pøístupem. To znamená,
+¾e toto zaøízení smí být obsazeno pouze jednou entitou. Zaøízení
+má dvì fronty - frontu vstupní Q1 a frontu pøeru¹ené obsluhy
+Q2.
+
+
+Busy
+
+  int Busy();
+
+
+Metoda vrací nenulovou hodnotu (TRUE), je-li zaøízení obsazeno.
+
+
+Clear
+
+  virtual void Clear();
+
+
+Inicializace zaøízení. Zru¹í entity ve frontách a fronty, pokud byly
+vytvoøeny dynamicky zaøízením.
+
+
+in - entita v obsluze
+
+  Entity *in;
+
+
+Obsahuje ukazatel na entitu právì obsluhovanou zaøízením nebo NULL
+v pøípadì, ¾e zaøízení není obsazeno.
+
+
+Konstruktor,Destruktor
+
+  Facility();
+
+  Facility(char *name);
+
+  Facility(Queue *queue1);
+
+  Facility(char *name, Queue *Queue1);
+
+  virtual ~Facility();
+
+
+Inicializuje zaøízení jménem name, je mo¾né explicitnì zadat
+vstupní frontu. Implicitnì je zaøízení volné.
+
+
+Q1,Q2 - fronty u zaøízení
+
+  Queue *Q1;
+
+  Queue *Q2;
+
+
+Vstupní fronta a fronta entit, jejich¾ obsluha byla pøeru¹ena.
+
+
+QueueLen
+
+  unsigned QueueLen();
+
+
+Délka vstupní fronty zaøízení. Tento údaj je pou¾itelný pro omezení
+délky fronty.
+
+
+QueueIn
+
+  virtual void QueueIn(Entity *e, tPriority sp);
+
+
+Metoda QueueIn zaøadí entitu e do vstupní fronty
+Q1 podle priorit v tomto poøadí:
+
+ (1) priorita obsluhy (nejvìt¹í je první)
+ (2) priorita entity
+ (3) FIFO
+
+
+Podle stejných pravidel je øazena i fronta Q2.
+
+
+Release
+
+  virtual void Release(Entity *e);
+
+
+Uvolní zaøízení. Je chybou, provede-li se uvolnìní neobsazeného zaøízení.
+Je chybou, uvolòuje-li zaøízení jiná entita ne¾ ta, která je obsadila.
+
+
+Seize
+
+  virtual void Seize(Entity *e, tPriority sp);
+
+
+Obsazení zaøízení entitou e s prioritou obsluhy sp.
+Je-li zaøízení ji¾ obsazeno entitou s men¹í prioritou obsluhy ne¾
+je sp, potom pøeru¹í obsluhu této entity, zaøadí ji do fronty
+pøeru¹ené obsluhy a obsadí zaøízení entitou e. Jinak vstoupí
+do vstupní fronty zaøízení metodou QueueIn. Entity, èekající
+ve frontì pøeru¹ených mají pøi stejné prioritì obsluhy pøednost pøed
+entitami, èekajícími ve vstupní frontì. Uspoøádání front je popsáno
+v popisu metody QueueIn.
+
+
+tstat - statistika zaøízení
+
+  TStat tstat;
+
+
+Tato èasová statistika umo¾òuje výpoèet prùmìrného vyu¾ití zaøízení.
+
+
+SetName, SetQueue
+
+  void SetName(char *name);
+
+  void SetQueue(Queue *queue1);
+
+
+Explicitní nastavení jména, resp. vstupní fronty. Pou¾ívá se pøedev¹ím
+pøi inicializaci polí zaøízení.
+
+
+Output
+
+  virtual void Output();
+
+
+Operace tisku stavu a statistik zaøízení vèetnì statistik front.
+
+
+
+\section{Tøída Frict - tøení}
+
+Tøída Frict implementuje nestavové bloky s charakteristikou tøení:
+
+
+Konstruktor
+
+  Frict(Input x, double r1, double r2, double tga);
+
+
+
+Value
+
+  double Value()=0;
+
+
+Metoda Value vrací hodnotu výstupu bloku.
+
+\section{Tøída Graph}
+
+Tato tøída je urèena pro záznam hodnot získaných pøi spojité simulaci
+do výstupního souboru. Výstup hodnot probíhá automaticky, soubor
+musí být otevøen voláním funkce OpenOutputFile v popisu
+experimentu. Tento soubor lze po skonèení simulaèních experimentù
+prohlí¾et výstupním editorem (program OE).
+
+
+Konstruktor
+
+  Graph(char *name, Input x, double step);
+
+
+Parametrem konstruktoru je jméno grafu, tj. jméno ukládaného prùbìhu,
+vstupní objekt, jeho¾ hodnota bude zaznamenávána a interval ukládání
+vstupních hodnot do souboru.
+
+Pøíklad:
+
+Integrator Teplota(x,20);
+Graph G("Teplota",Teplota,0.01);
+
+int main()
+{
+  OpenOutputFile("ZAZNAM.OUT");
+  Init(0,10);
+  Run();
+}
+
+\section{Tøída Histogram}
+
+Objekty tøídy Histogram sledují èetnost vstupních hodnot
+v zadaných intervalech. Histogram má tyto parametry:
+
+
+
+name       jméno histogramu
+
+low        dolní mez = zaèátek prvního intervalu
+
+step       krok = ¹íøka intervalù
+
+count      poèet intervalù
+
+
+
+
+Kromì toho se sledují hodnoty, které jsou men¹í, ne¾ dolní mez prvního
+intervalu a vìt¹í, ne¾ horní mez posledního intervalu. Situaci ilustruje
+obrázek:
+
+
+Clear
+
+  virtual void Clear();
+
+
+Inicializace histogramu.
+
+
+Konstruktor,Destruktor
+
+  Histogram();
+
+  Histogram(double low, double step, int count);
+
+  Histogram(char *name, double low, double step, int count);
+
+  ~Histogram();
+
+
+Vytvoøení a ru¹ení histogramu se zadanými parametry.
+
+
+operator () - záznam hodnoty
+
+  void operator ()(double x);
+
+
+Tato operace zaznamená hodnotu x do histogramu.
+
+
+operator [] - èetnost v intervalu
+
+  unsigned operator [](unsigned i);
+
+
+Tato operace vrací èetnost v i-tém intervalu histogramu.
+Je-li index i mimo meze vrací nulu.
+
+
+Output
+
+  virtual void Output();
+
+
+Operace tisku histogramu do standardního textového výstupu. Tiskne
+se formou tabulky.
+
+Pøíklad:
+
+Histogram H("Histogram1",0,0.1,100);
+double x;
+  ...
+  H(x);           // záznam hodnoty promìnné x
+  H(5);           // záznam hodnoty 5
+  ...
+  H.Output();     // tisk histogramu H
+
+
+
+\section{Tøída Hyst - hystereze}
+
+Hystereze je nelinearita s vnitøním stavem. Charakteristika hystereze
+je na obrázku:
+
+
+Konstruktor
+
+  Hyst(Input x, double p1, double p2, double y1, double y2, double  tga);
+
+
+Vytvoøí a inicializuje parametry bloku.
+
+
+Value
+
+  double Value()=0;
+
+
+Metoda Value vrací hodnotu výstupu bloku.
+
+Pøíklad:
+
+Hyst H(x,-1,1,-5,5,3.5);
+  ...
+  printf("výstup bloku hystereze =%g\n",H.Value());
+
+
+
+\section{Tøída Input}
+
+Objekty této tøídy se pou¾ívají jako vstupy spojitých blokù. Objekt
+reprezentuje odkaz na spojitý blok.
+
+
+Konstruktor
+
+  Input(aBlock *b);
+
+
+Inicializuje objekt tøídy Input odkazem na blok, zadaný jako parametr.
+
+
+Value
+
+  double Value();
+
+
+Vyhodnotí objekt na který se odkazuje.
+
+Pøíklad:
+
+  class B1 : aBlock {
+    Input in;
+     ...
+    B1(Input i): in(i) {}
+     ...
+  };
+
+\section{Tøída Insv - necitlivost}
+
+Necitlivost je typická nestavová nelinearita s charakteristikou:
+
+
+Konstruktor
+
+  Insv(Input x, double p1, double p2);
+
+  Insv(Input x, double p1, double p2, double tgalfa, double tgbeta);
+
+
+Implicitnì jsou úhly alfa a beta 45 stupòù.
+
+
+Value
+
+  double Value()=0;
+
+
+Metoda Value vrací hodnotu výstupu bloku.
+
+
+\section{Tøída Integrator}
+
+Tøída Integrator implementuje popis numerické integrace pøi spojité
+simulaci. Integrátor má definovány tøi základní operace:
+
+
+ o  inicializace, nastavení poèáteèní hodnoty
+
+ o  nastavení hodnoty, tj. skoková zmìna stavu integrátoru
+
+ o  numerická integrace (skrytá vlastnost objektu)
+
+
+Init
+
+  void Init(double initvalue);
+
+  double operator = (double x)
+
+
+Metoda Init nastaví inicializaèní hodnotu integrátoru. Tuto
+hodnotu integrátor v¾dy pou¾ije pro svou inicializaci pøed zaèátkem
+simulace.
+
+
+Konstruktor
+
+  Integrator(Input x);
+
+  Integrator(Input x, double initvalue);
+
+
+Vytvoøení a inicializace integrátoru hodnotou initvalue nebo
+nulou.
+
+
+Set
+
+  void Set(double value);
+
+  double operator = (double x)
+
+
+Nastaví hodnotu integrátoru. Lze pou¾ít k provedení nespojité zmìny
+hodnoty integrátoru.
+
+
+Operátor =
+
+  double operator = (double x)
+
+
+Operátor pøiøazení má dva rùzné významy podle místa pou¾ití. Pøi
+pou¾ití ve stavu INITIALIZATION (tj. mezi voláním funkcí Init
+a Run v popisu experimentu) nastaví inicializaèní hodnotu
+integrátoru (je ekvivalentní metodì Init). Pou¾ije-li se
+ve stavu SIMULATION (probíhá simulace), potom nastavuje hodnotu výstupu
+integrátoru (je ekvivalentní metodì Set).
+
+
+Value
+
+  double Value();
+
+
+Metoda Value vrací hodnotu výstupu integrátoru.
+
+Pøíklad:
+
+Integrator i1(x,1),
+           i2(i1);  // vytvoøení a inicializace
+
+class Udalost1 : Event {
+  void Behavior() {
+    i1 = 1.0;       // nastavení hodnoty - skoková zmìna
+    ...
+  }
+};
+
+main() {
+  Init(0,10);
+  i1 = 1.0;         // inicializace integrátoru
+  ...
+  Run();
+}
+
+
+\section{Tøída Lim - omezení}
+
+Objekty tøídy Lim omezují vstupní hodnotu na zadaný interval
+od p1 do p2. Strmost charakteristiky je mo¾no zadat
+jako poslední parametr formou tangenty úhlu alfa. Charakteristika
+omezení je na obrázku:
+
+
+Konstruktor
+
+  Lim(Input x, double p1, double p2);
+
+  Lim(Input x, double p1, double p2, double tgalfa);
+
+
+Value
+
+  double Value();
+
+
+Metoda Value vrací hodnotu výstupu bloku.
+
+\section{Tøída Process}
+
+Abstraktní tøída Process popisuje vlastnosti objektù (entit), jejich¾
+chování v èase je popsáno procesem (tím rozumíme proceduru, pøeru¹itelnou
+nìkterými pøíkazy). Pou¾ívá se jako bázová tøída pro tøídy vytváøené
+u¾ivatelem. Dìdí vlastnosti tøídy Entity.
+
+
+Activate
+
+  void Activate(double t);
+
+  void Activate();
+
+
+Plánuje aktivaci entity na modelový èas t, pøípadnì ihned.
+Aktivace znamená buï start popisu chování v pøípadì novì vytvoøené
+entity, nebo pokraèování provádìní popisu chování v pøípadì, ¾e proces
+ji¾ bì¾el (a byl napøíklad deaktivován pøíkazem Passivate).
+
+
+Behavior
+
+  virtual void Behavior()=0;
+
+
+Popis diskrétního chování procesu. U¾ivatel musí definovat tuto metodu
+ve tøídì, která zdìdí tøídu Process. Metoda je pøeru¹itelná
+pøíkazy Wait, WaitUntil, Seize, Enter,
+Passivate, Cancel.
+
+
+Cancel
+
+  virtual void Cancel();
+
+
+Ukonèení procesu a zru¹ení objektu. Nemusí se uvádìt v pøípadì, ¾e
+by ¹lo o poslední pøíkaz v metodì Behavior.
+
+
+Enter
+
+  virtual void Enter(Store *s, tCapacity ReqCap);
+
+
+Obsadí kapacitu ReqCap skladu s, je-li volná. Jinak
+vstoupí do vstupní fronty skladu s. Uvolnìní skladu viz metoda Leave.
+
+
+Konstruktor,Destruktor
+
+\begin{verbatim}
+  Process(tPriority p=DEFAULT_PRIORITY);
+
+  virtual ~Process();
+\end{verbatim}
+
+Vytvoøí proces se zadanou prioritou. Implicitní priorita procesu
+je rovna nule (nejni¾¹í). Destruktor zru¹í objekt (proces).
+
+
+Leave
+
+  virtual void Leave(Store *s, tCapacity ReqCap);
+
+
+Uvolní kapacitu ReqCap skladu s. Obsazení skladu
+viz metoda Enter.
+
+
+Passivate
+
+  virtual void Passivate();
+
+
+Vyøadí aktivaèní záznam procesu z kalendáøe. Proces èeká a¾ bude
+opìt aktivován. Po aktivaci pokraèuje od následujícího pøíkazu v
+popisu chování.
+
+
+Priority
+
+  tPriority Priority;
+
+
+Priorita procesu. Typ tPriority má rozsah od nuly do 255.
+Nejni¾¹í priorita je nulová.
+
+
+Release
+
+  virtual void Release(Facility *f);
+
+
+Uvolní zaøízení f. Je chybou, provede-li se uvolnìní zaøízení
+pøed jeho obsazením. Je chybou, uvolòuje-li zaøízení jiný proces
+ne¾ ten, který je obsadil metodou Seize.
+
+
+Seize
+
+  virtual void Seize(Facility *f);
+
+  virtual void Seize(Facility *f, tPriority PrioS);
+
+
+Obsadí zaøízení f, je-li volné. Je-li zaøízení obsazeno
+entitou s men¹í prioritou obsluhy PrioS, potom pøeru¹í obsluhu
+této entity, zaøadí ji do fronty pøeru¹ené obsluhy a obsadí zaøízení.
+Jinak vstoupí do vstupní fronty zaøízení f. Entity, èekající
+ve frontì pøeru¹ených mají pøednost pøed entitami, èekajícími ve
+vstupní frontì. Fronty jsou uspoøádány podle priority obsluhy a podle
+priority entity. Viz té¾ tøída Facility.
+
+
+Wait
+
+  virtual void Wait(aQueue *Q);
+
+  virtual void Wait(double DeltaTime);
+
+
+Èekání entity ve frontì Q nebo èekání po dobu DeltaTime.
+Èekání po dobu DeltaTime znamená plánování reaktivace procesu
+na èas Time + DeltaTime.
+
+
+WaitUntil
+
+  virtual void WaitUntil(int expr);
+
+
+Obecné èekání na splnìní podmínky expr. Parametr je neustále
+vyhodnocován a platí-li, proces pokraèuje, jinak èeká. K vyhodnocování
+podmínky expr dochází v¾dy po skonèení události nebo po
+pøeru¹ení procesu. Pokud se èeká na zmìnu nìjaké promìnné, je tøeba
+zajistit pøeru¹ení procesu po pøíkazu, který ji zmìní.
+
+\section{Tøída Qntzr - kvantizátor}
+
+Kvantizátor provádí zaokrouhlení vstupní hodnoty na násobek kvantizaèního
+kroku.
+
+
+Konstruktor
+
+  Qntzr(Input x, double p);
+
+
+Parametr p je kvantizaèní krok.
+
+
+Value
+
+  double Value();
+
+
+Metoda Value vrací hodnotu výstupu kvantizátoru.
+
+\section{Tøída Queue}
+
+Tøída Queue pøedstavuje prostøedek pro uchování objektù
+tøíd, odvozených z tøídy Entity. Fronta je seøazena podle
+priorit entit Fronta udr¾uje statistiku poètu entit ve frontì a statistiku
+dob pobytu entit ve frontì.
+
+
+Clear
+
+  virtual void Clear();
+
+
+Zru¹í v¹echny entity ve frontì, inicializuje statistiky fronty.
+
+
+Empty
+
+  int Empty();
+
+
+Test, je-li fronta prázdná.
+
+
+Get
+
+  Entity *Get(Entity *e);
+
+  Entity *Get();
+
+
+Vyjme zadaný, resp. první prvek z fronty.
+
+
+Insert
+
+  virtual void Insert(Entity *e);
+
+
+Vlo¾í zadanou entitu do fronty podle její priority.
+
+
+Konstruktor, Destruktor
+
+  Queue();
+
+  Queue(char *name);
+
+  virtual ~Queue();
+
+
+Vytvoøí prázdnou frontu se jménem name. Destruktor zru¹í
+frontu, vèetnì zaøazených objektù.
+
+
+Length
+
+  unsigned Length();
+
+
+Získá poèet entit ve frontì. Je pou¾itelné v pøípadì modelování front
+s omezenou délkou.
+
+
+Output
+
+  void Output();
+
+
+Tato metoda vytiskne do standardního textového výstupního souboru
+statistiky a stav fronty.
+
+
+SetName
+
+  void SetName(char *name);
+
+
+Nastaví jméno fronty. Pou¾ívá se pøi inicializaci polí front. Jméno
+slou¾í k identifikaci fronty ve výstupních datech pøi tisku metodou
+Output.
+
+
+StatN, StatDT - statistiky fronty
+
+  TStat StatN;
+
+  Stat StatDT;
+
+
+Statistika poètu prvkù ve frontì a statistika doby pøítomnosti entit
+ve frontì.
+
+\section{Tøída Relay - relé}
+
+Charakteristika relé je uvedena na obrázku:
+
+
+Konstruktor
+
+  Relay(Input x, double p1, double p2, double p3, double p4, double  y1,
+  double y2);
+
+
+Value
+
+  double Value();
+
+
+Metoda Value vrací hodnotu výstupu relé.
+
+\section{Tøída SimObject}
+
+SimObject je základní bázovou tøídou (koøenem) hierarchie tøíd v
+SIMLIB. Specifikuje základní vlastnosti objektù modelu. Definuje
+metody pro vytvoøení a zru¹ení objektu. Tøída SimObject je
+abstraktní bázovou tøídou, tj. nelze vytváøet objekty této tøídy.
+
+\section{Tøída Stat}
+
+Tato tøída slou¾í pro sbìr statistických údajù. Uchovává následující
+informace vypoètené ze vstupních hodnot x:
+
+  double sx;       // suma hodnot x
+  double sx2;      // suma ètvercù hodnot x
+  double min;      // minimální hodnota
+  double max;      // maximální hodnota
+  unsigned long n; // poèet záznamù
+
+
+
+Clear
+
+  virtual void Clear();
+
+
+Inicializace statistiky.
+
+
+Konstruktor,Destruktor
+
+  Stat(char *name);
+
+  ~Stat();
+
+
+Inicializace a ru¹ení objektu.
+
+
+operator () - záznam hodnoty do statistiky
+
+  void operator ()(double x);
+
+
+Záznam hodnoty x do statistiky.
+
+
+Output
+
+  virtual void Output();
+
+
+Operace tisku statistiky do standardního textového souboru.
+
+Pøíklad:
+
+Stat Statistika("Statistika");
+  ...
+  Statistika(x);        // záznam hodnoty x
+  ...
+  Statistika.Output();  // tisk statistiky
+
+
+\section{Tøída Status - stavová promìnná}
+
+Tøída popisuje vlastnosti stavových promìnných. Jsou z ní odvozeny
+tøídy stavových blokù (napø. relé,hystereze). Ka¾dý objekt této tøídy
+má atribut, který definuje jeho stav.
+
+
+Init
+
+  void Init(double initvalue);
+
+
+Metoda Init nastaví inicializaèní hodnotu stavu objektu.
+
+
+Konstruktor
+
+  Status(Input x);
+
+  Status(Input x, double initvalue);
+
+
+Inicializace stavu objektu nulou nebo zadanou hodnotou initvalue.
+
+
+operator =
+
+  double operator = (double x)
+
+
+Operátor pøiøazení má dva rùzné významy podle místa pou¾ití. Pøi
+pou¾ití ve stavu INITIALIZATION (tj. mezi voláním funkcí Init
+a Run v popisu experimentu) nastaví inicializaèní hodnotu
+(je ekvivalentní metodì Init). Pou¾ije-li se ve stavu SIMULATION
+(probíhá simulace), potom nastavuje hodnotu objektu (je ekvivalentní
+metodì Set).
+
+
+Set
+
+  void Set(double value);
+
+  double operator = (double x)
+
+
+Nastaví stav objektu. Lze pou¾ít kdekoli v popisu modelu k provedení
+nespojité zmìny hodnoty stavu.
+
+
+Value
+
+  double Value();
+
+
+Metoda Value vrací hodnotu výstupu objektu.
+
+\section{Tøída Store}
+
+Tato tøída pøedstavuje sdílený prostøedek s urèitou kapacitou (poètem
+míst). To znamená, ¾e nìkolik entit mù¾e souèasnì pou¾ívat èást kapacity
+skladu. Pokud po¾adovaná kapacita není k dispozici, musí entita poèkat
+ve vstupní frontì Q.
+
+
+Capacity
+
+  tCapacity Capacity();
+
+
+Vrací celkovou kapacitu skladu.
+
+
+Clear
+
+  virtual void Clear();
+
+
+Inicializace skladu, jeho vstupní fronty a statistik.
+
+
+Empty
+
+  int Empty();
+
+
+Metoda Empty vrací TRUE, je-li sklad prázdný.
+
+
+Enter
+
+  virtual void Enter(Entity *e, tCapacity cap);
+
+
+Entita e obsadí kapacitu cap skladu, je-li volná.
+Jinak vstoupí do vstupní fronty skladu voláním metody QueueIn.
+
+
+Free
+
+  tCapacity Free();
+
+
+Vrací volnou kapacitu skladu.
+
+
+Full
+
+  int Full();
+
+
+Metoda Full vrací TRUE, je-li kapacita skladu zcela obsazena.
+
+
+Konstruktory,Destruktor
+
+  Store();
+
+  Store(tCapacity capacity);
+
+  Store(char *name, tCapacity capacity);
+
+  Store(tCapacity capacity, Queue *queue);
+
+  Store(char *name, tCapacity capacity, Queue *queue);
+
+  virtual ~Store();
+
+
+Konstruktory umo¾òují inicializaci skladu, nastavení jeho kapacity
+a vstupní fronty. Implicitní kapacita je 1, pokud nezadáme frontu,
+sklad si ji vytvoøí. Typ tCapacity je celoèíselný (unsigned
+long).
+
+
+Leave
+
+  virtual void Leave(tCapacity cap);
+
+
+Uvolní po¾adovanou kapacitu cap skladu. Je chybou, ¾ádá-li
+se o uvolnìní vìt¹í kapacity, ne¾ je obsazeno.
+
+
+Output
+
+  virtual void Output();
+
+
+Tiskne stav skladu, jeho fronty a statistiky.
+
+
+Q - vstupní fronta
+
+  Queue *Q;
+
+
+Ukazatel na vstupní frontu. Sklad si vytvoøí vstupní frontu dynamicky,
+je-li to zapotøebí.
+
+
+QueueIn
+
+  virtual int QueueIn(Entity *e);
+
+
+Operace vstupu do fronty u skladu. Zaøadí do fronty podle priority
+entity, pøi shodì priorit podle strategie FIFO.
+
+
+QueueLen
+
+  unsigned QueueLen();
+
+
+Zjistí délku fronty u skladu.
+
+
+SetName,SetCapacity,SetQueue
+
+  void SetName(char *name);
+
+  void SetCapacity(tCapacity capacity);
+
+  void SetQueue(Queue *queue);
+
+
+Tyto operace nastavují parametry skladu, pou¾ívají se pøi inicializaci
+polí skladù.
+
+
+tstat - statistika skladu
+
+  TStat tstat;
+
+
+Slou¾í pro výpoèet prùmìrnì obsazené kapacity.
+
+
+Used
+
+  tCapacity Used();
+
+
+Vrací pou¾itou kapacitu skladu.
+
+
+
+\section{Tøída TStat}
+
+Tato tøída slou¾í pro sbìr statistických údajù. Objekty této tøídy
+sledují èasový prùbìh vstupní velièiny. To umo¾òuje výpoèet prùmìrných
+hodnot velièin v zadaném èasovém intervalu od inicializace statistiky
+do okam¾iku výstupu. Èasová statistika uchovává tyto údaje vypoètené
+ze vstupních hodnot x:
+
+\begin{verbatim}
+  double sxt;        // suma hodnot x*dtime
+  double sx2t;       // suma ètvercù hodnot (x^2)*dtime
+  double min;        // minimální hodnota x
+  double max;        // maximální hodnota x
+  double t0;         // èas inicializace
+  double tl;         // èas poslední operace
+  double xl;         // poslední zaznamenaná hodnota x
+  unsigned long n;   // poèet záznamù do statistiky
+\end{verbatim}
+
+
+
+Clear
+
+  virtual void Clear();
+
+
+Inicializace statistiky.
+
+
+Konstruktor,Destruktor
+
+  TStat();
+
+  TStat(char *name);
+
+  ~TStat();
+
+
+Inicializace a ru¹ení objektu.
+
+
+operator () - záznam hodnoty do statistiky
+
+  void operator ()(double x);
+
+
+Tato operace provede záznam hodnoty x do statistiky.
+
+
+Output
+
+  virtual void Output();
+
+
+Operace tisku èasové statistiky.
+
+Pøíklad:
+
+TStat  TS("TS");
+  ...
+  TS(x);        // záznam hodnoty v èase Time
+  ...
+  TS.Output();  // výstup
+
+
+
+\section{Standardní objekty a promìnné}
+
+Souèástí ka¾dého modelu jsou standardní promìnné, které jsou deklarovány
+implicitnì. Identifikátorù standardních promìnných nelze pou¾ít pro
+oznaèení jiných objektù modelu. Tyto promìnné plní zvlá¹tní úlohu
+pøi øízení simulace. Jejich hodnoty nastavují funkce Init,
+Run, SetStep a SetAccuracy.
+
+
+AbsoluteError
+
+\begin{verbatim}
+  double AbsoluteError;
+\end{verbatim}
+
+
+Promìnná AbsoluteError obsahuje po¾adovanou maximální absolutní
+chybu numerické integrace. Je nastavována funkcí SetAccuracy.
+Implicitní hodnota je nulová, to znamená, ¾e v úvahu se bere pouze
+po¾adovaná maximální relativní chyba integrace.
+
+
+Current
+
+\begin{verbatim}
+  Entity *Current;
+\end{verbatim}
+
+
+Promìnná Current je ukazatel na právì aktivní entitu, tj.
+objekt s diskrétním chováním, jeho¾ popis chování (metoda Behavior)
+se právì provádí.
+
+
+EndTime
+
+\begin{verbatim}
+  double EndTime;
+\end{verbatim}
+
+
+Promìnná EndTime obsahuje èas ukonèení simulace.
+
+
+MaxStep,MinStep
+
+\begin{verbatim}
+  double MaxStep,MinStep;
+\end{verbatim}
+
+
+Promìnné MaxStep a MinStep udávají povolený rozsah
+kroku numerické integrace. Nastavují se voláním funkce SetStep.
+
+
+Phase
+
+\begin{verbatim}
+  enum PhaseEnum {START,INITIALIZATION, SIMULATION, TERMINATION};
+
+  PhaseEnum Phase;
+\end{verbatim}
+
+
+Promìnná Phase obsahuje oznaèení právì probíhající fáze experimentu,
+mù¾e nabývat hodnot: START,INITIALIZATION, SIMULATION, TERMINATION
+
+
+RelativeError
+
+\begin{verbatim}
+  double RelativeError;
+\end{verbatim}
+
+
+Promìnná RelativeError obsahuje po¾adovanou maximální relativní
+chybu numerické integrace. Integraèní metoda bere tento po¾adavek
+v úvahu pøi volbì velikosti integraèního kroku.
+
+
+StartTime
+
+\begin{verbatim}
+  double StartTime;
+\end{verbatim}
+
+
+V promìnné StartTime je zaznamenán poèáteèní modelový èas,
+nastavený funkcí Init pøi inicializaci experimentu.
+
+
+Time
+
+\begin{verbatim}
+  double Time;
+\end{verbatim}
+
+
+Promìnná Time reprezentuje modelový èas.
+
+
+Objekt T
+
+
+
+
+\section{Standardní funkce}
+
+
+Abort
+
+\begin{verbatim}
+  void Abort();
+\end{verbatim}
+
+
+Funkce ukonèí simulaèní program.
+
+
+Activate
+
+\begin{verbatim}
+  void Activate(Entity *e);
+\end{verbatim}
+
+
+Funkce pro aktivaci entit. (viz tøída Entity)
+
+
+Init
+
+\begin{verbatim}
+  void Init(double StartTime, double StopTime);
+\end{verbatim}
+
+
+Funkce inicializuje kalendáø, nastaví rozsah modelového èasu a promìnnou
+Time, inicializuje systém øízení simulace.
+
+
+Passivate
+
+\begin{verbatim}
+  void Passivate(Entity *e);
+\end{verbatim}
+
+
+Funkce pro deaktivaci entit. (viz tøída Entity)
+
+
+Run
+
+\begin{verbatim}
+  void Run();
+\end{verbatim}
+
+
+Funkce zahájí simulaci od aktuální hodnoty èasu a pokraèuje a¾ do
+èasu, zadaného pøi pøedcházejícím volání Init. Simulaci
+lze pøedèasnì ukonèit stiskem klávesy ESC nebo programovì funkcí
+Stop.
+
+
+SetOutput
+
+\begin{verbatim}
+  void SetOutput(char *name)
+\end{verbatim}
+
+
+Nastaví standardní textový výstupní soubor pro v¹echny metody Output.
+
+
+Stop
+
+\begin{verbatim}
+  void Stop();
+\end{verbatim}
+
+
+Funkce ukonèí právì probíhající simulaèní bìh. Je mo¾no pokraèovat
+v dal¹ích experimentech.
+
+
+
+
+\section{Generátory náhodných èísel}
+
+Základem pro generování rùzných pseudonáhodných rozlo¾ení je generátor
+rovnomìrného rozlo¾ení na intervalu <0,1). Tento generátor je realizován
+funkcí Random, kterou lze pøedefinovat u¾ivatelem definovanou
+funkcí. To umo¾òuje pou¾ít vlastní generátor pseudonáhodných èísel
+s lep¹ími vlastnostmi.
+
+
+Exponential
+
+  double Exponential(double mv);
+
+
+Funkce Exponential generuje pseudonáhodná èísla s exponenciálním
+rozlo¾ením a støední hodnotou mv.
+
+
+Normal
+
+  double Normal(double mi, double sigma);
+
+
+Funkce Normal generuje pseudonáhodná èísla s normálním rozlo¾ením,
+støední hodnotou mi a smìrodatnou odchylkou sigma.
+
+
+Poisson
+
+  int Poisson(double lambda);
+
+
+Funkce Poisson generuje pseudonáhodná èísla Poissonova rozlo¾ení
+se støední hodnotou lambda.
+
+
+Random
+
+  double Random();
+
+
+Standardní funkce Random generuje pseudonáhodná èísla s
+rovnomìrným rozlo¾ením v intervalu od nuly do jedné. Horní mez intervalu
+(èíslo jedna) negeneruje.
+
+
+
+
+RandomInit
+
+
+  void RandomInit();
+
+
+Funkce RandomInit inicializuje generátor pseudonáhodných
+èísel. Po jejím zavolání funkce Random generuje opìt stejnou
+posloupnost pseudonáhodných èísel.
+
+Uniform
+
+\begin{verbatim}
+  double Uniform(double l, double h);
+\end{verbatim}
+
+
+Funkce Uniform generuje pseudonáhodná èísla s rovnomìrným
+rozlo¾ením v intervalu od l vèetnì do h. Horní
+mez není zahrnuta do intervalu.
+
+Ostatní generátory
+
+Uvedeme pouze pøehled ostatních generátorù:
+
+\begin{verbatim}
+double Beta(double th, double fi, double min, double max);
+double Erlang(double alfa, double beta);
+double Gama(double alfa, double beta);
+int    Geom(double q);
+int    HyperGeom(double p, int n, int m);
+double Logar(double mi, double delta);
+int    NegBinM(double p,int m);
+int    NegBin(double q, int k);
+double Rayle(double delta);
+double Triag(double mod, double min, double max);
+double Weibul(double lambda, double alfa);
+\end{verbatim}
+
+
+
+
+
+
+\section{Poznámky k implementaci SIMLIB}
+
+Souèasná verze  knihovny je 2.12.  
+
+\subsection{MSDOS}
+
+Knihovnu lze pou¾ít  s tìmito pøekladaèi:
+
+   Borland C++ v3.1 
+   Borland C++ v4.0 (vypnout exception handling)
+   Borland C++ v5.0 (vypnout exception handling)
+   DJGPP = GNU C++ pro MSDOS
+
+Pamì»ové po¾adavky knihovny samotné se pohybují kolem 100KB.
+
+Pro 16 bitové pøekladaèe Borland C++ knihovna pou¾ívá pamì»ový  model 
+LARGE, v integrovaném  prostøedí  musí  být  pro  ka¾dý  model vytvoøen
+projekt, tj.  seznam modulù a knihoven,  které se budou spojovat do  jednoho
+programu.  Bì¾né modely  vystaèí s  knihovnou SIMLIB a jedním modulem
+obsahujícím popis modelu i experimentu.
+
+Pro pøeklad modelu je napsána dávka SIMLIB.BAT.
+
+
+\subsection{Linux}
+
+V tomto prostøedí je provádìn vývoj knihovny. Pou¾ívá se pøekladaè
+
+   GNU C++ v2.7.2 
+
+a vývojové prostøedí xwpe.
+
+Pøeklad modelu provede skript SIMLIB.
+
+
+\end{document}

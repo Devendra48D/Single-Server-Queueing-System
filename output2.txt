@@ -1,0 +1,17 @@
+Single-server queueing system
+
+Mean interarrival time 8 minutes
+
+Mean service time 5 minutes
+
+Number of customers 50 
+
+
+
+Average delay in queue 5.30637 minutes
+
+Average number in queue 0.609686 
+
+Server utilization 0.555148 
+
+Time simulation ended 445.775 minutes

@@ -1,0 +1,71 @@
+
+----------------------------------------------------------------
+Installation instructions for SimLib/C++ (Simulation Library for C++)
+----------------------------------------------------------------
+
+This is SIMLIB3 experimental pre-release version
+Warning: Compilation method will change in future
+Last modified: 2011-04-12
+
+----------------------------------------------------------------
+How to build and install SIMLIB/C++
+----------------------------------------------------------------
+
+0. Unpack the source archive.
+
+1. Type "make" or "gmake" (use GNU make)
+   If it does not work, check/create Makefile.<OS>-<CPU>
+   (On some platforms you should rewrite part of process.cc)
+   You can use it directly:   make -f Makefile.<OS>-<CPU>
+   You can compile 32bit version on 64bit platform:  make 32
+
+2. Test the library by "make test"  (pointer differences in output are O.K.).
+
+3. Test the library by running examples in ../examples (make run).
+
+4. Type "make install" (installs to /usr/local directory).
+   You should set dynamic linker configuration for /usr/local/lib.
+   The installation goes to /usr/local/lib, if you want .../lib64 on 64bit
+   system, change the makefile.
+
+
+This version of SIMLIB has been compiled and tested on:
+
+  System                         Compiler
+  ------------------------------------------------
+  Linux 2.6.26, Athlon64/64bit   (gcc-4.3.2)
+  Linux 2.6.26, Athlon64/64bit   (gcc-4.5.0)
+  Linux 2.6.32, Core2/64bit      (gcc-4.6.0)
+
+Old versions tested on:
+  Linux 2.6.24, Core2duo/32bit   (gcc-4.3.0)
+  Linux 2.6.18, Athlon64/64bit   (gcc-4.1.2)
+  Linux 2.6.18, Athlon64/32bit   (gcc-4.1.2)
+  Linux 2.6.9,  Athlon64/32bit   (gcc-3.4)
+  Linux 2.2.18, Pentium 3        (gcc-3.0)
+  Linux 2.2.17, Pentium 3        (gcc-2.95.2)
+  Linux 2.0.33, i386+            (egcs-1.0.3)
+  Linux 2.2.12, Pentium          (egcs-2.91.66)
+  FreeBSD 2.2.7-STABLE, i386+    (egcs-2.91.57)
+  FreeBSD 3.3-STABLE, Pentium 2  (gcc-2.95.1)
+  SCO UNIX_SV 4.2MP 2.1.2, i386+ (egcs-2.91.57)
+  MSDOS 5.0+, i386+              (DJGPP=GCC 2.8+)
+  ------------------------------------------------
+
+Shared library have been tested on Linux.
+
+Porting to another system is easy, except the process switching (see
+process.cc for details) which depends on processor type and stack layout.
+If you disable processes, it should work on any system with
+(sub)standard C++ compiler.
+Patches for other architectures are welcome ;-)
+
+Bug reports please mail to:  peringer AT fit.vutbr.cz
+
+----------------------------------------------------------------
+More information is at the SIMLIB home page:
+
+   http://www.fit.vutbr.cz/~peringer/SIMLIB/
+
+----------------------------------------------------------------
+Written by Petr Peringer              peringer AT fit.vutbr.cz

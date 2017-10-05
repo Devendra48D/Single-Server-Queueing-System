@@ -1,0 +1,59 @@
+
+SIMLIB/C++ FAQ
+==============
+
+Q) Simulation is too slow
+A) Maybe the problem is calendar implementation (linked list by default).
+   When you have more than cca 1000 processes/events scheduled, try to use
+   _experimental_ CalendarQueue implementation before Init(...);
+     SetCalendar("cq");
+
+Q) Block expression evaluates to bad value
+A) Possible use of double or int variable
+       double(x)*double(y)*block
+   means
+       Constant(double(x)*double(y))*block
+
+   you can't use C++ variable in block expression if you want to change its
+   value during simulation (for example the variable Time can't be used -- you
+   should use continuous block T)
+
+
+Q) After Release(Facility) the predicate Facility.Busy() is true
+A) Yes, the Facility is automatically seized by first entity in input queue
+   and this is done by Release() method -- it means
+   that after Release() the facility can be busy.
+
+Q) I have problem with arrays
+A) check indexes (C++ does not)
+A2) If you are using GCC 4.9.0, use another version of the compiler.
+
+Q) My simulation crashed after end of run
+A) possibilities:
+       -- bad use of pointers or array indexes
+       -- objects in unterminated Behavior()
+       -- etc...
+
+
+Q) I got SIMLIB error: entity activation in the past
+A) You probably used Normal() random generator for waiting by Wait().
+   Normal() can produce negative number.
+   Planning event activation in the past is impossible.
+
+Q) My simulation does not stop. Debugger shows that it is infinite loop in
+   myEvent::Behavior().
+A) You are using old (=pre 3.00) version of SIMLIB.
+   This was bug in SIMLIB. All events (derived from Event) were actually
+   periodic events - you used either
+      Activate(Time+something);  to schedule next activation or
+      Cancel();  to stop and destroy the event.
+   Cancel is no more needed in new version (v3).
+
+Q) Time statistics (class TStat) reports an error for multiple experiment
+   simulation.
+A) You should do  tstat.Clear() after Init(t1,t2) and before Run(). Those
+   statistics depend on model time, and seting the time in Init() leads to
+   the error message. See multiexp.cc in SIMLIB examples.
+   Because Facility, Store, and Queue contain time statistics, you should
+   Clear() all such objects you defined in a model.
+

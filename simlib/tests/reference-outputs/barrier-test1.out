@@ -1,0 +1,19 @@
+b:start 0xd69010
+b:start 0xd690b0
+b:start 0xd69150
+b:start 0xd691f0
+b:start 0xd69290
+b:start 0xd69330
+b:start 0xd693d0
+b:end 0xd69010
+b:end 0xd690b0
+b:end 0xd69150
+b:end 0xd691f0
+b:end 0xd69290
+Barrier: b
+  0: [0xd69330] Process#5
+  1: [0xd693d0] Process#6
+  2: empty
+  3: empty
+  4: empty
+
